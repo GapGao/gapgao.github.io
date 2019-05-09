@@ -66,8 +66,12 @@
         </hgroup>
 
         
-        <p class="header-subtitle">web前端技术博客</p>
+        <p class="header-subtitle">但行好事 莫问前程</p>
         
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
         
         
             <div id="switch-btn" class="switch-btn">
@@ -164,7 +168,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/前端-学习计划-2019/" style="font-size: 10px;">前端 学习计划 2019</a>
+                        <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a>
                     </div>
                 </section>
                 
@@ -203,14 +207,14 @@
         <header id="header" class="inner">
             <a href="/" class="profilepic">
                 
-                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                    <img lazy-src="/img/head2.jpg" class="js-avatar">
                 
             </a>
             <hgroup>
               <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
             </hgroup>
             
-            <p class="header-subtitle">web前端技术博客</p>
+            <p class="header-subtitle">但行好事 莫问前程</p>
             
             <nav class="header-menu">
                 <ul>
@@ -521,6 +525,23 @@
     });
 </script>
 
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
 
   </div>
 </body>
