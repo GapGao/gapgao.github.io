@@ -3,19 +3,20 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>wechat | 牛轰轰可能是个bug</title>
+  <title>本地微信真机调试方法 | 牛轰轰可能是个bug</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="web web前端 Nodejs CSS HTML Npm React Vue Angular">
-<meta property="og:type" content="website">
-<meta property="og:title" content="wechat">
-<meta property="og:url" content="https://gapgao.github.io/wechat/index.html">
+  <meta name="description" content="介绍写微信页面时最后需要真机调试，但是调试方式比较复杂，要域名，要求比较苛刻，且大多前端项目使用webpack构建，在打包之后上传至测试服务器进行调试，实在繁琐，且如果出现问题，要重复上述过程无法修改之后快速查看效果。以下方式可以解决此类问题。">
+<meta name="keywords" content="wechat,真机调试,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本地微信真机调试方法">
+<meta property="og:url" content="https://gapgao.github.io/2019/06/01/本地微信真机调试方法/index.html">
 <meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="介绍写微信页面时最后需要真机调试，但是调试方式比较复杂，要域名，要求比较苛刻，且大多前端项目使用webpack构建，在打包之后上传至测试服务器进行调试，实在繁琐，且如果出现问题，要重复上述过程无法修改之后快速查看效果。以下方式可以解决此类问题。">
 <meta property="og:locale" content="Chinese">
-<meta property="og:image" content="https://gapgao.github.io/wechat/wechat.jpg">
-<meta property="og:updated_time" content="2019-04-27T16:25:18.359Z">
+<meta property="og:updated_time" content="2019-06-01T13:05:01.591Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wechat">
-<meta name="twitter:image" content="https://gapgao.github.io/wechat/wechat.jpg">
+<meta name="twitter:title" content="本地微信真机调试方法">
+<meta name="twitter:description" content="介绍写微信页面时最后需要真机调试，但是调试方式比较复杂，要域名，要求比较苛刻，且大多前端项目使用webpack构建，在打包之后上传至测试服务器进行调试，实在繁琐，且如果出现问题，要重复上述过程无法修改之后快速查看效果。以下方式可以解决此类问题。">
   
     <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
   
@@ -41,7 +42,7 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -262,11 +263,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-本地微信真机调试方法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/wechat/index.html" class="article-date">
-      <time datetime="2019-04-27T15:52:36.000Z" itemprop="datePublished">2019-04-27</time>
+      <a href="/2019/06/01/本地微信真机调试方法/" class="article-date">
+      <time datetime="2019-06-01T12:43:25.000Z" itemprop="datePublished">2019-06-01</time>
 </a>
     </div>
   
@@ -279,7 +280,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      wechat
+      本地微信真机调试方法
     </h1>
   
 
@@ -289,6 +290,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wechat/">wechat</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/真机调试/">真机调试</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -296,42 +301,19 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta {
-        display: none;
-    }
-    #container .article .article-title {
-        padding-right: 0;
-    }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 1.6em
-    }
-    .article-meta {
-        display: none;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    #container .article-info-post.article-info {
-      display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>
-
-
-          
-        <p><img src="./wechat.jpg" alt="avatar"></p>
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>写微信页面时最后需要真机调试，但是调试方式比较复杂，要域名，要求比较苛刻，且大多前端项目使用webpack构建，在打包之后上传至测试服务器进行调试，实在繁琐，且如果出现问题，要重复上述过程无法修改之后快速查看效果。以下方式可以解决此类问题。</p>
+<a id="more"></a>
+<h1 id="下载一个代理软件，如charles-mac-，其他操作系统请自行安装。"><a href="#下载一个代理软件，如charles-mac-，其他操作系统请自行安装。" class="headerlink" title="下载一个代理软件，如charles(mac)，其他操作系统请自行安装。"></a>下载一个代理软件，如charles(mac)，其他操作系统请自行安装。</h1><h1 id="修改本地hosts"><a href="#修改本地hosts" class="headerlink" title="修改本地hosts"></a>修改本地hosts</h1><blockquote>
+<p>将本地hosts   /etc/hosts 文件  sudo vim 加入一行</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1  xxx.xxx.com 配置成你微信公众平台设置的域名</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在hosts加入这一行后，在本地访问xxx.xxx.com，会自动转为访问localhost → 127.0.0.1</p>
+</blockquote>
+<h1 id="使用代理软件"><a href="#使用代理软件" class="headerlink" title="使用代理软件"></a>使用代理软件</h1><p>打开代理软件，打开代理服务，配置你喜欢的端口，charles默认为8888</p>
+<h1 id="手机网络代理至你的电脑"><a href="#手机网络代理至你的电脑" class="headerlink" title="手机网络代理至你的电脑"></a>手机网络代理至你的电脑</h1><p>将自己的手机调成跟你电脑一样的wifi下，并在手机的wifi设置中配置代理为手动，ip填写你电脑的局域网ip，端口填写你配置代理的端口如8888，存储。在本地启动服务，注意要使用80端口启动（需sudo）。</p>
+<h1 id="微信访问"><a href="#微信访问" class="headerlink" title="微信访问"></a>微信访问</h1><p>手机微信访问xxx.xxx.com 大概需要10秒钟会出来页面，由于我们的dev环境代码量很大（有很多webpack的plugin），几十兆的样子，如果用有对应域名的服务器来做代理，会比较慢，用局域网代理比较快，</p>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>如果只测页面及获取微信的某些操作权限的功能（如分享，取照片，上传等），此方法都可以实现。因为微信只看我们在微信浏览器里访问了什么地址。如果要测微信推消息什么的功能，那么请用有对应域名的服务器做代理，才接受得到微信的消息（如token）。本质上是做了代理，微信以某个域名访问，转而访问到本地服务，绕过微信的某些限制。但微信推消息（如token）是往真实的xxx.xxx.com 地址下推，所以我们是收不到的。</p>
 
       
       
@@ -386,10 +368,67 @@
   </div>
   
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2019年06月01日 - 20时43分</p>
+        <p><span>最后更新:</span>2019年06月01日 - 21时05分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2019/06/01/本地微信真机调试方法/" title="本地微信真机调试方法">https://gapgao.github.io/2019/06/01/本地微信真机调试方法/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2019/06/01/本地微信真机调试方法/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
 
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2019/06/01/chrome模拟微信浏览器device/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">chrome模拟微信浏览器device</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#下载一个代理软件，如charles-mac-，其他操作系统请自行安装。"><span class="toc-number">2.</span> <span class="toc-text">下载一个代理软件，如charles(mac)，其他操作系统请自行安装。</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#修改本地hosts"><span class="toc-number">3.</span> <span class="toc-text">修改本地hosts</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用代理软件"><span class="toc-number">4.</span> <span class="toc-text">使用代理软件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#手机网络代理至你的电脑"><span class="toc-number">5.</span> <span class="toc-text">手机网络代理至你的电脑</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#微信访问"><span class="toc-number">6.</span> <span class="toc-text">微信访问</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意"><span class="toc-number">7.</span> <span class="toc-text">注意</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
 
 
 
@@ -425,6 +464,37 @@
     
 
 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2019/06/01/chrome模拟微信浏览器device/" title="下一篇: chrome模拟微信浏览器device">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
 
 
 
