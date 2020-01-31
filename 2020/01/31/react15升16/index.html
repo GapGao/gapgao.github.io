@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>react15升16 | 牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="React 16已经发布很长时间了 目前最新版本是 16.12.0 让我们来看看从15升级到16都要做哪些迁移吧~">
+<meta name="keywords" content="react15,react16,migration">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react15升16">
+<meta property="og:url" content="https://gapgao.github.io/2020/01/31/react15升16/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="React 16已经发布很长时间了 目前最新版本是 16.12.0 让我们来看看从15升级到16都要做哪些迁移吧~">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2020-01-31T12:40:03.858Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="react15升16">
+<meta name="twitter:description" content="React 16已经发布很长时间了 目前最新版本是 16.12.0 让我们来看看从15升级到16都要做哪些迁移吧~">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web前端/" style="font-size: 10px;">web前端</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-react15升16" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/01/31/react15升16/" class="article-date">
+      <time datetime="2020-01-31T09:47:23.000Z" itemprop="datePublished">2020-01-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      react15升16
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/migration/">migration</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react15/">react15</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/react16/">react16</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>React 16已经发布很长时间了 目前最新版本是 16.12.0 让我们来看看从15升级到16都要做哪些迁移吧~</p>
+<a id="more"></a>
+<h2 id="基础依赖升级"><a href="#基础依赖升级" class="headerlink" title="基础依赖升级"></a>基础依赖升级</h2><ol>
+<li>react 16.12.0</li>
+<li>react-dom 16.12.0</li>
+<li>prop-types 15.7.2</li>
+</ol>
+<p>如果引用redux的话</p>
+<ol start="4">
+<li>redux 4.0.5</li>
+<li>react-redux 7.1.3</li>
+<li>redux-thunk 2.3.0</li>
+</ol>
+<p>如果引用transition的话</p>
+<ol start="7">
+<li>react-transition-group 4.3.0</li>
+</ol>
+<h2 id="基础依赖安装"><a href="#基础依赖安装" class="headerlink" title="基础依赖安装"></a>基础依赖安装</h2><p>1.react-router-dom 5.1.2<br>2.react-router-config 5.1.1</p>
+<h2 id="三方依赖升级"><a href="#三方依赖升级" class="headerlink" title="三方依赖升级"></a>三方依赖升级</h2><p>一些组件库需要升级版本，如果不升级，依赖的不是react16的话，就会有一些生命周期函数的warning<br>这些生命周期函数将在17彻底废除掉</p>
+<h2 id="migration-之-路由"><a href="#migration-之-路由" class="headerlink" title="migration 之 路由"></a>migration 之 路由</h2><p>升级之后发现跑不起来了，是因为react-router的写法完全变了react 和 react-router相互版本依赖 所以要一起升级，react-router已经到5了可怕而秉承万物即组件的理念 react-router 相较之前的写法有了很大的变化，迁移改动巨大。<br>那么使用路由组件的写法，一是改动成本大，二是不集中管理路由的话，又很难维护代，路由分散，对开发和debug查bug什么的对于新同学来说非常繁琐隐晦。<br>莫慌，我们还装了一个叫react-router-config的库，它可以帮助我们仍然可以集中管理路由，并且有点像vue一样的json写法，让你的路由配置变的神清气爽。<br>像这样</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; lazy, Suspense &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserRouter &#125; <span class="keyword">from</span> <span class="string">'react-router-dom'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; renderRoutes &#125; <span class="keyword">from</span> <span class="string">'react-router-config'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/App'</span>));</span><br><span class="line"><span class="keyword">const</span> Organization = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/Organization'</span>));</span><br><span class="line"><span class="keyword">const</span> ApplicationList = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/ApplicationList'</span>));</span><br><span class="line"><span class="keyword">const</span> ExcelApplicationList = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/ExcelApplicationList'</span>));</span><br><span class="line"><span class="keyword">const</span> JobList = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/JobList'</span>));</span><br><span class="line"><span class="keyword">const</span> Job = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/Job'</span>));</span><br><span class="line"><span class="keyword">const</span> CandidateInfo = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./components/CandidateInfo'</span>));</span><br><span class="line"><span class="keyword">const</span> Result = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/Result'</span>));</span><br><span class="line"><span class="keyword">const</span> ExcelResult = lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./containers/ExcelResult'</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: [<span class="string">'/headhunters/:orgId'</span>, <span class="string">'/headhunters'</span>],</span><br><span class="line">    <span class="comment">// 是按顺序匹配</span></span><br><span class="line">    <span class="comment">// 如果exact为true 虽然会精确匹配 但是 触发子https://reacttraining.com/blog/react-router-v5-1/路由 父路由被精确掉了所以App就没了 子组件也就没有render了</span></span><br><span class="line">    <span class="comment">// 所以统一带id的放在前边 优先自动匹配</span></span><br><span class="line">    <span class="comment">// 有子路由的exact必须为false</span></span><br><span class="line">    component: App,</span><br><span class="line">    routes: [</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">'/headhunters/:orgId/org'</span>,</span><br><span class="line">        component: Organization,</span><br><span class="line">        routes: [</span><br><span class="line">          &#123;</span><br><span class="line">            path: <span class="string">'/headhunters/:orgId/org/jobs'</span>,</span><br><span class="line">            exact: <span class="literal">true</span>,</span><br><span class="line">            component: JobList,</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            path: <span class="string">'/headhunters/:orgId/org/applications'</span>,</span><br><span class="line">            exact: <span class="literal">true</span>,</span><br><span class="line">            component: ApplicationList,</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            path: <span class="string">'/headhunters/:orgId/org/excel_applications'</span>,</span><br><span class="line">            exact: <span class="literal">true</span>,</span><br><span class="line">            component: ExcelApplicationList,</span><br><span class="line">          &#125;,</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">'/headhunters/:orgId/job/:jobId'</span>,</span><br><span class="line">        exact: <span class="literal">true</span>,</span><br><span class="line">        component: Job,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">'/headhunters/:orgId/recommend/:jobId'</span>,</span><br><span class="line">        component: CandidateInfo,</span><br><span class="line">        routes: [</span><br><span class="line">          &#123;</span><br><span class="line">            path: <span class="string">'/headhunters/:orgId/recommend/:jobId/result'</span>,</span><br><span class="line">            exact: <span class="literal">true</span>,</span><br><span class="line">            component: Result,</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            path: <span class="string">'/headhunters/:orgId/recommend/:jobId/excel_result'</span>,</span><br><span class="line">            exact: <span class="literal">true</span>,</span><br><span class="line">            component: ExcelResult,</span><br><span class="line">          &#125;,</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">'/headhunters/:orgId/update/:applicationId'</span>,</span><br><span class="line">        component: CandidateInfo,</span><br><span class="line">        routes: [</span><br><span class="line">          &#123;</span><br><span class="line">            path: <span class="string">'/headhunters/:orgId/update/:applicationId/result'</span>,</span><br><span class="line">            exact: <span class="literal">true</span>,</span><br><span class="line">            component: Result,</span><br><span class="line">          &#125;,</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">];</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;Suspense fallback=&#123;<span class="literal">null</span>&#125;&gt;</span><br><span class="line">      &#123;renderRoutes(routes)&#125;</span><br><span class="line">    &lt;<span class="regexp">/Suspense&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>BrowserRouter&gt;</span><br><span class="line">);</span><br><span class="line"><span class="comment">// 其实这里还用该有个 &lt;Switch&gt;&lt;/Switch&gt;组件，代表同级的路由只匹配一个，但是renderRoutes内部已经包含了该组件，这里就没有写</span></span><br></pre></td></tr></table></figure>
+<p>这样的路由配置结构清晰，嵌套清晰。</p>
+<p>class组件的render方法，<code>withRouter</code>基本不变，但是可以看到export出去的路由多了很多东西。BrowserRouter组件代表使用history模式的路由，对，还有一个<code>HashRouter</code>，react-router已经内置了history模式，不需要再去引别的库了。</p>
+<p><code>this.props.router.</code> 等都改为 <code>this.props.history.</code>。</p>
+<p>且react16引入了lazy 和 Suspense，分别代表懒加载模块，以及将来时的声明组件，两者配合使用，还可以fallback，在加载时降级展示的组件，react自己引入了代码分割功能。</p>
+<blockquote>
+<p>具体用法参考 <a href="https://react.docschina.org/docs/code-splitting.html" target="_blank" rel="noopener">https://react.docschina.org/docs/code-splitting.html</a></p>
+</blockquote>
+<p>renderRoutes就是react-router-config库的render方法了，源码很简单，就是递归你的配置路由，自己去看。使用这个方法将配置的路由render出来。</p>
+<p>在子路由的render还是要改动，以前子路由的render可能是这样的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="keyword">this</span>.props.children &amp;&amp; React.cloneElement(</span><br><span class="line">  <span class="keyword">this</span>.props.children,</span><br><span class="line">  &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在改成这样</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; renderRoutes &#125; <span class="keyword">from</span> <span class="string">'react-router-config'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 凡是路由组件，经过renderRoutes之后都会有一个route字段，即当前匹配的路由配置</span></span><br><span class="line">renderRoutes(route.routes, &#123; ...props &#125;)</span><br><span class="line"><span class="comment">// 只有匹配了子路由才会，子组件才会被render</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; renderRoutes, matchRoutes &#125; <span class="keyword">from</span> <span class="string">'react-router-config'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 但是对于这种children是否存在，即是否匹配到子路由的情况的判断应该怎么判断呢</span></span><br><span class="line"><span class="comment">// 上边的例子是匹配哪个子路由就render哪个子组件，没有匹配就不render所以不会有这样的情况</span></span><br><span class="line"><span class="comment">// 但是这里需要在不匹配时render别的组件</span></span><br><span class="line"><span class="keyword">const</span> renderDom = children || Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以这样写</span></span><br><span class="line"><span class="comment">// matchRoutes是路由匹配方法，判断当前地址pathname是否匹配到了路由，匹配的路径是啥，返回的是一个数组</span></span><br><span class="line"><span class="comment">// 我们可以直接以子路由为匹配输入参数 进行匹配，如果branch的length&gt;0则说明当前地址匹配到了 当前层 路由的子路由，即有children</span></span><br><span class="line"><span class="keyword">const</span> branch = matchRoutes(<span class="keyword">this</span>.props.route.routes, <span class="keyword">this</span>.props.location.pathname);</span><br><span class="line"><span class="keyword">const</span> renderDom = branch.length ? children : Component;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>需要注意的是，<code>exact</code>这个字段，默认为false，顾名思义精确匹配，且是按层级的精准匹配</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  path: '/headhunters/:orgId/update/:applicationId',</span><br><span class="line">  component: CandidateInfo,</span><br><span class="line">  exact: true,</span><br><span class="line">  routes: [</span><br><span class="line">      &#123;</span><br><span class="line">      path: '/headhunters/:orgId/update/:applicationId/result',</span><br><span class="line">      component: Result,</span><br><span class="line">      &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比如这个路由<code>/headhunters/:orgId/update/:applicationId</code>，exact为true时，它的子路由<code>/headhunters/:orgId/update/:applicationId/result</code>，只会显示<code>Result</code>这个组件，而不会显示<code>CandidateInfo</code>这个组件，因为没有精准匹配到<code>/headhunters/:orgId/update/:applicationId</code>这个路由，这对于嵌套路由父子组件都显示（例如列表组件上浮着的详情浮层）的期望是不匹配的，所以exact为true，一定不要给到有子组件的路由上，要给到无子组件的路由上（特殊情况除外）。</p>
+<ul>
+<li>另外还有一个<code>strict</code>字段，默认为false，如果为true时，路由后面有斜杠而url中没有斜杠，是不匹配的</li>
+<li>另外react-router5好像不支持那种带括号啊之类的路由了，比如<code>/headhunters(/:orgId)</code>（有没有orgId都会匹配），但是path可以接受一个数组，也就是这个数组里的路由会按顺序挨个去匹配，那么我们可以改写上边的路由，例如<code>path: [&#39;/headhunters/:orgId&#39;, &#39;/headhunters&#39;]</code>，以更精确的路由来配置。</li>
+<li>对于function组件，在 react-router-dom 中有<code>let history = useHistory()</code>钩子🐶，可以使用，想咋使咋使。</li>
+</ul>
+<blockquote>
+<p>具体用法参考 <a href="https://reacttraining.com/blog/react-router-v5-1/" target="_blank" rel="noopener">https://reacttraining.com/blog/react-router-v5-1/</a></p>
+</blockquote>
+<h2 id="migration-之-params-和-query"><a href="#migration-之-params-和-query" class="headerlink" title="migration 之 params 和 query"></a>migration 之 params 和 query</h2><p>params不再存在于this.props.location里了</p>
+<p>location中只剩下这几个字段了，当前路由和search等</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location: &#123;</span><br><span class="line">  pathname: "/headhunters/gaobo/org/jobs"</span><br><span class="line">  search: "?aa=123"</span><br><span class="line">  hash: ""</span><br><span class="line">  state: undefined</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那params和query跑哪了嘞？</p>
+<p>可以看到props里多了一个match字段，对，params跑这里去了，顾名思义，这个字段是路由匹配的结果，里边有</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">match: &#123;</span><br><span class="line">  path: "/headhunters/:orgId"</span><br><span class="line">  url: "/headhunters/gaobo"</span><br><span class="line">  isExact: false</span><br><span class="line">  params: &#123;orgId: "gaobo"&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这些字段，path当前路由组件对应的路由配置，url是当前地址匹配到当前组件对应路由配置的部分，isExact略，params跑这了，所以之前有依赖这个字段的地方，会比较大。以前<code>this.props.params</code>，现在得<code>this.props.match.params</code>，虽然繁琐，但是对props的数据结构也更合理（改吧）。</p>
+<p>query去哪了？对，没了。<br>在 v4 中不再能直接获取到 query 的值了。由于没有处理复杂 query 字符串的标准。所以 v4 决定把 query 字符串的处理权留给开发者，这样其实也挺好的，可以用qs等库自己处理，但是依赖query改变而触发不同render的情况，我还没改到那，但是我估计会比较麻烦，可能需要forceUpdate之类的吧。毕竟不算是props里的东西了，那它也不会引起组件的重新render。</p>
+<ul>
+<li>对于function组件，在 react-router-dom 中有<code>let { xxx } = useParams()</code>，<code>let location = useLocation()</code>钩子，随便造，还是方便了很多的。</li>
+</ul>
+<blockquote>
+<p>具体用法参考 <a href="https://reacttraining.com/blog/react-router-v5-1/" target="_blank" rel="noopener">https://reacttraining.com/blog/react-router-v5-1/</a></p>
+</blockquote>
+<h2 id="migration-之-react-transition-group"><a href="#migration-之-react-transition-group" class="headerlink" title="migration 之 react-transition-group"></a>migration 之 react-transition-group</h2><p>迁移</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">transitionName -&gt; classNames</span><br><span class="line">transitionEnterTimeout and transitionLeaveTimeout -&gt; timeout=&#123;&#123; exit, enter &#125;&#125;</span><br><span class="line">transitionAppear -&gt; appear</span><br><span class="line">transitionEnter -&gt; enter</span><br><span class="line">transitionLeave -&gt; exit</span><br></pre></td></tr></table></figure>
+<p>原来</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> CSSTransitionGroup <span class="keyword">from</span> <span class="string">'react/lib/ReactCSSTransitionGroup'</span>;</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"><span class="keyword">import</span> CSSTransitionGroup <span class="keyword">from</span> <span class="string">'react-addons-css-transition-group'</span>;</span><br><span class="line"><span class="comment">// 这些都是低版本react的用法 里边包含着一些即将被废弃的生命周期函数（会报warning）所以需要一并升级</span></span><br><span class="line"></span><br><span class="line">&lt;CSSTransitionGroup</span><br><span class="line">  transitionName=<span class="string">"toast-animation"</span></span><br><span class="line">  transitionEnterTimeout=&#123;<span class="number">500</span>&#125;</span><br><span class="line">  transitionLeaveTimeout=&#123;<span class="number">500</span>&#125;</span><br><span class="line">&gt;</span><br><span class="line">&#123;</span><br><span class="line">  toasts.map(<span class="function">(<span class="params">, index</span>) =&gt;</span> (</span><br><span class="line">    &lt;div key=&#123;index&#125;&gt;&lt;/div&gt;</span><br><span class="line">  ))</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/CSSTransitionGroup&gt;</span></span><br></pre></td></tr></table></figure>
+<p>现在</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; CSSTransition, TransitionGroup &#125; <span class="keyword">from</span> <span class="string">'react-transition-group'</span>;</span><br><span class="line">  &lt;TransitionGroup&gt;</span><br><span class="line">  &#123;</span><br><span class="line">    toasts.map(<span class="function">(<span class="params">, index</span>) =&gt;</span> (</span><br><span class="line">      &lt;CSSTransition</span><br><span class="line">        classNames=<span class="string">"toast-animation"</span></span><br><span class="line">        timeout=&#123;&#123; <span class="attr">exit</span>: <span class="number">500</span>, <span class="attr">enter</span>: <span class="number">500</span> &#125;&#125;</span><br><span class="line">        key=&#123;index&#125;</span><br><span class="line">        <span class="comment">// 还增加了一些生命周期函数</span></span><br><span class="line">        onEnter=&#123;handleEnter&#125;</span><br><span class="line">        onEntering=&#123;handleEntering&#125;</span><br><span class="line">        onEntered=&#123;handleEntered&#125;</span><br><span class="line">        onExit=&#123;handleExit&#125;</span><br><span class="line">        onExiting=&#123;handleExiting&#125;</span><br><span class="line">        onExited=&#123;handleExited&#125;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;div className=&#123;styles.item&#125;&gt;&lt;/div&gt;</span><br><span class="line">      &lt;<span class="regexp">/CSSTransition&gt;</span></span><br><span class="line"><span class="regexp">    ))</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>TransitionGroup&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>具体用法参考 <a href="https://github.com/reactjs/react-transition-group/blob/master/Migration.md" target="_blank" rel="noopener">https://github.com/reactjs/react-transition-group/blob/master/Migration.md</a></p>
+</blockquote>
+<h2 id="migration-之-生命周期函数"><a href="#migration-之-生命周期函数" class="headerlink" title="migration 之 生命周期函数"></a>migration 之 生命周期函数</h2><p>有一些生命周期函数在16里边会报warning，且到17的时候会被废弃掉不能用了。<br>比如 <code>componentWillReceiveProps</code> 改为 <code>UNSAFE_componentWillReceiveProps</code><br>将 <code>componentWillMount</code> 改为 <code>UNSAFE_componentWillMount</code>等等</p>
+<p>由于目前项目较大，完全更换生命周期函数，工作量和风险都比较大，目前先改成UNSAFE了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上是对development环境下的react15升16的一些改造<br>对production环境，打包升级，还没开始做，后续做了会更新，尽情期待~</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><blockquote>
+<p><a href="https://react.docschina.org/docs/code-splitting.html" target="_blank" rel="noopener">https://react.docschina.org/docs/code-splitting.html</a><br><a href="https://reacttraining.com/blog/react-router-v5-1/" target="_blank" rel="noopener">https://reacttraining.com/blog/react-router-v5-1/</a><br><a href="https://github.com/reactjs/react-transition-group/blob/master/Migration.md" target="_blank" rel="noopener">https://github.com/reactjs/react-transition-group/blob/master/Migration.md</a></p>
+</blockquote>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/01/31/react15升16/">react15升16</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2020年01月31日 - 17时47分</p>
+        <p><span>最后更新:</span>2020年01月31日 - 20时40分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/01/31/react15升16/" title="react15升16">https://gapgao.github.io/2020/01/31/react15升16/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/01/31/react15升16/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/17/小程序开发笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">小程序开发笔记</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础依赖升级"><span class="toc-number">1.</span> <span class="toc-text">基础依赖升级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础依赖安装"><span class="toc-number">2.</span> <span class="toc-text">基础依赖安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三方依赖升级"><span class="toc-number">3.</span> <span class="toc-text">三方依赖升级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#migration-之-路由"><span class="toc-number">4.</span> <span class="toc-text">migration 之 路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#migration-之-params-和-query"><span class="toc-number">5.</span> <span class="toc-text">migration 之 params 和 query</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#migration-之-react-transition-group"><span class="toc-number">6.</span> <span class="toc-text">migration 之 react-transition-group</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#migration-之-生命周期函数"><span class="toc-number">7.</span> <span class="toc-text">migration 之 生命周期函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">9.</span> <span class="toc-text">引用</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'GapGao',
+      repo: 'gapgao.github.io',
+      oauth: {
+        client_id: 'b37cf634d1c116549841',
+        client_secret: '54bad933f4f25c63418d4c79fe77cbbba1c465b5',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2019/12/17/小程序开发笔记/" title="下一篇: 小程序开发笔记">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/01/31/react15升16/">react15升16</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/17/小程序开发笔记/">小程序开发笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/用preload预加载页面资源/">用preload预加载页面资源</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/25/初探WebAssembly/">初探WebAssembly</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/完全理解react Fiber/">完全理解react Fiber</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/20/Nuxt-express踩坑日记/">Nuxt+express踩坑日记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2020 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>
