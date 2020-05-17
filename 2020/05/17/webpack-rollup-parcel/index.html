@@ -3,26 +3,20 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>chrome模拟微信浏览器device | 牛轰轰可能是个bug</title>
+  <title>webpack-rollup-parcel | 牛轰轰可能是个bug</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="有时需要使用浏览器模拟微信浏览器的agent进行一些调试，但下载微信开发者工具又太麻烦，以下文档简述如果使用浏览器模拟微信浏览器环境">
-<meta name="keywords" content="chrome,wechat,device">
+  <meta name="description" content="webpack rollup parcel 应该用哪个？">
+<meta name="keywords" content="【webpack, rollup, parcel, 打包】">
 <meta property="og:type" content="article">
-<meta property="og:title" content="chrome模拟微信浏览器device">
-<meta property="og:url" content="https://gapgao.github.io/2019/06/01/chrome模拟微信浏览器device/index.html">
+<meta property="og:title" content="webpack-rollup-parcel">
+<meta property="og:url" content="https://gapgao.github.io/2020/05/17/webpack-rollup-parcel/index.html">
 <meta property="og:site_name" content="牛轰轰可能是个bug">
-<meta property="og:description" content="有时需要使用浏览器模拟微信浏览器的agent进行一些调试，但下载微信开发者工具又太麻烦，以下文档简述如果使用浏览器模拟微信浏览器环境">
+<meta property="og:description" content="webpack rollup parcel 应该用哪个？">
 <meta property="og:locale" content="Chinese">
-<meta property="og:image" content="https://gapgao.github.io/img/weixin/open-console.png">
-<meta property="og:image" content="https://gapgao.github.io/img/weixin/console.png">
-<meta property="og:image" content="https://gapgao.github.io/img/weixin/edit-device.png">
-<meta property="og:image" content="https://gapgao.github.io/img/weixin/add-device.png">
-<meta property="og:image" content="https://gapgao.github.io/img/weixin/edit-detail.png">
-<meta property="og:updated_time" content="2020-04-25T12:07:04.589Z">
+<meta property="og:updated_time" content="2020-05-17T12:27:57.268Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="chrome模拟微信浏览器device">
-<meta name="twitter:description" content="有时需要使用浏览器模拟微信浏览器的agent进行一些调试，但下载微信开发者工具又太麻烦，以下文档简述如果使用浏览器模拟微信浏览器环境">
-<meta name="twitter:image" content="https://gapgao.github.io/img/weixin/open-console.png">
+<meta name="twitter:title" content="webpack-rollup-parcel">
+<meta name="twitter:description" content="webpack rollup parcel 应该用哪个？">
   
     <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
   
@@ -269,11 +263,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-chrome模拟微信浏览器device" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-webpack-rollup-parcel" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/06/01/chrome模拟微信浏览器device/" class="article-date">
-      <time datetime="2019-06-01T12:26:19.000Z" itemprop="datePublished">2019-06-01</time>
+      <a href="/2020/05/17/webpack-rollup-parcel/" class="article-date">
+      <time datetime="2020-05-17T12:12:25.000Z" itemprop="datePublished">2020-05-17</time>
 </a>
     </div>
   
@@ -286,7 +280,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      chrome模拟微信浏览器device
+      webpack-rollup-parcel
     </h1>
   
 
@@ -297,7 +291,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/chrome/">chrome</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/device/">device</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wechat/">wechat</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/【webpack-rollup-parcel-打包】/">【webpack, rollup, parcel, 打包】</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -307,19 +301,88 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>有时需要使用浏览器模拟微信浏览器的agent进行一些调试，但下载微信开发者工具又太麻烦，以下文档简述如果使用浏览器模拟微信浏览器环境</p>
+        <p>webpack rollup parcel 应该用哪个？</p>
 <a id="more"></a>
-<h2 id="打开chrome浏览器控制台"><a href="#打开chrome浏览器控制台" class="headerlink" title="打开chrome浏览器控制台"></a>打开chrome浏览器控制台</h2><blockquote>
-<p>右键检查</p>
-</blockquote>
-<p><img src="/img/weixin/open-console.png" alt="avatar"></p>
-<h2 id="打开移动端调试"><a href="#打开移动端调试" class="headerlink" title="打开移动端调试"></a>打开移动端调试</h2><p><img src="/img/weixin/console.png" alt="avatar"></p>
-<h2 id="编辑device"><a href="#编辑device" class="headerlink" title="编辑device"></a>编辑device</h2><p><img src="/img/weixin/edit-device.png" alt="avatar"></p>
-<h2 id="添加一个device"><a href="#添加一个device" class="headerlink" title="添加一个device"></a>添加一个device</h2><p><img src="/img/weixin/add-device.png" alt="avatar"></p>
-<h2 id="编辑详情"><a href="#编辑详情" class="headerlink" title="编辑详情"></a>编辑详情</h2><p><img src="/img/weixin/edit-detail.png" alt="avatar"></p>
-<blockquote>
-<p>User agent string 填写以下内容 模拟微信浏览器agent<br>Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365   MicroMessenger/5.4.1 NetType/WIFI</p>
-</blockquote>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h3><p>webpack  是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个  bundle。为处理资源管理和分割代码而生，可以包含任何类型的文件。灵活，插件多。</p>
+<h3 id="rollup"><a href="#rollup" class="headerlink" title="rollup"></a>rollup</h3><p>Rollup 是一个 JavaScript 模块打包器，可以将小块代码编译成大块复杂的代码，例如 library 或应用程序。用标准化的格式（es6）来写代码，通过减少死代码尽可能地缩小包体积。</p>
+<h3 id="parcel"><a href="#parcel" class="headerlink" title="parcel"></a>parcel</h3><p>Parcel 是 Web 应用打包工具，适用于经验不同的开发者。它利用多核处理提供了极快的速度，并且不需要任何配置。超快的打包速度，多线程在多核上并发编译，不用任何配置。</p>
+<h2 id="配置对比"><a href="#配置对比" class="headerlink" title="配置对比"></a>配置对比</h2><p>webpack 和 rollup 都需要配 config 文件，指明 entry, output, plugin，transformations。二者的细微区别在于： rollup 有对 import/export 所做的 node polyfills，webpack 没有  rollup 支持相对路径，而 webpack 没有，所以得使用 path.resolve/path.join。<br>parcel 则是完全开箱可用的，不用配置。</p>
+<h2 id="入口文件对比"><a href="#入口文件对比" class="headerlink" title="入口文件对比"></a>入口文件对比</h2><p>webpack 只支持 js 文件作为入口文件，如果要以其他格式的文件作为入口，比如 html 文件为入口，如要加第三方 Plugin。<br>rollup 可以用 html 作为入口文件，但也需要 plugin，比如 rollup-plugin-html-entry。<br>parcel 可以用 index.html 作为入口文件，而且它会通过看 index.html 的 script tag 里包含的什么自己找到要打包生成哪些 js 文件。</p>
+<h2 id="transformations-对比"><a href="#transformations-对比" class="headerlink" title="transformations 对比"></a>transformations 对比</h2><p>transformations 指的是把其他文件转化成 js 文件的过程，需要经过 transformation 才能够被打包。<br>webpack 使用 Loaders 来处理。<br>rollup 使用 plugins 来处理。<br>parcel 会自动去转换，当找到配置文件比如.babelrc, .postcssrc 后就会自动转。</p>
+<h2 id="tree-shaking-对比"><a href="#tree-shaking-对比" class="headerlink" title="tree-shaking 对比"></a>tree-shaking 对比</h2><p>摇树优化是 webpack 的一大特性。需要 1，用 import/export 语法，2，在 package.json 中加副作用的入口，3，加上支持去除死代码的缩小器（uglifyjsplugin）。<br>rollup 会统计引入的代码并排除掉那些没有被用到的。这使得可以在现有工具和模块的基础上构建，而不会添加额外的依赖项或膨胀项目的大小。<br>parcel 不支持摇树优化。</p>
+<h2 id="dev-server-对比"><a href="#dev-server-对比" class="headerlink" title="dev server 对比"></a>dev server 对比</h2><p>webpack 用 webpack-dev-server。<br>rollup 用 rollup-plugin-serve 和 rollup-plugin-livereload 共同作用。<br>parcel 内置的有 dev server。</p>
+<h2 id="热更新对比"><a href="#热更新对比" class="headerlink" title="热更新对比"></a>热更新对比</h2><p>webpack 的 wepack-dev-server 支持 hot 模式。<br>rollup 不支持 hmr。<br>parcel 有内置的 hmr。</p>
+<h2 id="代码分割对比"><a href="#代码分割对比" class="headerlink" title="代码分割对比"></a>代码分割对比</h2><p>webpack 通过在 entry 中手动设置，使用 CommonsChunkPlugin，和模块内的内联函数动态引入来做代码分割。<br>rollup 有实验性的代码分割特性。它是用 es 模块在浏览器中的模块加载机制本身来分割代码的。需要把 experimentalCodeSplitting 和 experimentalDynamicImport 设为 true。<br>parcel 支持 0 配置的代码分割。主要是通过动态 improt。</p>
+<h2 id="DEV-打包时间对比"><a href="#DEV-打包时间对比" class="headerlink" title="DEV 打包时间对比"></a>DEV 打包时间对比</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>DEV BUILD TIME ONE</th>
+<th>DEV BUILD TIME TWO</th>
+<th>DEV BUILD TIME THREE</th>
+<th>DEV BUILD TIME AVG</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Webpack</td>
+<td>1.249 S</td>
+<td>1.126 S</td>
+<td>1.218 S</td>
+<td>1.197 AVG S</td>
+</tr>
+<tr>
+<td>Rollup</td>
+<td>0.618 S</td>
+<td>0.570 S</td>
+<td>0.583 S</td>
+<td>0.590 AVG S</td>
+</tr>
+<tr>
+<td>Parcel</td>
+<td>8.61 S</td>
+<td>1.68 S</td>
+<td>1.74 S</td>
+<td>4.01 AVG S</td>
+</tr>
+</tbody>
+</table>
+<h2 id="PROD-打包时间对比"><a href="#PROD-打包时间对比" class="headerlink" title="PROD 打包时间对比"></a>PROD 打包时间对比</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>PROD BUILD TIME ONE</th>
+<th>PROD BUILD TIME TWO</th>
+<th>PROD BUILD TIME THREE</th>
+<th>PROD BUILD TIME AVG</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Webpack</td>
+<td>1.551 S</td>
+<td>1.149 S</td>
+<td>1.226 S</td>
+<td>1.308 AVG S</td>
+</tr>
+<tr>
+<td>Rollup</td>
+<td>0.785 S</td>
+<td>0.739 S</td>
+<td>0.754 S</td>
+<td>0.759 AVG S</td>
+</tr>
+<tr>
+<td>Parcel</td>
+<td>6.60 S</td>
+<td>0.456 S</td>
+<td>0.422 S</td>
+<td>2.492 AVG S</td>
+</tr>
+</tbody>
+</table>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>首次运行后，Parcel 的缓存功能大大减少了时间消耗。对于较小的频繁发生小改动的项目，Parcel 是一个不错的选择。<br>Rollup 提供了比 Webpack4 更简单的配置，并且具有许多预配置的插件，可以轻松地将它们集成到项目中。Rollup 也是构建工具阶段中最快的。<br>Rollup 还提供了方便的 sourcemap，可以帮助调试。<br>webpack 4 的使用变得更加容易，尤其是通过便捷的 mode 属性（现在设置为“production”时将强制最小化）。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Webpack 适⽤于⼤型复杂的前端站点构建: webpack 有强⼤的 loader 和插件⽣态,打包后的⽂件实际上就是⼀个⽴即执⾏函数，这个⽴即执⾏函数接收⼀个参数，这个参数是模块对象，键为各个模块的路径，值为模块内容。⽴即执行函数内部则处理模块之间的引⽤，执⾏模块等,这种情况更适合⽂件依赖复杂的应⽤开发.<br>Rollup 适⽤于基础库的打包，如 vue、d3 等: Rollup 就是将各个模块打包进⼀个⽂件中，并且通过 Tree-shaking 来删除⽆⽤的代码,可以最⼤程度上降低代码体积,但是 rollup 没有 Webpack 如此多的的如代码分割、按需加载等⾼级功能，其更聚焦于库的打包，因此更适合库的开发.（Rollup 已被许多主流的 JavaScript 库使用，也可用于构建绝大多数应用程序。但是 Rollup 还不支持一些特定的高级功能，尤其是用在构建一些应用程序的时候，特别是代码拆分和运行时态的动态导入  dynamic imports at runtime. 如果你的项目中更需要这些功能，那使用  Webpack 可能更符合你的需求。）<br>Parcel 适⽤于简单的实验性项⽬: 他可以满⾜低⻔槛的快速看到效果,但是⽣态差、报错信息不够全⾯都是他的硬 伤，除了⼀些玩具项⽬或者实验项⽬不建议使⽤</p>
 
       
       
@@ -375,13 +438,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></p>
+        <p><span>本文标题:</span><a href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
-        <p><span>发布时间:</span>2019年06月01日 - 20时26分</p>
-        <p><span>最后更新:</span>2020年04月25日 - 20时07分</p>
+        <p><span>发布时间:</span>2020年05月17日 - 20时12分</p>
+        <p><span>最后更新:</span>2020年05月17日 - 20时27分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2019/06/01/chrome模拟微信浏览器device/" title="chrome模拟微信浏览器device">https://gapgao.github.io/2019/06/01/chrome模拟微信浏览器device/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2019/06/01/chrome模拟微信浏览器device/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2020/05/17/webpack-rollup-parcel/" title="webpack-rollup-parcel">https://gapgao.github.io/2020/05/17/webpack-rollup-parcel/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/05/17/webpack-rollup-parcel/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -394,18 +457,9 @@
 
 <nav id="article-nav">
   
-    <a href="/2019/06/01/本地微信真机调试方法/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          本地微信真机调试方法
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/06/01/vConsole调试console/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">vConsole调试console</div>
+    <a href="/2020/05/17/AST抽象语法树/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">AST抽象语法树</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -416,7 +470,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#打开chrome浏览器控制台"><span class="toc-number">1.</span> <span class="toc-text">打开chrome浏览器控制台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打开移动端调试"><span class="toc-number">2.</span> <span class="toc-text">打开移动端调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编辑device"><span class="toc-number">3.</span> <span class="toc-text">编辑device</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加一个device"><span class="toc-number">4.</span> <span class="toc-text">添加一个device</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编辑详情"><span class="toc-number">5.</span> <span class="toc-text">编辑详情</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack"><span class="toc-number">1.1.</span> <span class="toc-text">webpack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rollup"><span class="toc-number">1.2.</span> <span class="toc-text">rollup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parcel"><span class="toc-number">1.3.</span> <span class="toc-text">parcel</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置对比"><span class="toc-number">2.</span> <span class="toc-text">配置对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#入口文件对比"><span class="toc-number">3.</span> <span class="toc-text">入口文件对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#transformations-对比"><span class="toc-number">4.</span> <span class="toc-text">transformations 对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tree-shaking-对比"><span class="toc-number">5.</span> <span class="toc-text">tree-shaking 对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dev-server-对比"><span class="toc-number">6.</span> <span class="toc-text">dev server 对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#热更新对比"><span class="toc-number">7.</span> <span class="toc-text">热更新对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码分割对比"><span class="toc-number">8.</span> <span class="toc-text">代码分割对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DEV-打包时间对比"><span class="toc-number">9.</span> <span class="toc-text">DEV 打包时间对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PROD-打包时间对比"><span class="toc-number">10.</span> <span class="toc-text">PROD 打包时间对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-number">11.</span> <span class="toc-text">结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">12.</span> <span class="toc-text">总结</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
 
@@ -482,13 +536,11 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2019/06/01/本地微信真机调试方法/" title="上一篇: 本地微信真机调试方法">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2019/06/01/vConsole调试console/" title="下一篇: vConsole调试console">
+            <a href="/2020/05/17/AST抽象语法树/" title="下一篇: AST抽象语法树">
                 <i class="fa fa-angle-right"></i>
             </a>
         
