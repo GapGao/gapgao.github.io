@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="牛轰轰可能是个bug">
 <meta property="og:description" content="最近公司项目在升级 react 技术栈，因为改动巨大，尤其是在路由改造和渲染方面。且我司项目庞大，路由众多，而我司主要测试靠人肉 e2e 测试，并没有做规范的高效率的自动化测试。所以此次升级回归测试范围很广，且风险很大。为了以后能够应对这种复杂的情况，故而研究一下前端自动化测试。 写着写着发现这个博客议题忒大，我们还是一点一点的写吧，第一篇我们先来学习一些概念，有一个理论基础，下一期再根据现在我司">
 <meta property="og:locale" content="Chinese">
-<meta property="og:updated_time" content="2020-07-26T06:17:07.561Z">
+<meta property="og:updated_time" content="2020-07-26T06:27:56.269Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端自动化测试（一）">
 <meta name="twitter:description" content="最近公司项目在升级 react 技术栈，因为改动巨大，尤其是在路由改造和渲染方面。且我司项目庞大，路由众多，而我司主要测试靠人肉 e2e 测试，并没有做规范的高效率的自动化测试。所以此次升级回归测试范围很广，且风险很大。为了以后能够应对这种复杂的情况，故而研究一下前端自动化测试。 写着写着发现这个博客议题忒大，我们还是一点一点的写吧，第一篇我们先来学习一些概念，有一个理论基础，下一期再根据现在我司">
@@ -58,7 +58,7 @@
     <header id="header" class="inner">
         <a href="/" class="profilepic">
             
-            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            <img lazy-src="/img/head2.jpg" class="js-avatar">
             
         </a>
 
@@ -389,8 +389,9 @@
 <li>测试需要在真实浏览器中运行</li>
 <li>测试执行需要足够迅速</li>
 <li>被测代码可能是 es6 React Typescript，因此使用需要解决编译和打点的问题</li>
-<li>方便持续集成<br>咳咳，我还没完全掌握，还选不太出来，但是对于单元测试的需求是明确的，其实有点想用 jest，因为我司是 React 项目，但是呢我看好多人都用 karma，配合 mocha，chai 什么的。</li>
+<li>方便持续集成</li>
 </ul>
+<p>咳咳，我还没完全掌握，还选不太出来，但是对于单元测试的需求是明确的，其实有点想用 jest，因为我司是 React 项目，但是呢我看好多人都用 karma，配合 mocha，chai 什么的。</p>
 <p>我已经快不行了，翻阅了几十篇博客和文章，都没有看到一篇相对全面和有条理的文章，众说纷纭，可见大家对于前端自动化测试方面的关注度仍然不够多，不是只有后端才应该自动化测试，前端也需要，而且方案已经相对成熟，为了前端的稳定性，整！</p>
 <h2 id="自动化端到端测试（E2E-Testing）"><a href="#自动化端到端测试（E2E-Testing）" class="headerlink" title="自动化端到端测试（E2E Testing）"></a>自动化端到端测试（E2E Testing）</h2><p>e2e 测试（不管是人肉的也好，自动化的也好）e2e 测试在整个系统测试的贯通性覆盖率上来说是最大的，它可以覆盖从地基到顶端的这一长串的范围。所以如果说 UT 是用来保证保证成品各个层级可靠性的话，那 e2e 就是用来验证这种可靠性的，并且它的作用范围运不止此。</p>
 <h3 id="说到端到端测试，首先要明确它需要解决的一些问题"><a href="#说到端到端测试，首先要明确它需要解决的一些问题" class="headerlink" title="说到端到端测试，首先要明确它需要解决的一些问题"></a>说到端到端测试，首先要明确它需要解决的一些问题</h3><ol>
@@ -411,12 +412,12 @@
 <h3 id="Selenium-amp-PhantomJS"><a href="#Selenium-amp-PhantomJS" class="headerlink" title="Selenium &amp; PhantomJS"></a>Selenium &amp; PhantomJS</h3><p>自动化 e2e 测试，不得不说到 Selenium 和 PhantomJS。</p>
 <p>Selenium 是一个用于 Web 应用程序测试的工具。Selenium 测试直接运行在浏览器中，就像真正的用户在操作一样。支持的浏览器包括 IE（7, 8, 9, 10, 11），Mozilla Firefox，Safari，Google Chrome，Opera 等。selenium 是一套完整的 web 应用程序测试系统，包含了测试的录制（selenium IDE）,编写及运行（Selenium Remote Control）和测试的并行处理（Selenium Grid）。<br>Selenium 的核心 Selenium Core 基于 JsUnit，完全由 JavaScript 编写，因此可以用于任何支持 JavaScript 的浏览器上。Selenium 可以模拟真实浏览器，自动化测试工具，支持多种浏览器，爬虫中主要用来解决 JavaScript 渲染问题。可以使用 Selenium 与其他测试框架（如 jest）配合使用，效果很不错。</p>
 <p>而 PhantomJS 使用无界面的 WebKit 浏览器，是一个基于 WebKit 的服务端 JavaScript API,支持 Web 而不需要浏览器支持，其快速、原生支持各种 Web 标准：Dom 处理，CSS 选择器，JSON 等等。PhantomJS 可以用用于页面自动化、网络监测、网页截屏，以及无界面测试。</p>
-<h3 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h3><ul>
+<h3 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h3><ol>
 <li>CasperJS 只能是无界面浏览器测试。</li>
 <li>Nightwatch 是基于 Selenium 的一种更简洁的测试方案。</li>
 <li>TestCafe 支持常见浏览器，支持 ES6/ES7 和 TS，安装也方便。</li>
 <li>Cypress 开箱即用，文档比较清晰美观，语法用起来比较舒服，最重要的一点是测试跑在 Chrome 的标签页里，和平时开发没什么区别。Cypress 并没有使用 Selenium / Webdriver。</li>
-</ul>
+</ol>
 <h3 id="重要性"><a href="#重要性" class="headerlink" title="重要性"></a>重要性</h3><p>先说说 Regression Test 即回归测试，当有新功能上线后，我们需要对产品老的功能进行回归测试，以确保新代码的加入没有引入新的 bug。通常一次迭代中，QA 会花费大约 20~30%的时间进行回归测试，可见回归测试的重要性，但是很多情况下，由于项目时间紧迫，或者紧急发布等情况，被压缩和牺牲的往往是回归测试，而 e2e AT 正好可以覆盖一部分的回归测试，如果你的 AT case 覆盖率越高，则回归测试的覆盖率也越高，出品也就越稳定，如果 AT 能覆盖绝大部分的回归测试，而 AT 的执行效率又是人肉执行的数倍，那 QA 的工作量就被大大的降低。</p>
 <h3 id="何时触发"><a href="#何时触发" class="headerlink" title="何时触发"></a>何时触发</h3><p>当新的代码合并到主线并部署到测试环境后，进入 QA 人肉测试环节前，是触发 自动化 e2e 测试 的最佳时机。bug 是越早发现越好，自动化 e2e 测试 与 jenkins 等 CI 工具可以很好的整合，也不依赖于什么特殊插件，跑完测试 后自动生成 report，若有失败则发送邮箱第一时间暴露问题。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>单元测试 和 端到端测试 的存在都是很有意义的。<br>unit 测试是程序员写好自己的逻辑后可以很容易的测试自己的逻辑返回的是不是都正确。<br>e2e 代码是测试所有的需求是不是都可以正确的完成，而且最终要的是在代码重构，js 改动很多之后，需要对需求进行测试的时候测试代码是不需要改变的，你也不用担心在重构后不能达到客户的需求。</p>
@@ -429,6 +430,9 @@
 </blockquote>
 <blockquote>
 <p><a href="https://zhuanlan.zhihu.com/p/32666685" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32666685</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://segmentfault.com/a/1190000015724775?utm_source=sf-related" target="_blank" rel="noopener">https://segmentfault.com/a/1190000015724775?utm_source=sf-related</a></p>
 </blockquote>
 
       
@@ -488,7 +492,7 @@
         <p><span>本文标题:</span><a href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
         <p><span>发布时间:</span>2020年07月25日 - 16时22分</p>
-        <p><span>最后更新:</span>2020年07月26日 - 14时17分</p>
+        <p><span>最后更新:</span>2020年07月26日 - 14时27分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2020/07/25/前端自动化测试（一）/" title="前端自动化测试（一）">https://gapgao.github.io/2020/07/25/前端自动化测试（一）/</a>
             <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/07/25/前端自动化测试（一）/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
