@@ -23,7 +23,8 @@
 <meta property="og:image" content="https://gapgao.github.io/img/vite/7.png">
 <meta property="og:image" content="https://gapgao.github.io/img/vite/7.png">
 <meta property="og:image" content="https://gapgao.github.io/img/vite/10.png">
-<meta property="og:updated_time" content="2021-02-28T16:41:09.555Z">
+<meta property="og:image" content="https://gapgao.github.io/img/vite/11.png">
+<meta property="og:updated_time" content="2021-03-01T03:19:40.618Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vite是什么">
 <meta name="twitter:description" content="很久很久没写博客了，今天拾起来，干它一篇。最近也有很多不错的项目开源出来，今天我就来研究一下，最近很火的，尤大大刚发布的 vite。">
@@ -329,7 +330,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm init @vitejs/app</span><br><span class="line">或者</span><br><span class="line">yarn create @vitejs/app</span><br></pre></td></tr></table></figure>
 <p><img src="/img/vite/1.png" alt="avatar"></p>
 <p>执行后可以看到，可以选择 vue,vue-ts,react,react-ts,preact,preact-ts,lit-element,lit-element-ts 选项，我们这里选择了 react，因为比较熟悉，咳咳。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br><span class="line">&amp;&amp;</span><br><span class="line">npx vite</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br><span class="line">&amp;&amp;</span><br><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
 <p>项目起来了</p>
 <p><img src="/img/vite/2.png" alt="avatar"></p>
 <h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>index.html 是应用程序的入口</p>
@@ -367,6 +368,12 @@
 <p><img src="/img/vite/10.png" alt="avatar"></p>
 <p>并且对于引用过的 node_modules 里的依赖，都会被 vite 进行压缩处理，放到 node_modules/.vite 下进行缓存，后续无需再处理，直接使用，提高了加载速度。</p>
 <p>并且还看到了 esbuild，总之就是，极致的效率体验~</p>
+<h2 id="prod"><a href="#prod" class="headerlink" title="prod"></a>prod</h2><p>执行 <code>npm run build</code></p>
+<p><img src="/img/vite/11.png" alt="avatar"></p>
+<p>可以看到通过 rollup 打包出了一个dist</p>
+<p>尤大大没用webpack，而是用了rollup，跟webpack开发者在推特的中文对话，也是挺有意思。<br>也看的出rollup升级发展迅速，性能强劲，逐渐的被大家所接受，使用，之前写过一篇对比的博客<br><a href="/2020/05/17/webpack-rollup-parcel" target="_self">webpack-rollup-parcel</a>。</p>
+<p>再执行 <code>npm run serve</code></p>
+<p>vite 会以 dist 起一个静态访问服务，但是打包出来的好像还是esmodule，index.html里引用的还是<code>type=module</code></p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>下次再研究一下它的热更新，以及是否能应用到我们的项目中或者参考它，提升一下我司项目的开发体验，因为它真的是太慢了。。。<br>虽然在短时间内 vite 不会替代 webpack，但是能够看到社区中多了一种方案还是很兴奋的。也佩服尤大大的勤奋和开源精神。希望他加油，赶紧更新出更加完备的 vite，我急用。。。</p>
 <h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><blockquote>
 <p><a href="https://vitejs.dev/" target="_blank" rel="noopener">https://vitejs.dev/</a><br><a href="https://www.zhihu.com/question/394062839/answer/1496127786" target="_blank" rel="noopener">https://www.zhihu.com/question/394062839/answer/1496127786</a></p>
@@ -429,7 +436,7 @@
         <p><span>本文标题:</span><a href="/2021/02/28/vite是什么/">vite是什么</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
         <p><span>发布时间:</span>2021年02月28日 - 20时14分</p>
-        <p><span>最后更新:</span>2021年03月01日 - 00时41分</p>
+        <p><span>最后更新:</span>2021年03月01日 - 11时19分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2021/02/28/vite是什么/" title="vite是什么">https://gapgao.github.io/2021/02/28/vite是什么/</a>
             <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2021/02/28/vite是什么/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -458,7 +465,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES-imports"><span class="toc-number">2.</span> <span class="toc-text">ES imports</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装使用"><span class="toc-number">3.</span> <span class="toc-text">安装使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#index-html"><span class="toc-number">4.</span> <span class="toc-text">index.html</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出"><span class="toc-number">5.</span> <span class="toc-text">输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hmr"><span class="toc-number">6.</span> <span class="toc-text">hmr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vite-如何处理-ESM-参考阿里巴巴淘系技术博客"><span class="toc-number">7.</span> <span class="toc-text">vite 如何处理 ESM 参考阿里巴巴淘系技术博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#modules-是什么？参考阿里巴巴淘系技术博客"><span class="toc-number">8.</span> <span class="toc-text">@modules 是什么？参考阿里巴巴淘系技术博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结语"><span class="toc-number">9.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">10.</span> <span class="toc-text">引用</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES-imports"><span class="toc-number">2.</span> <span class="toc-text">ES imports</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装使用"><span class="toc-number">3.</span> <span class="toc-text">安装使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#index-html"><span class="toc-number">4.</span> <span class="toc-text">index.html</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出"><span class="toc-number">5.</span> <span class="toc-text">输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hmr"><span class="toc-number">6.</span> <span class="toc-text">hmr</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vite-如何处理-ESM-参考阿里巴巴淘系技术博客"><span class="toc-number">7.</span> <span class="toc-text">vite 如何处理 ESM 参考阿里巴巴淘系技术博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#modules-是什么？参考阿里巴巴淘系技术博客"><span class="toc-number">8.</span> <span class="toc-text">@modules 是什么？参考阿里巴巴淘系技术博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prod"><span class="toc-number">9.</span> <span class="toc-text">prod</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结语"><span class="toc-number">10.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">11.</span> <span class="toc-text">引用</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
 
