@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>AST抽象语法树 | 牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="AST-抽象语法树 同事写了一个脚本，把所有引入某一组件的 js 文件都找出来了，我问他是咋做的，字符串正则匹配吗，他说用 AST 做的，今天我们就来研究一下。我也是人生第一次。">
+<meta name="keywords" content="javascript,AST">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AST抽象语法树">
+<meta property="og:url" content="https://gapgao.github.io/2020/05/17/AST抽象语法树/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="AST-抽象语法树 同事写了一个脚本，把所有引入某一组件的 js 文件都找出来了，我问他是咋做的，字符串正则匹配吗，他说用 AST 做的，今天我们就来研究一下。我也是人生第一次。">
+<meta property="og:locale" content="Chinese">
+<meta property="og:image" content="https://gapgao.github.io/img/ast/1.png">
+<meta property="og:updated_time" content="2024-01-04T08:04:02.207Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AST抽象语法树">
+<meta name="twitter:description" content="AST-抽象语法树 同事写了一个脚本，把所有引入某一组件的 js 文件都找出来了，我问他是咋做的，字符串正则匹配吗，他说用 AST 做的，今天我们就来研究一下。我也是人生第一次。">
+<meta name="twitter:image" content="https://gapgao.github.io/img/ast/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CJS/" style="font-size: 10px;">CJS</a> <a href="/tags/Cypress/" style="font-size: 10px;">Cypress</a> <a href="/tags/Deno/" style="font-size: 10px;">Deno</a> <a href="/tags/E2E测试测试/" style="font-size: 10px;">E2E测试测试</a> <a href="/tags/ESM/" style="font-size: 10px;">ESM</a> <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/UMD/" style="font-size: 10px;">UMD</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/parcel/" style="font-size: 10px;">parcel</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vite/" style="font-size: 10px;">vite</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/打包/" style="font-size: 10px;">打包</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a> <a href="/tags/自动化测试/" style="font-size: 15px;">自动化测试</a> <a href="/tags/飞冰/" style="font-size: 10px;">飞冰</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-AST抽象语法树" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/17/AST抽象语法树/" class="article-date">
+      <time datetime="2020-05-17T09:27:51.000Z" itemprop="datePublished">2020-05-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AST抽象语法树
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AST/">AST</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>AST-抽象语法树</p>
+<p>同事写了一个脚本，把所有引入某一组件的 js 文件都找出来了，我问他是咋做的，字符串正则匹配吗，他说用 AST 做的，今天我们就来研究一下。<br>我也是人生第一次。</p>
+<a id="more"></a>
+<h2 id="先看看概念"><a href="#先看看概念" class="headerlink" title="先看看概念"></a>先看看概念</h2><p>抽象语法树（abstract syntax code，AST）是源代码的抽象语法结构的树状表示，树上的每个节点都表示源代码中的一种结构，这所以说是抽象的，是因为抽象语法树并不会表示出真实语法出现的每一个细节，比如说，嵌套括号被隐含在树的结构中，并没有以节点的形式呈现。抽象语法树并不依赖于源语言的语法，也就是说语法分析阶段所采用的上下文无文文法，因为在写文法时，经常会对文法进行等价的转换（消除左递归，回溯，二义性等），这样会给文法分析引入一些多余的成分，对后续阶段造成不利影响，甚至会使合个阶段变得混乱。因些，很多编译器经常要独立地构造语法分析树，为前端，后端建立一个清晰的接口。</p>
+<p>抽象语法树在很多领域有广泛的应用，比如浏览器，智能编辑器，编译器。</p>
+<p>其实，我也没看懂。。</p>
+<blockquote>
+<p>引用 <a href="https://blog.csdn.net/philosophyatmath/article/details/38170131" target="_blank" rel="noopener">https://blog.csdn.net/philosophyatmath/article/details/38170131</a></p>
+</blockquote>
+<h2 id="AST-有什么用"><a href="#AST-有什么用" class="headerlink" title="AST 有什么用"></a>AST 有什么用</h2><p><img src="/img/ast/1.png" alt="avatar"></p>
+<ol>
+<li><p>解析(PARSE)：将代码字符串解析成抽象语法树。</p>
+</li>
+<li><p>转换(TRANSFORM)：对抽象语法树进行转换操作。</p>
+</li>
+<li><p>生成(GENERATE): 根据变换后的抽象语法树再生成代码字符串。</p>
+</li>
+</ol>
+<p>javascript 程序是由一系列的字符组成的，每一个字符都有一些含义，比如我们可以使用匹配的字符([], {}, ()), 或一些其他成对的字符(‘’, “”)和代码缩进让程序解析更加简单，但是对计算机并不适用，这些字符在内存中仅仅是个数值，但是计算机并不知道一个程序内部有多少个变量这些高级问题，这个时候我们需要寻找一些能让计算机理解的方式，这个时候，抽象语法树诞生了。</p>
+<h2 id="Parse"><a href="#Parse" class="headerlink" title="Parse"></a>Parse</h2><p>我们通过上面知道，Babel 的工作的第一步是 解析操作，将代码字符串解析成抽象语法树，那么抽象语法树就是在解析过程中产生的。其实解析又可以分成两个步骤： 1.：将整个代码字符串分割成 语法单元数组。 2.：在分词结果的基础之上分析 语法单元之间的关系。</p>
+<p>那么 JS 代码中有哪些语法单元呢？</p>
+<ol>
+<li>空白。JS 中连续的空格，换行，缩进等这些如果不在字符串里面，就没有任何实际的意义，因此我们可以将连续的空白组合在一起作为一个语法单元。</li>
+<li>注释。行注释或块注释，对于编写人或维护人注释是有意义的，但是对于计算机来说知道这是个注释就可以了，并不关心注释的含义，因此我们可以将注释理解为一个不可拆分的语法单元。</li>
+<li>字符串。对计算机而言，字符串的内容会参与计算或显示，因此有可以为一个语法单元。</li>
+<li>数字。JS 中有 16，10，8 进制以及科学表达式等语法，因此数字也可以理解一个语法单元。</li>
+<li>标识符。没有被引号括起来的连续字符，可包含字母 _, \$ 及数字，或 true, false 等这些内置常量，或 if，return，function 等这些关键字。</li>
+<li>运算符： +, -, *, /, &gt;, &lt; 等。</li>
+<li>还有一些其他的，比如括号，中括号，大括号，分号，冒号，点等等。</li>
+</ol>
+<p>程序代码本身可以被映射成为一棵语法树，而通过操纵语法树，我们能够精准的获得程序代码中的某个节点。例如声明语句，赋值语句，而这是用正则表达式所不能准确体现的地方。所以在正则表达式做不了的时候考虑下 AST 哦。</p>
+<p>这里有两个在线 AST 解析工具</p>
+<ol>
+<li><a href="https://esprima.org/demo/parse.html" target="_blank" rel="noopener">https://esprima.org/demo/parse.html</a></li>
+<li><a href="https://astexplorer.net/" target="_blank" rel="noopener">https://astexplorer.net/</a></li>
+</ol>
+<p>个人认为第二个网站更牛批一些，里边有各种语言的 AST 解析和一些三方库，并且还有一些可视化的模块划分，鼠标悬浮，就能清晰的看出，这块数据代表的是哪块代码。</p>
+<h2 id="我的第一次-AST-解析"><a href="#我的第一次-AST-解析" class="headerlink" title="我的第一次 AST 解析"></a>我的第一次 AST 解析</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 这是我的第一个 AST 解析</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> gap = <span class="string">"g"</span> + <span class="string">"a"</span> + <span class="string">"p"</span>;</span><br></pre></td></tr></table></figure>
+<p>这里边包含了注释，变量定义，字符串，空格，运算符等等，我们来看看 AST 能解析出啥。（通过<a href="https://astexplorer.net/" target="_blank" rel="noopener">https://astexplorer.net/</a>这个解析的）</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"type"</span>: <span class="string">"File"</span>,</span><br><span class="line">  <span class="attr">"start"</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">"end"</span>: <span class="number">54</span>,</span><br><span class="line">  <span class="attr">"loc"</span>: &#123;</span><br><span class="line">    <span class="attr">"start"</span>: &#123;</span><br><span class="line">      <span class="attr">"line"</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">"column"</span>: <span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"end"</span>: &#123;</span><br><span class="line">      <span class="attr">"line"</span>: <span class="number">6</span>,</span><br><span class="line">      <span class="attr">"column"</span>: <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"errors"</span>: [],</span><br><span class="line">  <span class="attr">"program"</span>: &#123;</span><br><span class="line">    <span class="attr">"type"</span>: <span class="string">"Program"</span>,</span><br><span class="line">    <span class="attr">"start"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"end"</span>: <span class="number">54</span>,</span><br><span class="line">    <span class="attr">"loc"</span>: &#123;</span><br><span class="line">      <span class="attr">"start"</span>: &#123;</span><br><span class="line">        <span class="attr">"line"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"column"</span>: <span class="number">0</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">"end"</span>: &#123;</span><br><span class="line">        <span class="attr">"line"</span>: <span class="number">6</span>,</span><br><span class="line">        <span class="attr">"column"</span>: <span class="number">0</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"sourceType"</span>: <span class="string">"module"</span>,</span><br><span class="line">    <span class="attr">"interpreter"</span>: <span class="literal">null</span>,</span><br><span class="line">    <span class="attr">"body"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"type"</span>: <span class="string">"VariableDeclaration"</span>,</span><br><span class="line">        <span class="attr">"start"</span>: <span class="number">27</span>,</span><br><span class="line">        <span class="attr">"end"</span>: <span class="number">53</span>,</span><br><span class="line">        <span class="attr">"loc"</span>: &#123;</span><br><span class="line">          <span class="attr">"start"</span>: &#123;</span><br><span class="line">            <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="attr">"column"</span>: <span class="number">0</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="attr">"end"</span>: &#123;</span><br><span class="line">            <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="attr">"column"</span>: <span class="number">26</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"declarations"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"VariableDeclarator"</span>,</span><br><span class="line">            <span class="attr">"start"</span>: <span class="number">31</span>,</span><br><span class="line">            <span class="attr">"end"</span>: <span class="number">52</span>,</span><br><span class="line">            <span class="attr">"loc"</span>: &#123;</span><br><span class="line">              <span class="attr">"start"</span>: &#123;</span><br><span class="line">                <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                <span class="attr">"column"</span>: <span class="number">4</span></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">"end"</span>: &#123;</span><br><span class="line">                <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                <span class="attr">"column"</span>: <span class="number">25</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"id"</span>: &#123;</span><br><span class="line">              <span class="attr">"type"</span>: <span class="string">"Identifier"</span>,</span><br><span class="line">              <span class="attr">"start"</span>: <span class="number">31</span>,</span><br><span class="line">              <span class="attr">"end"</span>: <span class="number">34</span>,</span><br><span class="line">              <span class="attr">"loc"</span>: &#123;</span><br><span class="line">                <span class="attr">"start"</span>: &#123;</span><br><span class="line">                  <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                  <span class="attr">"column"</span>: <span class="number">4</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"end"</span>: &#123;</span><br><span class="line">                  <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                  <span class="attr">"column"</span>: <span class="number">7</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"identifierName"</span>: <span class="string">"gap"</span></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">"name"</span>: <span class="string">"gap"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"init"</span>: &#123;</span><br><span class="line">              <span class="attr">"type"</span>: <span class="string">"BinaryExpression"</span>,</span><br><span class="line">              <span class="attr">"start"</span>: <span class="number">37</span>,</span><br><span class="line">              <span class="attr">"end"</span>: <span class="number">52</span>,</span><br><span class="line">              <span class="attr">"loc"</span>: &#123;</span><br><span class="line">                <span class="attr">"start"</span>: &#123;</span><br><span class="line">                  <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                  <span class="attr">"column"</span>: <span class="number">10</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"end"</span>: &#123;</span><br><span class="line">                  <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                  <span class="attr">"column"</span>: <span class="number">25</span></span><br><span class="line">                &#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">"left"</span>: &#123;</span><br><span class="line">                <span class="attr">"type"</span>: <span class="string">"BinaryExpression"</span>,</span><br><span class="line">                <span class="attr">"start"</span>: <span class="number">37</span>,</span><br><span class="line">                <span class="attr">"end"</span>: <span class="number">46</span>,</span><br><span class="line">                <span class="attr">"loc"</span>: &#123;</span><br><span class="line">                  <span class="attr">"start"</span>: &#123;</span><br><span class="line">                    <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                    <span class="attr">"column"</span>: <span class="number">10</span></span><br><span class="line">                  &#125;,</span><br><span class="line">                  <span class="attr">"end"</span>: &#123;</span><br><span class="line">                    <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                    <span class="attr">"column"</span>: <span class="number">19</span></span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"left"</span>: &#123;</span><br><span class="line">                  <span class="attr">"type"</span>: <span class="string">"StringLiteral"</span>,</span><br><span class="line">                  <span class="attr">"start"</span>: <span class="number">37</span>,</span><br><span class="line">                  <span class="attr">"end"</span>: <span class="number">40</span>,</span><br><span class="line">                  <span class="attr">"loc"</span>: &#123;</span><br><span class="line">                    <span class="attr">"start"</span>: &#123;</span><br><span class="line">                      <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                      <span class="attr">"column"</span>: <span class="number">10</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    <span class="attr">"end"</span>: &#123;</span><br><span class="line">                      <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                      <span class="attr">"column"</span>: <span class="number">13</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;,</span><br><span class="line">                  <span class="attr">"extra"</span>: &#123;</span><br><span class="line">                    <span class="attr">"rawValue"</span>: <span class="string">"g"</span>,</span><br><span class="line">                    <span class="attr">"raw"</span>: <span class="string">"'g'"</span></span><br><span class="line">                  &#125;,</span><br><span class="line">                  <span class="attr">"value"</span>: <span class="string">"g"</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"operator"</span>: <span class="string">"+"</span>,</span><br><span class="line">                <span class="attr">"right"</span>: &#123;</span><br><span class="line">                  <span class="attr">"type"</span>: <span class="string">"StringLiteral"</span>,</span><br><span class="line">                  <span class="attr">"start"</span>: <span class="number">43</span>,</span><br><span class="line">                  <span class="attr">"end"</span>: <span class="number">46</span>,</span><br><span class="line">                  <span class="attr">"loc"</span>: &#123;</span><br><span class="line">                    <span class="attr">"start"</span>: &#123;</span><br><span class="line">                      <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                      <span class="attr">"column"</span>: <span class="number">16</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    <span class="attr">"end"</span>: &#123;</span><br><span class="line">                      <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                      <span class="attr">"column"</span>: <span class="number">19</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;,</span><br><span class="line">                  <span class="attr">"extra"</span>: &#123;</span><br><span class="line">                    <span class="attr">"rawValue"</span>: <span class="string">"a"</span>,</span><br><span class="line">                    <span class="attr">"raw"</span>: <span class="string">"'a'"</span></span><br><span class="line">                  &#125;,</span><br><span class="line">                  <span class="attr">"value"</span>: <span class="string">"a"</span></span><br><span class="line">                &#125;</span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">"operator"</span>: <span class="string">"+"</span>,</span><br><span class="line">              <span class="attr">"right"</span>: &#123;</span><br><span class="line">                <span class="attr">"type"</span>: <span class="string">"StringLiteral"</span>,</span><br><span class="line">                <span class="attr">"start"</span>: <span class="number">49</span>,</span><br><span class="line">                <span class="attr">"end"</span>: <span class="number">52</span>,</span><br><span class="line">                <span class="attr">"loc"</span>: &#123;</span><br><span class="line">                  <span class="attr">"start"</span>: &#123;</span><br><span class="line">                    <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                    <span class="attr">"column"</span>: <span class="number">22</span></span><br><span class="line">                  &#125;,</span><br><span class="line">                  <span class="attr">"end"</span>: &#123;</span><br><span class="line">                    <span class="attr">"line"</span>: <span class="number">5</span>,</span><br><span class="line">                    <span class="attr">"column"</span>: <span class="number">25</span></span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"extra"</span>: &#123;</span><br><span class="line">                  <span class="attr">"rawValue"</span>: <span class="string">"p"</span>,</span><br><span class="line">                  <span class="attr">"raw"</span>: <span class="string">"'p'"</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">"value"</span>: <span class="string">"p"</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"kind"</span>: <span class="string">"var"</span>,</span><br><span class="line">        <span class="attr">"leadingComments"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"CommentBlock"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"*\n * 这是我的第一个 AST 解析\n "</span>,</span><br><span class="line">            <span class="attr">"start"</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="attr">"end"</span>: <span class="number">25</span>,</span><br><span class="line">            <span class="attr">"loc"</span>: &#123;</span><br><span class="line">              <span class="attr">"start"</span>: &#123;</span><br><span class="line">                <span class="attr">"line"</span>: <span class="number">1</span>,</span><br><span class="line">                <span class="attr">"column"</span>: <span class="number">0</span></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">"end"</span>: &#123;</span><br><span class="line">                <span class="attr">"line"</span>: <span class="number">3</span>,</span><br><span class="line">                <span class="attr">"column"</span>: <span class="number">3</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"directives"</span>: []</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"comments"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"CommentBlock"</span>,</span><br><span class="line">      <span class="attr">"value"</span>: <span class="string">"*\n * 这是我的第一个 AST 解析\n "</span>,</span><br><span class="line">      <span class="attr">"start"</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="attr">"end"</span>: <span class="number">25</span>,</span><br><span class="line">      <span class="attr">"loc"</span>: &#123;</span><br><span class="line">        <span class="attr">"start"</span>: &#123;</span><br><span class="line">          <span class="attr">"line"</span>: <span class="number">1</span>,</span><br><span class="line">          <span class="attr">"column"</span>: <span class="number">0</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"end"</span>: &#123;</span><br><span class="line">          <span class="attr">"line"</span>: <span class="number">3</span>,</span><br><span class="line">          <span class="attr">"column"</span>: <span class="number">3</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我的妈呀真是有够长的，我们简单看看都有些什么内容。<br>首先是 File 对象，即当前文件，有文本的起点位置重点位置，起点行终点行（loc）之类的。然后分为<code>program</code>和<code>comments</code>。<br>咱们先说<code>comment</code>s，它是一个数组，当有多个注释的块的时候，它会变多，并且标记好不同的位置信息，及内容。<br><code>program</code>是个对象，应该是整个文件都属于它的范畴，里边的<code>body</code>是个数组，它其实包含着我们每一个代码块，可以看到里边的，<code>type:VariableDeclaration</code>，其实就是表示一个变量声明代码块。一些基本的位置信息之后是<code>declaration</code>，具体的定义信息，变量名字模块<code>id</code>，<code>init</code>里是递归嵌套的具体的操作运算类<code>BinaryExpression</code>，里边会有<code>left</code>个<code>right</code>分别代表运算符两边的变量，而<code>left</code>仍然可以是<code>BinaryExpression</code>类，这样就递归下去了，直至将整个运算都表示完全。<code>body</code>里每一个代码块还有一个<code>leadingComments</code> 和 <code>trailingComments</code>分别代表自己前边的注释和后边的注释，都是数组。</p>
+<p>这样这么简单的一段代码就被解析成这么复杂的 json 给展示出来了。<br>虽然复杂，但是绝对最低粒度的展示了代码的本质。</p>
+<h2 id="纯文本转-AST-的实现"><a href="#纯文本转-AST-的实现" class="headerlink" title="纯文本转 AST 的实现"></a>纯文本转 AST 的实现</h2><p>上述从纯文本转换成树形结构的数据，每个条目和树中的节点一一对应。<br>那么纯文本是如何转成 AST 的呢？</p>
+<h3 id="第一步：词法分析，也叫扫描-scanner"><a href="#第一步：词法分析，也叫扫描-scanner" class="headerlink" title="第一步：词法分析，也叫扫描 scanner"></a>第一步：词法分析，也叫扫描 scanner</h3><p>它读取我们的代码，然后把它们按照预定的规则合并成一个个的标识 tokens。同时，它会移除空白符、注释等。最后，整个代码将被分割进一个 tokens 列表（或者说一维数组）。<a href="https://esprima.org/demo/parse.html" target="_blank" rel="noopener">https://esprima.org/demo/parse.html</a>这个里边可以解析的到。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="string">'gap'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 转换成</span></span><br><span class="line"></span><br><span class="line">[&#123;<span class="attr">value</span>: <span class="string">'const'</span>, <span class="attr">type</span>: <span class="string">'keyword'</span>&#125;, &#123;<span class="attr">value</span>: <span class="string">'a'</span>, <span class="attr">type</span>: <span class="string">'identifier'</span>&#125;, ...]</span><br></pre></td></tr></table></figure>
+<p>当词法分析源代码的时候，它会一个一个字母地读取代码，所以很形象地称之为扫描 - scans。当它遇到空格、操作符，或者特殊符号的时候，它会认为一个话已经完成了。</p>
+<h3 id="第二步：语法分析，也称解析器"><a href="#第二步：语法分析，也称解析器" class="headerlink" title="第二步：语法分析，也称解析器"></a>第二步：语法分析，也称解析器</h3><p>它会将词法分析出来的数组转换成树形的形式，同时，验证语法。语法如果有错的话，抛出语法错误。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[&#123;<span class="attr">value</span>: <span class="string">'const'</span>, <span class="attr">type</span>: <span class="string">'keyword'</span>&#125;, &#123;<span class="attr">value</span>: <span class="string">'a'</span>, <span class="attr">type</span>: <span class="string">'identifier'</span>&#125;, ...]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 语法分析后的树形形式</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  type: <span class="string">"VariableDeclarator"</span>,</span><br><span class="line"></span><br><span class="line">  id: &#123;</span><br><span class="line"></span><br><span class="line">  type: <span class="string">"Identifier"</span>,</span><br><span class="line"></span><br><span class="line">  name: <span class="string">"a"</span></span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当生成树的时候，解析器会删除一些没必要的标识 tokens（比如：不完整的括号），因此 AST 不是 100% 与源码匹配的。</p>
+<blockquote>
+<p>解析器 100%覆盖所有代码结构生成树叫做 CST（具体语法树）</p>
+</blockquote>
+<h2 id="看看别人怎么吹-AST-的"><a href="#看看别人怎么吹-AST-的" class="headerlink" title="看看别人怎么吹 AST 的"></a>看看别人怎么吹 AST 的</h2><p>Javascript 就像一台精妙运作的机器，我们可以用它来完成一切天马行空的构思。</p>
+<p>我们对 javascript 生态了如指掌，却常忽视 javascript 本身。这台机器，究竟是哪些零部件在支持着它运行？</p>
+<p>AST 在日常业务中也许很难涉及到，但当你不止于想做一个工程师，而想做工程师的工程师，写出 vue、react 之类的大型框架，或类似 webpack、vue-cli 前端自动化的工具，或者有批量修改源码的工程需求，那你必须懂得 AST。AST 的能力十分强大，且能帮你真正吃透 javascript 的语言精髓。</p>
+<p>事实上，在 javascript 世界中，你可以认为抽象语法树(AST)是最底层。 再往下，就是关于转换和编译的“黑魔法”领域了。</p>
+<blockquote>
+<p><a href="https://segmentfault.com/a/1190000016231512?utm_source=tag-newest" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016231512?utm_source=tag-newest</a></p>
+</blockquote>
+<h2 id="开搞：利用-AST-实现一个组件引用文件查找的脚本"><a href="#开搞：利用-AST-实现一个组件引用文件查找的脚本" class="headerlink" title="开搞：利用 AST 实现一个组件引用文件查找的脚本"></a>开搞：利用 AST 实现一个组件引用文件查找的脚本</h2><h3 id="依赖工具安装"><a href="#依赖工具安装" class="headerlink" title="依赖工具安装"></a>依赖工具安装</h3><p>这里我们使用<code>acorn</code>这个库，这个还是比较权威的。</p>
+<h3 id="试用一下功能"><a href="#试用一下功能" class="headerlink" title="试用一下功能"></a>试用一下功能</h3><p>安装好依赖之后，创建一个 index.js 文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> acorn = <span class="built_in">require</span>(<span class="string">"acorn"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(acorn.parse(<span class="string">"1 + 1"</span>));</span><br></pre></td></tr></table></figure>
+<p>运行 node index.js 输出</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Node &#123;</span><br><span class="line">  type: 'Program',</span><br><span class="line">  start: 0,</span><br><span class="line">  end: 5,</span><br><span class="line">  body:</span><br><span class="line">   [ Node &#123;</span><br><span class="line">       type: 'ExpressionStatement',</span><br><span class="line">       start: 0,</span><br><span class="line">       end: 5,</span><br><span class="line">       expression: [Object] &#125; ],</span><br><span class="line">  sourceType: 'script' &#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式是在代码中去解析一个 string，即<code>纯文本转 AST</code>。<br>你也可以执行命令行，<code>npx acorn ./index.js</code><br>输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"type"</span>: <span class="string">"Program"</span>,</span><br><span class="line">  <span class="attr">"start"</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">"end"</span>: <span class="number">65</span>,</span><br><span class="line">  <span class="attr">"body"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"VariableDeclaration"</span>,</span><br><span class="line">      <span class="attr">"start"</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="attr">"end"</span>: <span class="number">29</span>,</span><br><span class="line">      <span class="attr">"declarations"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">"type"</span>: <span class="string">"VariableDeclarator"</span>,</span><br><span class="line">          <span class="attr">"start"</span>: <span class="number">4</span>,</span><br><span class="line">          <span class="attr">"end"</span>: <span class="number">28</span>,</span><br><span class="line">          <span class="attr">"id"</span>: &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"Identifier"</span>,</span><br><span class="line">            <span class="attr">"start"</span>: <span class="number">4</span>,</span><br><span class="line">            <span class="attr">"end"</span>: <span class="number">9</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"acorn"</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="attr">"init"</span>: &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"CallExpression"</span>,</span><br><span class="line">            <span class="attr">"start"</span>: <span class="number">12</span>,</span><br><span class="line">            <span class="attr">"end"</span>: <span class="number">28</span>,</span><br><span class="line">            <span class="attr">"callee"</span>: &#123;</span><br><span class="line">              <span class="attr">"type"</span>: <span class="string">"Identifier"</span>,</span><br><span class="line">              <span class="attr">"start"</span>: <span class="number">12</span>,</span><br><span class="line">              <span class="attr">"end"</span>: <span class="number">19</span>,</span><br><span class="line">              <span class="attr">"name"</span>: <span class="string">"require"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"arguments"</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="attr">"type"</span>: <span class="string">"Literal"</span>,</span><br><span class="line">                <span class="attr">"start"</span>: <span class="number">20</span>,</span><br><span class="line">                <span class="attr">"end"</span>: <span class="number">27</span>,</span><br><span class="line">                <span class="attr">"value"</span>: <span class="string">"acorn"</span>,</span><br><span class="line">                <span class="attr">"raw"</span>: <span class="string">"\"acorn\""</span></span><br><span class="line">              &#125;</span><br><span class="line">            ]</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">"kind"</span>: <span class="string">"let"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"ExpressionStatement"</span>,</span><br><span class="line">      <span class="attr">"start"</span>: <span class="number">30</span>,</span><br><span class="line">      <span class="attr">"end"</span>: <span class="number">64</span>,</span><br><span class="line">      <span class="attr">"expression"</span>: &#123;</span><br><span class="line">        <span class="attr">"type"</span>: <span class="string">"CallExpression"</span>,</span><br><span class="line">        <span class="attr">"start"</span>: <span class="number">30</span>,</span><br><span class="line">        <span class="attr">"end"</span>: <span class="number">63</span>,</span><br><span class="line">        <span class="attr">"callee"</span>: &#123;</span><br><span class="line">          <span class="attr">"type"</span>: <span class="string">"MemberExpression"</span>,</span><br><span class="line">          <span class="attr">"start"</span>: <span class="number">30</span>,</span><br><span class="line">          <span class="attr">"end"</span>: <span class="number">41</span>,</span><br><span class="line">          <span class="attr">"object"</span>: &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"Identifier"</span>,</span><br><span class="line">            <span class="attr">"start"</span>: <span class="number">30</span>,</span><br><span class="line">            <span class="attr">"end"</span>: <span class="number">37</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"console"</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="attr">"property"</span>: &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"Identifier"</span>,</span><br><span class="line">            <span class="attr">"start"</span>: <span class="number">38</span>,</span><br><span class="line">            <span class="attr">"end"</span>: <span class="number">41</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"log"</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="attr">"computed"</span>: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"arguments"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"CallExpression"</span>,</span><br><span class="line">            <span class="attr">"start"</span>: <span class="number">42</span>,</span><br><span class="line">            <span class="attr">"end"</span>: <span class="number">62</span>,</span><br><span class="line">            <span class="attr">"callee"</span>: &#123;</span><br><span class="line">              <span class="attr">"type"</span>: <span class="string">"MemberExpression"</span>,</span><br><span class="line">              <span class="attr">"start"</span>: <span class="number">42</span>,</span><br><span class="line">              <span class="attr">"end"</span>: <span class="number">53</span>,</span><br><span class="line">              <span class="attr">"object"</span>: &#123;</span><br><span class="line">                <span class="attr">"type"</span>: <span class="string">"Identifier"</span>,</span><br><span class="line">                <span class="attr">"start"</span>: <span class="number">42</span>,</span><br><span class="line">                <span class="attr">"end"</span>: <span class="number">47</span>,</span><br><span class="line">                <span class="attr">"name"</span>: <span class="string">"acorn"</span></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">"property"</span>: &#123;</span><br><span class="line">                <span class="attr">"type"</span>: <span class="string">"Identifier"</span>,</span><br><span class="line">                <span class="attr">"start"</span>: <span class="number">48</span>,</span><br><span class="line">                <span class="attr">"end"</span>: <span class="number">53</span>,</span><br><span class="line">                <span class="attr">"name"</span>: <span class="string">"parse"</span></span><br><span class="line">              &#125;,</span><br><span class="line">              <span class="attr">"computed"</span>: <span class="literal">false</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"arguments"</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="attr">"type"</span>: <span class="string">"Literal"</span>,</span><br><span class="line">                <span class="attr">"start"</span>: <span class="number">54</span>,</span><br><span class="line">                <span class="attr">"end"</span>: <span class="number">61</span>,</span><br><span class="line">                <span class="attr">"value"</span>: <span class="string">"1 + 1"</span>,</span><br><span class="line">                <span class="attr">"raw"</span>: <span class="string">"\"1 + 1\""</span></span><br><span class="line">              &#125;</span><br><span class="line">            ]</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"sourceType"</span>: <span class="string">"script"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是对整个 js 文件进行 AST 解析。</p>
+<h3 id="举个-🌰"><a href="#举个-🌰" class="headerlink" title="举个 🌰"></a>举个 🌰</h3><p>我们要找出来所有引用了<code>lodash</code>库的文件，下边是个例子<br>本例是一个普通 js，如果是 react、vue、es6、ts 代码，还需要进行 babel 转换之后再进行 AST 解析。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _ = <span class="built_in">require</span>(<span class="string">"lodash"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> xxx = &#123; <span class="attr">a</span>: &#123; <span class="attr">b</span>: &#123; <span class="attr">c</span>: <span class="number">3</span> &#125; &#125; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> yyy = _.get(a, [<span class="string">"b"</span>, <span class="string">"c"</span>]);</span><br></pre></td></tr></table></figure>
+<p>所以我们要写一个脚本，要对解析的内容进行判断区别，然后记录文件名字。</p>
+<h4 id="首先我们要搞一些测试文件或文件夹：如下"><a href="#首先我们要搞一些测试文件或文件夹：如下" class="headerlink" title="首先我们要搞一些测试文件或文件夹：如下"></a>首先我们要搞一些测试文件或文件夹：如下</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- src</span><br><span class="line"> |- dir</span><br><span class="line"> | |- dir</span><br><span class="line"> | | |- yyy.js <span class="comment">// 含有lodash</span></span><br><span class="line"> | |- demo.js <span class="comment">// 含有lodash</span></span><br><span class="line"> | |- xxx.css</span><br><span class="line"> | |- xxx.js <span class="comment">// 不含有</span></span><br><span class="line"> |- index.js <span class="comment">// 含有lodash</span></span><br><span class="line"> |- script.js <span class="comment">// 脚本</span></span><br></pre></td></tr></table></figure>
+<h4 id="然后要写一个遍历文件读取的脚本"><a href="#然后要写一个遍历文件读取的脚本" class="headerlink" title="然后要写一个遍历文件读取的脚本"></a>然后要写一个遍历文件读取的脚本</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rootPathName = path.resolve(__dirname, <span class="string">"./src"</span>);</span><br><span class="line"><span class="keyword">const</span> outputPathName = path.resolve(__dirname, <span class="string">"./hasLodashFileList.txt"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">traverseDir</span>(<span class="params">pathName</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 读取文件夹 输出目录</span></span><br><span class="line">  fs.readdir(pathName, <span class="function"><span class="keyword">function</span> (<span class="params">err, files</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 遍历文件 判断是文件还是文件夹，如果是文件是否是js文件</span></span><br><span class="line">    <span class="comment">// 如果是文件夹 则 递归深入遍历</span></span><br><span class="line">    files.forEach(<span class="function">(<span class="params">fileName</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> filePath = path.join(pathName, fileName);</span><br><span class="line">      fs.stat(filePath, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (data.isDirectory()) &#123;</span><br><span class="line">          <span class="comment">// 如果是文件夹 则递归</span></span><br><span class="line">          traverseDir(filePath);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (data.isFile() &amp;&amp; fileName.endsWith(<span class="string">".js"</span>)) &#123;</span><br><span class="line">          <span class="comment">// 如果是文件 且是js文件则 AST 解析 检查是否引入了 lodash</span></span><br><span class="line">          fs.readFile(filePath, <span class="string">"utf-8"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">const</span> result = <span class="literal">false</span>; <span class="comment">// 需要在这里进行AST解析</span></span><br><span class="line">            <span class="keyword">if</span> (result) &#123;</span><br><span class="line">              <span class="comment">// 将结果输出到一个文本里</span></span><br><span class="line">              fs.appendFileSync(outputPathName, <span class="string">`<span class="subst">$&#123;filePath&#125;</span>\n`</span>);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">traverseDir(rootPathName);</span><br></pre></td></tr></table></figure>
+<h4 id="log-一下解析内容"><a href="#log-一下解析内容" class="headerlink" title="log 一下解析内容"></a>log 一下解析内容</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(filePath, <span class="string">"utf-8"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(acorn.parse(data));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line">Node &#123;</span><br><span class="line">  type: <span class="string">'Program'</span>,</span><br><span class="line">  start: <span class="number">0</span>,</span><br><span class="line">  end: <span class="number">101</span>,</span><br><span class="line">  body:</span><br><span class="line">   [ Node &#123;</span><br><span class="line">       type: <span class="string">'VariableDeclaration'</span>,</span><br><span class="line">       start: <span class="number">0</span>,</span><br><span class="line">       end: <span class="number">28</span>,</span><br><span class="line">       declarations: [<span class="built_in">Array</span>],</span><br><span class="line">       kind: <span class="string">'const'</span> &#125;,</span><br><span class="line">     Node &#123;</span><br><span class="line">       type: <span class="string">'VariableDeclaration'</span>,</span><br><span class="line">       start: <span class="number">30</span>,</span><br><span class="line">       end: <span class="number">65</span>,</span><br><span class="line">       declarations: [<span class="built_in">Array</span>],</span><br><span class="line">       kind: <span class="string">'const'</span> &#125;,</span><br><span class="line">     Node &#123;</span><br><span class="line">       type: <span class="string">'VariableDeclaration'</span>,</span><br><span class="line">       start: <span class="number">67</span>,</span><br><span class="line">       end: <span class="number">100</span>,</span><br><span class="line">       declarations: [<span class="built_in">Array</span>],</span><br><span class="line">       kind: <span class="string">'const'</span> &#125; ],</span><br><span class="line">  sourceType: <span class="string">'script'</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发现有些遍历被包含住了看不到，所以</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(acorn.parse(data)));</span><br><span class="line"><span class="comment">// 解析之后，按照type argument 等字段的判断 我们就可以判断出此文件是否引入了 lodash</span></span><br></pre></td></tr></table></figure>
+<h4 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</span><br><span class="line"><span class="keyword">const</span> acorn = <span class="built_in">require</span>(<span class="string">"acorn"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rootPathName = path.resolve(__dirname, <span class="string">"./src"</span>);</span><br><span class="line"><span class="keyword">const</span> outputPathName = path.resolve(__dirname, <span class="string">"./hasLodashFileList.txt"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">traverseDir</span>(<span class="params">pathName</span>) </span>&#123;</span><br><span class="line">  fs.readdir(pathName, <span class="function"><span class="keyword">function</span> (<span class="params">err, files</span>) </span>&#123;</span><br><span class="line">    files.forEach(<span class="function">(<span class="params">fileName</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> filePath = path.join(pathName, fileName);</span><br><span class="line">      fs.stat(filePath, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (data.isDirectory()) &#123;</span><br><span class="line">          <span class="comment">// 如果是文件夹 则递归</span></span><br><span class="line">          traverseDir(filePath);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (data.isFile() &amp;&amp; fileName.endsWith(<span class="string">".js"</span>)) &#123;</span><br><span class="line">          <span class="comment">// 如果是文件 且是js文件则 AST 解析 检查是否引入了 lodash</span></span><br><span class="line">          fs.readFile(filePath, <span class="string">"utf-8"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">const</span> ast = acorn.parse(data);</span><br><span class="line">            <span class="keyword">const</span> result = ast.body.some(<span class="function">(<span class="params">line</span>) =&gt;</span> &#123;</span><br><span class="line">              <span class="comment">// 找到类型是变量定义的那一行</span></span><br><span class="line">              <span class="keyword">if</span> (line.type === <span class="string">"VariableDeclaration"</span>) &#123;</span><br><span class="line">                <span class="comment">// 遍历每一个 变量定义 块 判断是否 引入(require) 了 lodash</span></span><br><span class="line">                <span class="keyword">return</span> line.declarations.some(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">                  <span class="keyword">if</span> (</span><br><span class="line">                    item.type === <span class="string">"VariableDeclarator"</span> &amp;&amp;</span><br><span class="line">                    item.init.callee &amp;&amp;</span><br><span class="line">                    item.init.callee.name === <span class="string">"require"</span> &amp;&amp;</span><br><span class="line">                    item.init.arguments &amp;&amp;</span><br><span class="line">                    item.init.arguments.some(<span class="function">(<span class="params">arg</span>) =&gt;</span> arg.value === <span class="string">"lodash"</span>)</span><br><span class="line">                  ) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">if</span> (result) &#123;</span><br><span class="line">              fs.appendFileSync(outputPathName, <span class="string">`<span class="subst">$&#123;filePath&#125;</span>\n`</span>);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">traverseDir(rootPathName);</span><br></pre></td></tr></table></figure>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2020年05月17日 - 17时27分</p>
+        <p><span>最后更新:</span>2024年01月04日 - 16时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/05/17/AST抽象语法树/" title="AST抽象语法树">https://gapgao.github.io/2020/05/17/AST抽象语法树/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/05/17/AST抽象语法树/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2020/05/17/webpack-rollup-parcel/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          webpack-rollup-parcel
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/25/ES6-Proxy能干点啥/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ES6-Proxy 能干点啥</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#先看看概念"><span class="toc-number">1.</span> <span class="toc-text">先看看概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AST-有什么用"><span class="toc-number">2.</span> <span class="toc-text">AST 有什么用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parse"><span class="toc-number">3.</span> <span class="toc-text">Parse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我的第一次-AST-解析"><span class="toc-number">4.</span> <span class="toc-text">我的第一次 AST 解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#纯文本转-AST-的实现"><span class="toc-number">5.</span> <span class="toc-text">纯文本转 AST 的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一步：词法分析，也叫扫描-scanner"><span class="toc-number">5.1.</span> <span class="toc-text">第一步：词法分析，也叫扫描 scanner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二步：语法分析，也称解析器"><span class="toc-number">5.2.</span> <span class="toc-text">第二步：语法分析，也称解析器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#看看别人怎么吹-AST-的"><span class="toc-number">6.</span> <span class="toc-text">看看别人怎么吹 AST 的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开搞：利用-AST-实现一个组件引用文件查找的脚本"><span class="toc-number">7.</span> <span class="toc-text">开搞：利用 AST 实现一个组件引用文件查找的脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖工具安装"><span class="toc-number">7.1.</span> <span class="toc-text">依赖工具安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#试用一下功能"><span class="toc-number">7.2.</span> <span class="toc-text">试用一下功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#举个-🌰"><span class="toc-number">7.3.</span> <span class="toc-text">举个 🌰</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#首先我们要搞一些测试文件或文件夹：如下"><span class="toc-number">7.3.1.</span> <span class="toc-text">首先我们要搞一些测试文件或文件夹：如下</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#然后要写一个遍历文件读取的脚本"><span class="toc-number">7.3.2.</span> <span class="toc-text">然后要写一个遍历文件读取的脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#log-一下解析内容"><span class="toc-number">7.3.3.</span> <span class="toc-text">log 一下解析内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#最终代码"><span class="toc-number">7.3.4.</span> <span class="toc-text">最终代码</span></a></li></ol></li></ol></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'GapGao',
+      repo: 'gapgao.github.io',
+      oauth: {
+        client_id: 'b37cf634d1c116549841',
+        client_secret: '54bad933f4f25c63418d4c79fe77cbbba1c465b5',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2020/05/17/webpack-rollup-parcel/" title="上一篇: webpack-rollup-parcel">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2020/04/25/ES6-Proxy能干点啥/" title="下一篇: ES6-Proxy 能干点啥">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/28/rn/">RN开发与使用Expo+EAS打包发布及配套苹果开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/vite是什么/">vite是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/19/vue3之初体验/">vue3之初体验</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/初探Deno/">初探Deno</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/04/25/ES6-Proxy能干点啥/">ES6-Proxy 能干点啥</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/29/我爱读源码系列之飞冰配置式路由/">我爱读源码系列之飞冰配置式路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/23/搞懂CJS&UMD&ESM/">搞懂CJS & UMD & ESM</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/31/react15升16/">react15升16</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/17/小程序开发笔记/">小程序开发笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/用preload预加载页面资源/">用preload预加载页面资源</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/25/初探WebAssembly/">初探WebAssembly</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/完全理解react Fiber/">完全理解react Fiber</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/20/Nuxt-express踩坑日记/">Nuxt+express踩坑日记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>初探Deno | 牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="背景介绍Node.js 的创建者 Ryan Dahl 觉得 Node.js 已经背离了自己的初衷，因为他已经将 Node 托管给别人很久了，当他回来时，发现物是人非，因为有些众所周知且无法忽视的问题，Ryan Dahl 决定再写一个替代品，彻底解决这些问题。它就是 Deno（Destroy Node.js），顾名思义，推翻 Node。Deno 在 2020 年 5 月 14 日也正式发布了 1.0">
+<meta name="keywords" content="Deno">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初探Deno">
+<meta property="og:url" content="https://gapgao.github.io/2020/06/28/初探Deno/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="背景介绍Node.js 的创建者 Ryan Dahl 觉得 Node.js 已经背离了自己的初衷，因为他已经将 Node 托管给别人很久了，当他回来时，发现物是人非，因为有些众所周知且无法忽视的问题，Ryan Dahl 决定再写一个替代品，彻底解决这些问题。它就是 Deno（Destroy Node.js），顾名思义，推翻 Node。Deno 在 2020 年 5 月 14 日也正式发布了 1.0">
+<meta property="og:locale" content="Chinese">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/1.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/2.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/3.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/5.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/6.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/7.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/8.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/9.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/10.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/11.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/12.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/13.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/15.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/14.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/16.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/17.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/18.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/19.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/20.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/21.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/22.png">
+<meta property="og:image" content="https://gapgao.github.io/img/deno/4.png">
+<meta property="og:updated_time" content="2024-01-04T08:04:02.209Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初探Deno">
+<meta name="twitter:description" content="背景介绍Node.js 的创建者 Ryan Dahl 觉得 Node.js 已经背离了自己的初衷，因为他已经将 Node 托管给别人很久了，当他回来时，发现物是人非，因为有些众所周知且无法忽视的问题，Ryan Dahl 决定再写一个替代品，彻底解决这些问题。它就是 Deno（Destroy Node.js），顾名思义，推翻 Node。Deno 在 2020 年 5 月 14 日也正式发布了 1.0">
+<meta name="twitter:image" content="https://gapgao.github.io/img/deno/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CJS/" style="font-size: 10px;">CJS</a> <a href="/tags/Cypress/" style="font-size: 10px;">Cypress</a> <a href="/tags/Deno/" style="font-size: 10px;">Deno</a> <a href="/tags/E2E测试测试/" style="font-size: 10px;">E2E测试测试</a> <a href="/tags/ESM/" style="font-size: 10px;">ESM</a> <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/UMD/" style="font-size: 10px;">UMD</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/parcel/" style="font-size: 10px;">parcel</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vite/" style="font-size: 10px;">vite</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/打包/" style="font-size: 10px;">打包</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a> <a href="/tags/自动化测试/" style="font-size: 15px;">自动化测试</a> <a href="/tags/飞冰/" style="font-size: 10px;">飞冰</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-初探Deno" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/06/28/初探Deno/" class="article-date">
+      <time datetime="2020-06-28T11:25:11.000Z" itemprop="datePublished">2020-06-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      初探Deno
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Deno/">Deno</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>Node.js 的创建者 Ryan Dahl 觉得 Node.js 已经背离了自己的初衷，因为他已经将 Node 托管给别人很久了，当他回来时，发现物是人非，因为有些众所周知且无法忽视的问题，Ryan Dahl 决定再写一个替代品，彻底解决这些问题。它就是 Deno（Destroy Node.js），顾名思义，推翻 Node。Deno 在 2020 年 5 月 14 日也正式发布了 1.0 版本，它的更新非常之快，扶我起来，我还能学。</p>
+<a id="more"></a>
+<h2 id="为啥-Ryan-Dahl-觉得-node-背离了自己的初衷呢"><a href="#为啥-Ryan-Dahl-觉得-node-背离了自己的初衷呢" class="headerlink" title="为啥 Ryan Dahl 觉得 node 背离了自己的初衷呢"></a>为啥 Ryan Dahl 觉得 node 背离了自己的初衷呢</h2><p>顾名思义其实就是 Node 有很多缺陷呗，其实这些缺陷也众所周知</p>
+<ol>
+<li>异步接口有 Promise 和回调函数两种写法（让我想到了 bluebird）。</li>
+<li>自己的模块格式 CommonJS 与不支持 ES 模块不兼容，需要借助 babel。</li>
+<li>模块管理工具 npm，及安装目录极其复杂，难以管理（还有 package-lock.json，还经常容易冲突）。</li>
+<li>不安全，安装了模块就任由别人的代码在自己的服务里运行进行各种读写操作（经典的 Antd 彩蛋事件，还有各种库的 bug）。</li>
+<li>功能不完善，没有内置构建工具，没有内置测试模块，lint，format 等，都需要自己或借助三方库搞，然后又没什么标准，导致三方库横行，开发者要学太多，搞的疲惫不堪。<br>等等</li>
+</ol>
+<h2 id="Deno-是啥"><a href="#Deno-是啥" class="headerlink" title="Deno 是啥"></a>Deno 是啥</h2><p>Deno 是使用 V8 并内置于 Rust 的 JavaScript 和 TypeScript 和 WebAssembly 的简单的，现代的且安全的运行时。<br>它内置了 V8 引擎，用来解释 JavaScript。同时，也内置了 tsc 引擎，解释 TypeScript。它使用 Rust 语言开发，由于 Rust 原生支持 WebAssembly，所以它也能直接运行 WebAssembly。它的异步操作不使用 libuv 这个库，而是使用 Rust 语言的 Tokio 库，来实现事件循环（event loop）。</p>
+<p>为啥不是用 C++呢？据说是因为 Rust 提供了很多现成的模块，对 Deno 项目来说，可以节约很多开发时间。毕竟大佬的时间也很宝贵，看得出来大佬是急切的想 destory node。</p>
+<h2 id="Deno-有哪些特点呢"><a href="#Deno-有哪些特点呢" class="headerlink" title="Deno 有哪些特点呢"></a>Deno 有哪些特点呢</h2><ol>
+<li>支持 js，ts，WebAssembly。<br>原生支持 ts，可以直接运行，不必显示转码，Deno 会根据后缀名来判断是用 v8 引擎，还是先用 tsc 编译器，查看 Deno 的 github 代码就会发现，它默认都是使用 ts 编写的。<a href="https://github.com/denoland/deno" target="_blank" rel="noopener">https://github.com/denoland/deno</a></li>
+<li><p>相对安全，默认没有文件、网络或环境的访问权限，除非设置允许</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">--allow-read：打开读权限，可以指定可读的目录，比如--allow-read=<span class="regexp">/temp。</span></span><br><span class="line"><span class="regexp">--allow-write：打开写权限。</span></span><br><span class="line"><span class="regexp">--allow-net：允许网络通信，可以指定可请求的域，比如--allow-net=google.com。</span></span><br><span class="line"><span class="regexp">--allow-env：允许读取环境变量。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>去 packages 化，就是没有 package.json 和 node_modules</p>
+</li>
+<li>使用标准库<br><a href="https://deno.land/std/" target="_blank" rel="noopener">https://deno.land/std/</a>在这里可以看到 Deno 核心团队开发且都没有用外部依赖，还可以加上版本号，比如<a href="https://deno.land/std@v1.0.0。" target="_blank" rel="noopener">https://deno.land/std@v1.0.0。</a></li>
+<li>使用 ES 模块，而不支持 CommonJs。<br>没有 npm 和 node_modules，所有模块通过 URL 加载。因此，Deno 不需要一个中心化的模块储存系统，可以从任何地方加载模块。并且必须指定加载脚本的后缀。但是，Deno 下载模块以后，依然会有一个总的目录，在本地缓存模块，因此可以离线使用。<br>Deno 也为 ES 模块提供了公共托管服务，可以在<a href="https://deno.land/x" target="_blank" rel="noopener">https://deno.land/x</a>中找到。</li>
+<li>直接支持 async/await 不需要 babel，polify 什么鬼的，凡是异步操作都会返回 promise</li>
+<li><p>内置工具比如：Testing、依赖检查、构建工具、lint 和代码格式化等</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">deno bundle：将脚本和依赖打包</span><br><span class="line">deno <span class="built_in">eval</span>：执行代码</span><br><span class="line">deno fetch：将依赖抓取到本地</span><br><span class="line">deno fmt：代码的格式美化</span><br><span class="line">deno help：等同于-h参数</span><br><span class="line">deno info：显示本地的依赖缓存</span><br><span class="line">deno install：将脚本安装为可执行文件</span><br><span class="line">deno repl：进入 REPL 环境</span><br><span class="line">deno run：运行脚本</span><br><span class="line">deno test：运行测试</span><br><span class="line">deno lint：检查代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>兼容浏览器 API，它提供 window 这个全局对象，同时支持 fetch、webCrypto、worker 等 Web 标准，也支持 onload、onunload、addEventListener 等事件操作函数</p>
+</li>
+<li>单文件可执行文件，所有操作都通过这个文件完成</li>
+</ol>
+<h2 id="安装上手（mac）"><a href="#安装上手（mac）" class="headerlink" title="安装上手（mac）"></a>安装上手（mac）</h2><p>其他环境安装方式 <a href="https://deno.land/" target="_blank" rel="noopener">https://deno.land/</a><br><code>brew install deno</code> 或者 <code>curl -fsSL https://deno.land/x/install/install.sh | sh</code>，但是后者需要配置环境变量什么的</p>
+<p>直接上图<br><img src="/img/deno/1.png" alt="avatar"><br><img src="/img/deno/2.png" alt="avatar"></p>
+<p>可以看到-V 是 0.26.0，而且 deno 的 help 还是很完善的 有介绍有例子有用法。<br>Deno 现行最新版本是 1.1.2 但是低版本还不支持 deno upgrade，咳咳，还是老老实实用 curl 重装吧。</p>
+<p><img src="/img/deno/3.png" alt="avatar"><br>龟速下载 需要翻墙</p>
+<p>还可以下载可执行文件 <a href="https://github.com/denoland/deno/releases/tag/v1.1.2" target="_blank" rel="noopener">https://github.com/denoland/deno/releases/tag/v1.1.2</a><br><img src="/img/deno/5.png" alt="avatar"><br><img src="/img/deno/6.png" alt="avatar"></p>
+<p>终于装好了，提示需要配置环境变量<br><img src="/img/deno/7.png" alt="avatar"><br>执行<code>deno -version</code>的话，不仅能看到 deno 的版本还可以看到 v8 和 tsc 的版本<br><img src="/img/deno/8.png" alt="avatar"></p>
+<p>执行官方例子 <code>deno run https://deno.land/std/examples/welcome.ts</code><br>居然可以直接执行网络上的脚本<br><img src="/img/deno/9.png" alt="avatar"><br>log 了个 🦕</p>
+<h2 id="搞几个-demo-学习一下基本操作"><a href="#搞几个-demo-学习一下基本操作" class="headerlink" title="搞几个 demo 学习一下基本操作"></a>搞几个 demo 学习一下基本操作</h2><ol>
+<li>Hello Word</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a: string = <span class="string">"Hello word"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
+<p>执行使用 run 指令<br><img src="/img/deno/10.png" alt="avatar"><br>可以看到 ts 可以直接执行。</p>
+<ol start="2">
+<li>引入一个官方标准包并起一个服务</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 去远程下载相关依赖</span></span><br><span class="line"><span class="keyword">import</span> &#123; serve &#125; <span class="keyword">from</span> <span class="string">"https://deno.land/std/http/server.ts"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PORT = <span class="number">8080</span>;</span><br><span class="line"><span class="keyword">const</span> server = serve(&#123; <span class="attr">port</span>: PORT &#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">` Listening on &lt;http://localhost&gt;:<span class="subst">$&#123;PORT&#125;</span>/`</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">await</span> (<span class="keyword">const</span> req <span class="keyword">of</span> server) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(req);</span><br><span class="line">  req.respond(&#123; <span class="attr">body</span>: <span class="string">"Hello Deno"</span> &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/deno/11.png" alt="avatar"></p>
+<p>可以看到它回去远程下载依赖，并且在执行是报错，让打开网络权限，没错就是<code>--allow-net</code>，<br>加上它再次执行（<code>deno run --allow-net ./demo.ts</code>）可以看到服务创建成功，访问之后会得到响应。<br><img src="/img/deno/12.png" alt="avatar"></p>
+<p>但是有没有发现它这个代码写的很奇怪，经过 log 之后，我发现访问一次，输出一次 req，所以它应该是一个 pending 状态的 promise，当有访问时就会 resolve 一个 req。然后循环等待。<br><img src="/img/deno/13.png" alt="avatar"></p>
+<p>执行 deno info 命令可以看到 缓存目录 但是目前还不知道怎么清除缓存<br><img src="/img/deno/15.png" alt="avatar"></p>
+<ol start="3">
+<li>网络请求</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 支持浏览器api fetch</span><br><span class="line">const url = Deno.args[0];</span><br><span class="line">const res = await fetch(url);</span><br><span class="line"></span><br><span class="line">console.log(res);</span><br></pre></td></tr></table></figure>
+<p>执行<code>deno run --allow-net=www.baidu.com ./demo.ts https://www.baidu.com</code><br>可以看到请求结果，记得要开启网络权限哦<br><img src="/img/deno/14.png" alt="avatar"></p>
+<ol start="4">
+<li>读写操作</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据路径 获取文件 并控制台输出</span></span><br><span class="line"><span class="keyword">const</span> filename = Deno.args[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">const</span> file = <span class="keyword">await</span> Deno.open(filename);</span><br><span class="line"><span class="keyword">await</span> Deno.copy(file, Deno.stdout);</span><br><span class="line">file.close();</span><br></pre></td></tr></table></figure>
+<p>执行<code>deno run --allow-read ./demo.ts ./demo.ts</code><br>可以看到打开的文件内容被打印，记得要开启读文件权限，写权限就略过了<br><img src="/img/deno/16.png" alt="avatar"></p>
+<ol start="5">
+<li>test</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Deno.test(<span class="string">"demo"</span>, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">"bad request"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="/img/deno/17.png" alt="avatar"></p>
+<ol start="6">
+<li>lint</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>();</span><br><span class="line">arr.push(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>执行<code>deno lint --unstable ./demo.ts</code><br><img src="/img/deno/18.png" alt="avatar"></p>
+<ol start="7">
+<li>打包</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> filename = Deno.args[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">const</span> file = <span class="keyword">await</span> Deno.open(filename);</span><br><span class="line"><span class="keyword">await</span> Deno.copy(file, Deno.stdout);</span><br><span class="line">file.close();</span><br></pre></td></tr></table></figure>
+<p>执行<code>deno bundle ./demo.ts</code><br>可以看到它打包出来的代码<br><img src="/img/deno/19.png" alt="avatar"></p>
+<ol start="8">
+<li><p>format<br>format 前<br><img src="/img/deno/20.png" alt="avatar"><br>format 后<br><img src="/img/deno/21.png" alt="avatar"></p>
+</li>
+<li><p>doc</p>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param &#123;string&#125; a</span></span><br><span class="line"><span class="comment"> * @param &#123;string&#125; b</span></span><br><span class="line"><span class="comment"> * @returns &#123;string&#125; a+b</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">demo</span>(<span class="params">a: string, b: string</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行<code>deno doc ./demo.ts</code><br>可以看到 deno 对代码中注释的解析<br><img src="/img/deno/22.png" alt="avatar"></p>
+<ol start="10">
+<li>发现</li>
+</ol>
+<p>打印了 window 和 Deno 对象之后，可以发现的是 Deno 这个属性是挂在 window 下的，而 Deno 下又有很多方法和对象，比如对于文件的操作对比 Node 的 fs，listen 服务监听，test 之类的基础 api。</p>
+<h2 id="Deno-真的能替换-Nodejs-吗"><a href="#Deno-真的能替换-Nodejs-吗" class="headerlink" title="Deno 真的能替换 Nodejs 吗"></a>Deno 真的能替换 Nodejs 吗</h2><p>我简单熟悉使用之后，感觉 Deno 更加清爽，不需要过多的关注代码之外的事，比如 package。基础 api 也比较丰富，有些官方也有标准库。我认为它的方向思路功能构想是更加先进简洁的，是颠覆的，对开发者更加友好的，比 Node 具有更多的优势，但是 Deno 毕竟也才 1.0，最近更新的版本也大都是 fixbug，如下图，所以它目前的稳定性还是一个很大的问题。另外它还很年轻，像是一个初生儿，几乎还没什么生态，所以用的时候肯定会缺少这样那样的模块库，它还需要时间去打磨和考验，需要更多的开发者去关注，去发展它的生态，我相信不久将来 Deno 一定会在开发圈里占有一席之地，就像当年的 Node 一样。<br><img src="/img/deno/4.png" alt="avatar"></p>
+<h2 id="参考引用"><a href="#参考引用" class="headerlink" title="参考引用"></a>参考引用</h2><blockquote>
+<p><a href="http://www.ruanyifeng.com/blog/2020/01/deno-intro.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2020/01/deno-intro.html</a> &gt; <a href="http://liguixing.com/archives/1381" target="_blank" rel="noopener">http://liguixing.com/archives/1381</a></p>
+</blockquote>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/06/28/初探Deno/">初探Deno</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2020年06月28日 - 19时25分</p>
+        <p><span>最后更新:</span>2024年01月04日 - 16时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/06/28/初探Deno/" title="初探Deno">https://gapgao.github.io/2020/06/28/初探Deno/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/06/28/初探Deno/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2020/07/25/前端自动化测试（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          前端自动化测试（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/17/webpack-rollup-parcel/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">webpack-rollup-parcel</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为啥-Ryan-Dahl-觉得-node-背离了自己的初衷呢"><span class="toc-number">2.</span> <span class="toc-text">为啥 Ryan Dahl 觉得 node 背离了自己的初衷呢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deno-是啥"><span class="toc-number">3.</span> <span class="toc-text">Deno 是啥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deno-有哪些特点呢"><span class="toc-number">4.</span> <span class="toc-text">Deno 有哪些特点呢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装上手（mac）"><span class="toc-number">5.</span> <span class="toc-text">安装上手（mac）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#搞几个-demo-学习一下基本操作"><span class="toc-number">6.</span> <span class="toc-text">搞几个 demo 学习一下基本操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deno-真的能替换-Nodejs-吗"><span class="toc-number">7.</span> <span class="toc-text">Deno 真的能替换 Nodejs 吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考引用"><span class="toc-number">8.</span> <span class="toc-text">参考引用</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'GapGao',
+      repo: 'gapgao.github.io',
+      oauth: {
+        client_id: 'b37cf634d1c116549841',
+        client_secret: '54bad933f4f25c63418d4c79fe77cbbba1c465b5',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2020/07/25/前端自动化测试（一）/" title="上一篇: 前端自动化测试（一）">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2020/05/17/webpack-rollup-parcel/" title="下一篇: webpack-rollup-parcel">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/28/rn/">RN开发与使用Expo+EAS打包发布及配套苹果开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/vite是什么/">vite是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/19/vue3之初体验/">vue3之初体验</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/初探Deno/">初探Deno</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/04/25/ES6-Proxy能干点啥/">ES6-Proxy 能干点啥</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/29/我爱读源码系列之飞冰配置式路由/">我爱读源码系列之飞冰配置式路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/23/搞懂CJS&UMD&ESM/">搞懂CJS & UMD & ESM</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/31/react15升16/">react15升16</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/17/小程序开发笔记/">小程序开发笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/用preload预加载页面资源/">用preload预加载页面资源</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/25/初探WebAssembly/">初探WebAssembly</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/完全理解react Fiber/">完全理解react Fiber</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/20/Nuxt-express踩坑日记/">Nuxt+express踩坑日记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>

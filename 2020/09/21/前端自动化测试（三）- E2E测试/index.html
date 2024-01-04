@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>前端自动化测试（三）- E2E测试 | 牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="上一篇博客我们讲了讲前端单元测试及其选型、demo 等，我还给团队做了技术分享，这次补上 E2E 测试实战。">
+<meta name="keywords" content="前端,E2E测试测试,Cypress">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端自动化测试（三）- E2E测试">
+<meta property="og:url" content="https://gapgao.github.io/2020/09/21/前端自动化测试（三）- E2E测试/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="上一篇博客我们讲了讲前端单元测试及其选型、demo 等，我还给团队做了技术分享，这次补上 E2E 测试实战。">
+<meta property="og:locale" content="Chinese">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/20.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/21.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/22.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/23.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/24.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/25.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/26.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/28.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/27.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/29.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/30.png">
+<meta property="og:updated_time" content="2024-01-04T08:04:02.209Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端自动化测试（三）- E2E测试">
+<meta name="twitter:description" content="上一篇博客我们讲了讲前端单元测试及其选型、demo 等，我还给团队做了技术分享，这次补上 E2E 测试实战。">
+<meta name="twitter:image" content="https://gapgao.github.io/img/autotest/20.png">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CJS/" style="font-size: 10px;">CJS</a> <a href="/tags/Cypress/" style="font-size: 10px;">Cypress</a> <a href="/tags/Deno/" style="font-size: 10px;">Deno</a> <a href="/tags/E2E测试测试/" style="font-size: 10px;">E2E测试测试</a> <a href="/tags/ESM/" style="font-size: 10px;">ESM</a> <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/UMD/" style="font-size: 10px;">UMD</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/parcel/" style="font-size: 10px;">parcel</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vite/" style="font-size: 10px;">vite</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/打包/" style="font-size: 10px;">打包</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a> <a href="/tags/自动化测试/" style="font-size: 15px;">自动化测试</a> <a href="/tags/飞冰/" style="font-size: 10px;">飞冰</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-前端自动化测试（三）- E2E测试" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/09/21/前端自动化测试（三）- E2E测试/" class="article-date">
+      <time datetime="2020-09-21T04:06:56.000Z" itemprop="datePublished">2020-09-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      前端自动化测试（三）- E2E测试
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cypress/">Cypress</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/E2E测试测试/">E2E测试测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>上一篇博客我们讲了讲前端单元测试及其选型、demo 等，我还给团队做了技术分享，这次补上 E2E 测试实战。</p>
+<a id="more"></a>
+<h2 id="选型"><a href="#选型" class="headerlink" title="选型"></a>选型</h2><p>说到自动化 e2e 测试，不得不说到 <code>Selenium</code> 和 <code>PhantomJS</code>。</p>
+<ol>
+<li><p>Selenium 是一个用于 Web 应用程序测试的工具，又名 webdriver。Selenium 测试直接运行在浏览器中，就像真正的用户在操作一样。支持的浏览器包括 IE（7, 8, 9, 10, 11），Mozilla Firefox，Safari，Google Chrome，Opera 等。selenium 是一套完整的 web 应用程序测试系统，包含了测试的录制（selenium IDE）,编写及运行（Selenium Remote Control）和测试的并行处理（Selenium Grid）。Selenium 的核心 Selenium Core 基于 JsUnit，完全由 JavaScript 编写，因此可以用于任何支持 JavaScript 的浏览器上。Selenium 可以模拟真实浏览器，自动化测试工具，支持多种浏览器，爬虫中主要用来解决 JavaScript 渲染问题。可以使用 Selenium 与其他测试框架（如 jest）配合使用，效果很不错。</p>
+</li>
+<li><p>而 PhantomJS 使用无界面的 WebKit 浏览器，是一个基于 WebKit 的服务端 JavaScript API,支持 Web 而不需要浏览器支持，其快速、原生支持各种 Web 标准：Dom 处理，CSS 选择器，JSON 等等。PhantomJS 可以用用于页面自动化、网络监测、网页截屏，以及无界面测试。</p>
+</li>
+</ol>
+<p>PhantomJS 是无界面测试，咱们就先不选它了，枯燥乏味。<br>Selenium 被说的神乎其神，确实功能强大，支持多种主流浏览器，它使用每个浏览器对自动化的原生支持直接调用浏览器，多语言，多平台，且社区庞大，但是学习曲线较高，而且我感觉它只是让你的代码有调用浏览器的能力，并不是一个完整的自动化测试框架，要形成测试框架估计还需要跟多的封装。最重要的是，我发现一个很不错的框架，很适合前端同学使用。</p>
+<p>他就是 <code>Cypres</code>。而且它不使用 Selenium 或 WebDriver。</p>
+<p>说干就干。</p>
+<h2 id="Cypress"><a href="#Cypress" class="headerlink" title="Cypress"></a>Cypress</h2><p>打开 Cypres 官网，直接一行 slogan<br>The web has evolved.<br>Finally, testing has too<br>看来这个团队还是很注重发展的。（我刚用的时候是 4.x，没过两天就升 5 了）</p>
+<p>为啥说很适合前端同学呢，因为他就是一个 npm 的 包，只需<code>npm install cypress</code>就可以拥有它，也可以单独下载它的应用。</p>
+<p>当然，如果项目不是 js 的项目，请略过。。</p>
+<p>还有一点超级赞，就是它的文档都是带视频的，大大降低了使用难度，良心团队。<br><img src="/img/autotest/20.png" alt="avatar"></p>
+<h3 id="特色功能"><a href="#特色功能" class="headerlink" title="特色功能"></a>特色功能</h3><p>Time Travel: Cypress takes snapshots as your tests run. Hover over commands in the Command Log to see exactly what happened at each step.<br>Cypress 在测试运行时拍摄快照。将鼠标悬停在命令日志中的命令上，以查看每一步发生了什么，还能查看当时的页面 dom 和交互，还可以前后对比。</p>
+<p>Debuggability: Stop guessing why your tests are failing. Debug directly from familiar tools like Developer Tools. Our readable errors and stack traces make debugging lightning fast.<br>测试用例调试友好，直接在浏览器里调试，报错什么的都打印在了浏览器里，和平常开发没什么太大区别</p>
+<p>Automatic Waiting: Never add waits or sleeps to your tests. Cypress automatically waits for commands and assertions before moving on. No more async hell.<br>不需要在代码里加 sleep 或 等待之类的方法，去执行等待接口响应之后的操作，cypress 帮我们做了</p>
+<p>Spies, Stubs, and Clocks: Verify and control the behavior of functions, server responses, or timers. The same functionality you love from unit testing is right at your fingertips.<br>没看懂</p>
+<p>Network Traffic Control: Easily control, stub, and test edge cases without involving your server. You can stub network traffic however you like.<br>可以控制网络流量模拟真实场景</p>
+<p>Consistent Results: Our architecture doesn’t use Selenium or WebDriver. Say hello to fast, consistent and reliable tests that are flake-free.<br>不使用 Selenium</p>
+<p>Screenshots and Videos: View screenshots taken automatically on failure, or videos of your entire test suite when run from the CLI.<br>查看失败时自动拍摄的屏幕截图，或从 CLI 运行时整个测试套件的视频，步步有记录，整体有视频。</p>
+<p>Cross browser Testing: Run tests within Firefox and Chrome-family browsers (including Edge and Electron) locally and optimally in a Continuous Integration pipeline.<br>可以在本地火狐或者 chrome 系的浏览器中直接测试运行，也可以配置 Continuous Integration pipeline 集成测试流程</p>
+<h3 id="安装使用"><a href="#安装使用" class="headerlink" title="安装使用"></a>安装使用</h3><ol>
+<li><p>npm install cypress<br>嚯，我一看已经 5.2.0 了，发展有点快距离上次使用不过两三周，但是下载超级慢，我们还是下 4 吧<br>npm i cypress@4</p>
+</li>
+<li><p>第二步启动 npx cypress open<br><img src="/img/autotest/21.png" alt="avatar"><br><img src="/img/autotest/22.png" alt="avatar"></p>
+</li>
+</ol>
+<p>可以看到直接弹出了一个 cypress 的应用，上边有一些 examples，还有一些功能按钮，还可以切换浏览器，并且在项目目录下也多了很多文件，能基本看的出，每一个 test example 就是对应一个 cypress/integration 下边的一个文件，还有贴心的文档链接地址和技术支持。<br>可以直接看到右边噼里啪啦的在执行，访问跳转等等<br><img src="/img/autotest/23.png" alt="avatar"><br>并且其中每一步的执行都有详细记录，和‘截屏’与之对应，方便你查看是哪一步出了问题，还可以比较操作前和操作后界面的变化。<br>甚至可以获取到‘截屏’里边的 dom 节点，感觉其实是把整个 dom 都做了备份，保留了交互功能，总之有点高端，没想到是怎么做的。<br><img src="/img/autotest/24.png" alt="avatar"> 3. 上边都是可视化执行的，启动和执行以及结果都在浏览器中呈现，下面是手动执行或者说静默执行<br>npx cypress run<br><img src="/img/autotest/25.png" alt="avatar"></p>
+<p>发现项目目录里多了好多个 video 文件，对，没错，这就是 cypress 录制的整个执行过程，是不是很酷炫 4. Cypress 平台<br>cypress 应用里边有一个 <code>Runs</code> tab，这里可以帮你配置生成一个 cypres 项目，并且生成唯一 record key，在静默执行时，使用<br>cypress run –record –key <code>your record key</code>，启动，他就会自动把执行记录发往 cypress 云平台。</p>
+<p>刚一启动，就已经同步到了平台。<br><img src="/img/autotest/26.png" alt="avatar"><br><img src="/img/autotest/28.png" alt="avatar"><br>执行结果页也可以查看输出、截图、视频等，不要太方便。</p>
+<p>平台上还有一些分析报表的功能帮助我们改进。<br><img src="/img/autotest/27.png" alt="avatar"></p>
+<p>还有一些和 github 等工具的对接，集成 ci，cd 等，感觉功能确实比较完善和强大。</p>
+<h3 id="我的第一个-e2e-测试"><a href="#我的第一个-e2e-测试" class="headerlink" title="我的第一个 e2e 测试"></a>我的第一个 e2e 测试</h3><p>我们实现一个最基本的测试。来模拟用户的使用。<br>访问网站-&gt; 输入账号密码 -&gt; 登录 -&gt; 打开一个详情 -&gt; 浏览 -&gt; 退出</p>
+<p>注意，写测试用例的时候要 <code>npx cypress open</code>启动 cypress 应用之后，并打开你的测试文件，在测试浏览器里边调试边写<br>cypress 还有配套的功能，让你可以选择某个元素来选中，并自动生成代码，复制到你代码里就完事了，很高效。但是如果像一些 class<br>经常发生变化的节点可能需要考虑另一个方式，就是固定 attr 属性 cypress 支持两种选中。</p>
+<p>测试框架集成了 Mocha 和 Chai，所以可以随便用 describe it 断言等等<br>cypress 的 api 都在 cy 下</p>
+<p>ps 我感觉这玩意能写个抢票或者刷单软件。<br>废话不多说，上边了解了那么多强大的功能之后我们来写一个，尝尝</p>
+<p>我们在 cypress 文件夹下写一个 demo<br>ps：fixtures 文件夹下 放一些 mock 数据源之类的<br>plugins 下放一些外部插件 <a href="https://docs.cypress.io/plugins/" target="_blank" rel="noopener">https://docs.cypress.io/plugins/</a><br>社区里有很多更实际的解决方案</p>
+<p><img src="/img/autotest/29.png" alt="avatar"><br><img src="/img/autotest/30.png" alt="avatar"><br>选中元素，复制自动生成的代码，刷新重新跑，齐活。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写一个访问我司网站 浏览一下</span></span><br><span class="line">describe(<span class="string">"My First Test"</span>, () =&gt; &#123;</span><br><span class="line">  beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// reset and seed the database prior to every test</span></span><br><span class="line">    <span class="comment">// cy.exec("npm run db:reset &amp;&amp; npm run db:seed");</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">"Login Moka"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">done</span>) </span>&#123;</span><br><span class="line">    cy.visit(<span class="string">"https://xxx.com"</span>);</span><br><span class="line">    <span class="comment">// 类似jq</span></span><br><span class="line">    cy.get(<span class="string">":nth-child(1) &gt; .sd-Input-container-1MAQN &gt; .sd-Input-input-3dqaS"</span>)</span><br><span class="line">      .type(<span class="string">"xxxx"</span>)</span><br><span class="line">      .should(<span class="string">"have.value"</span>, <span class="string">"xxxxx"</span>);</span><br><span class="line"></span><br><span class="line">    cy.get(</span><br><span class="line">      <span class="string">":nth-child(2) &gt; .sd-Input-container-1MAQN &gt; .sd-Input-input-3dqaS"</span></span><br><span class="line">    ).type(<span class="string">"xxxx"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取cookie</span></span><br><span class="line">    cy.getCookie(<span class="string">"user_email"</span>)</span><br><span class="line">      .as(<span class="string">"email"</span>)</span><br><span class="line">      .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 登录</span></span><br><span class="line">        cy.get(<span class="string">".sd_global_focus_controller_class"</span>).click().wait(<span class="number">2000</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.email);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.email) &#123;</span><br><span class="line">          cy.get(<span class="string">".sd_global_focus_controller_class"</span>).click().wait(<span class="number">2000</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 打开详情</span></span><br><span class="line">    cy.get(<span class="string">".choose_orgs_login_panel &gt; :nth-child(3) &gt; :nth-child(1)"</span>).click();</span><br><span class="line"></span><br><span class="line">    cy.get(<span class="string">"#\\30  &gt; .info &gt; .candidate-info"</span>).click();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 查看</span></span><br><span class="line">    cy.get(<span class="string">".candidate-resume__container"</span>)</span><br><span class="line">      .wait(<span class="number">1000</span>)</span><br><span class="line">      .scrollTo(<span class="number">0</span>, <span class="number">500</span>)</span><br><span class="line">      .wait(<span class="number">1000</span>)</span><br><span class="line">      .scrollTo(<span class="number">0</span>, <span class="number">1000</span>)</span><br><span class="line">      .wait(<span class="number">1000</span>)</span><br><span class="line">      .scrollTo(<span class="number">0</span>, <span class="number">500</span>)</span><br><span class="line">      .wait(<span class="number">1000</span>)</span><br><span class="line">      .scrollTo(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    cy.get(<span class="string">".candidate-header__util &gt; .sd-Icon-container-1BX72"</span>).click();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 登出</span></span><br><span class="line">    cy.get(<span class="string">".hoverdown-btn &gt; .avatar--10 &gt; .avatar--name"</span>).trigger(<span class="string">"mouseover"</span>);</span><br><span class="line">    cy.get(<span class="string">".topbar__hoverdown-item__form"</span>).click();</span><br><span class="line">    cy.clearCookies().then(<span class="function"><span class="params">()</span> =&gt;</span> done());</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>文件目录里还有一个叫 cypress.json 的文件，没错他就是 cypress 的配置文件。里边可以设置包括 projectId，viewPort，文件目录，视频输出目录，浏览器设置，截屏设置，超时设置等。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"viewportWidth"</span>: <span class="number">2000</span>,</span><br><span class="line">  <span class="attr">"viewportHeight"</span>: <span class="number">1320</span>,</span><br><span class="line">  <span class="attr">"projectId"</span>: <span class="string">"xxxx"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通常一次迭代中，QA 会花费大约 20~30%的时间进行回归测试，可见回归测试的重要性，但是很多情况下，由于项目时间紧迫，或者紧急发布等情况，被压缩和牺牲的往往是回归测试，而 e2e AT 正好可以覆盖一部分的回归测试，如果你的 AT case 覆盖率越高，则回归测试的覆盖率也越高，出品也就越稳定，如果 AT 能覆盖绝大部分的回归测试，而 AT 的执行效率又是人肉执行的数倍，那 QA 的工作量就被大大的降低。<br>Cypress 强烈推荐使用，它是一整套的解决方案，省时省力，开发便捷。<br>后续有时间研究下 Cypress 怎么配置 CI/CD。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://www.cypress.io/" target="_blank" rel="noopener">https://www.cypress.io/</a> &gt; <a href="https://docs.cypress.io/" target="_blank" rel="noopener">https://docs.cypress.io/</a></p>
+</blockquote>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2020年09月21日 - 12时06分</p>
+        <p><span>最后更新:</span>2024年01月04日 - 16时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/09/21/前端自动化测试（三）- E2E测试/" title="前端自动化测试（三）- E2E测试">https://gapgao.github.io/2020/09/21/前端自动化测试（三）- E2E测试/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/09/21/前端自动化测试（三）- E2E测试/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2020/10/19/vue3之初体验/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          vue3之初体验
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/22/前端自动化测试（二）- 单元测试/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">前端自动化测试（二）- 单元测试</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#选型"><span class="toc-number">1.</span> <span class="toc-text">选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cypress"><span class="toc-number">2.</span> <span class="toc-text">Cypress</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特色功能"><span class="toc-number">2.1.</span> <span class="toc-text">特色功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装使用"><span class="toc-number">2.2.</span> <span class="toc-text">安装使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#我的第一个-e2e-测试"><span class="toc-number">2.3.</span> <span class="toc-text">我的第一个 e2e 测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">3.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'GapGao',
+      repo: 'gapgao.github.io',
+      oauth: {
+        client_id: 'b37cf634d1c116549841',
+        client_secret: '54bad933f4f25c63418d4c79fe77cbbba1c465b5',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2020/10/19/vue3之初体验/" title="上一篇: vue3之初体验">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2020/08/22/前端自动化测试（二）- 单元测试/" title="下一篇: 前端自动化测试（二）- 单元测试">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/28/rn/">RN开发与使用Expo+EAS打包发布及配套苹果开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/vite是什么/">vite是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/19/vue3之初体验/">vue3之初体验</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/初探Deno/">初探Deno</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/04/25/ES6-Proxy能干点啥/">ES6-Proxy 能干点啥</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/29/我爱读源码系列之飞冰配置式路由/">我爱读源码系列之飞冰配置式路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/23/搞懂CJS&UMD&ESM/">搞懂CJS & UMD & ESM</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/31/react15升16/">react15升16</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/17/小程序开发笔记/">小程序开发笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/用preload预加载页面资源/">用preload预加载页面资源</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/25/初探WebAssembly/">初探WebAssembly</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/完全理解react Fiber/">完全理解react Fiber</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/20/Nuxt-express踩坑日记/">Nuxt+express踩坑日记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>

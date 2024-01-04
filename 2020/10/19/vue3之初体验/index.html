@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>vue3之初体验 | 牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前段时间，神秘的尤爸爸终于发布了vue3.0。因为发布个vue3，尤爸爸还一度成为网红，积攒了一大波粉丝，又是搞直播又是搞宣传什么的，哈哈。今天让我们来看看vue3相较于vue2有哪些升级和不同吧~">
+<meta name="keywords" content="vue3,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue3之初体验">
+<meta property="og:url" content="https://gapgao.github.io/2020/10/19/vue3之初体验/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="前段时间，神秘的尤爸爸终于发布了vue3.0。因为发布个vue3，尤爸爸还一度成为网红，积攒了一大波粉丝，又是搞直播又是搞宣传什么的，哈哈。今天让我们来看看vue3相较于vue2有哪些升级和不同吧~">
+<meta property="og:locale" content="Chinese">
+<meta property="og:image" content="https://gapgao.github.io/img/vue3/1.png">
+<meta property="og:image" content="https://gapgao.github.io/img/vue3/2.png">
+<meta property="og:image" content="https://gapgao.github.io/img/vue3/3.png">
+<meta property="og:updated_time" content="2024-01-04T08:04:02.208Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue3之初体验">
+<meta name="twitter:description" content="前段时间，神秘的尤爸爸终于发布了vue3.0。因为发布个vue3，尤爸爸还一度成为网红，积攒了一大波粉丝，又是搞直播又是搞宣传什么的，哈哈。今天让我们来看看vue3相较于vue2有哪些升级和不同吧~">
+<meta name="twitter:image" content="https://gapgao.github.io/img/vue3/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CJS/" style="font-size: 10px;">CJS</a> <a href="/tags/Cypress/" style="font-size: 10px;">Cypress</a> <a href="/tags/Deno/" style="font-size: 10px;">Deno</a> <a href="/tags/E2E测试测试/" style="font-size: 10px;">E2E测试测试</a> <a href="/tags/ESM/" style="font-size: 10px;">ESM</a> <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/UMD/" style="font-size: 10px;">UMD</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/parcel/" style="font-size: 10px;">parcel</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vite/" style="font-size: 10px;">vite</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/打包/" style="font-size: 10px;">打包</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a> <a href="/tags/自动化测试/" style="font-size: 15px;">自动化测试</a> <a href="/tags/飞冰/" style="font-size: 10px;">飞冰</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-vue3之初体验" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/10/19/vue3之初体验/" class="article-date">
+      <time datetime="2020-10-18T16:08:46.000Z" itemprop="datePublished">2020-10-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vue3之初体验
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue3/">vue3</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>前段时间，神秘的尤爸爸终于发布了vue3.0。因为发布个vue3，尤爸爸还一度成为网红，积攒了一大波粉丝，又是搞直播又是搞宣传什么的，哈哈。今天让我们来看看vue3相较于vue2有哪些升级和不同吧~</p>
+<a id="more"></a>
+<h2 id="6大亮点"><a href="#6大亮点" class="headerlink" title="6大亮点"></a>6大亮点</h2><ol>
+<li>Performance：性能更比Vue 2.0强。</li>
+<li>Tree shaking support：可以将无用模块“剪辑”，仅打包需要的。</li>
+<li>Composition API：组合API</li>
+<li>Fragment, Teleport, Suspense</li>
+<li>Better TypeScript support：更优秀的Ts支持</li>
+<li>Custom Renderer API：暴露了自定义渲染API</li>
+</ol>
+<h2 id="break-change-重大变化"><a href="#break-change-重大变化" class="headerlink" title="break change 重大变化"></a>break change 重大变化</h2><h3 id="全局API"><a href="#全局API" class="headerlink" title="全局API"></a>全局API</h3><ol>
+<li>Global Vue API is changed to use an application instance<br>人话就是，在vue2中，创建一个全局组件或自定义指令都是挂载全局Vue下的，例如 <code>Vue.directive</code>，<code>Vue.component</code>等，这样可以使该Vue应用全局都可以使用。但是弊端是，对于同一个Vue，new 的两个实例应用，都会带上同样的全局属性，难以分别，会引起诸多不便。所以这些在Vue3中得到了优化，会将相关操作转而挂在应用下，也就是new 出来的实例下，有不同作用域。</li>
+<li>Global and internal APIs have been restructured to be tree-shakable<br>全局和内部的API 可以 tree-shaking</li>
+</ol>
+<h3 id="模板指令"><a href="#模板指令" class="headerlink" title="模板指令"></a>模板指令</h3><ol>
+<li>v-model usage on components has been reworked<br>v-model 用法重新设计优化</li>
+<li>key usage on <code>&lt;template v-for&gt;</code> and non-v-for nodes has changed<br>key 在 <code>&lt;template v-for&gt;</code>和 非v-for节点上的使用情况已更改<br>key在v-if/ v-else/v-else-if分支上不再需要<br>key 在2中可以放在v-for的子元素上，现在必须要放在 v-for的元素上</li>
+<li>v-if and v-for precedence when used on the same element has changed<br>v-if和v-for在同一元素上使用时的优先级已更改<br>如果用于同一元素上时，则v-if优先级高于v-for</li>
+<li>v-bind=”object” is now order-sensitive<br>v-bind的绑定顺序将影响渲染结果<br>vue2时，有同样的属性或绑定时会有原生优先级的区别，但vue3，则完全按生命顺序进行合并</li>
+<li>ref inside v-for no longer register an array of refs<br>v-for内部使用ref时，不再注册数组，而是提供一个:ref方法，自己处理ref的存储格式和维护</li>
+</ol>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><ol>
+<li>Functional components can only be created using a plain function<br>Functional组件只能使用普通函数创建，在vue2时，Functional组件主要为了提升组件性能，因为它的初始化和有状态组件相比要快的多，但是vue3已经将两者优化的性能几乎无差距，所以Functional组件存在的意义就不是那么大了，只用于一些小组件</li>
+<li>functional attribute on single-file component (SFC) <code>&lt;template&gt;</code> and functional component option are deprecated<br>functional单文件组件（SFC）上的属性<code>&lt;template&gt;</code>和functional组件选项已弃用</li>
+<li>Async components now require defineAsyncComponent method to be created<br>异步组件现在需要有defineAsyncComponent方法包裹创建，并且之前的高级用法里的component字段改为loader</li>
+</ol>
+<h3 id="渲染功能"><a href="#渲染功能" class="headerlink" title="渲染功能"></a>渲染功能</h3><ol>
+<li>Render function API changed<br>render函数变动，vue2 render会接收一个h参数即createElement方法，而后再调用。vue3，render不再接收h，而是从Vue中import进来再调用，且VNode结构变的更加扁平</li>
+<li>$scopedSlots property is removed and all slots are exposed via $slots as functions<br>this.$scopedSlots属性被删除，所有插槽都通过$slots函数公开</li>
+</ol>
+<h3 id="自定义元素"><a href="#自定义元素" class="headerlink" title="自定义元素"></a>自定义元素</h3><ol>
+<li>Custom elements whitelisting is now performed during template compilation</li>
+<li>Special is prop usage is restricted to the reserved <code>&lt;component&gt;</code> tag only<br>这俩不知道说啥呢，可能是高级用法，我也没整明白</li>
+</ol>
+<h3 id="其他小的变化"><a href="#其他小的变化" class="headerlink" title="其他小的变化"></a>其他小的变化</h3><ol>
+<li>destroyed =&gt; unmounted</li>
+<li>beforeDestroy =&gt; beforeUnmount</li>
+<li>Props default factory function no longer has access to this context<br>props的default定义 函数 将不能在访问this 但可以通过inject方法实现</li>
+<li>Custom directive API changed to align with component lifecycle<br>自定义指令会有生命周期 在元素不同情况下可以有不同的调用 与 组件生命周期统一</li>
+<li>The data option should always be declared as a function<br>vue2 data 可以用 object定义 也可以用 function return object 定义，但vue3必须用function return object</li>
+<li>The data option from mixins is now merged shallowly<br>mixins 中的 data 现在会被浅合并</li>
+<li>Attributes coercion strategy changed<br>html 的 attr 的绑定 false 不再强制删除，而是置为<code>&#39;false&#39;</code>，使用null或undefined进行去除，这样就统一了输出</li>
+<li>Some transition classes got a rename<br>v-enter =&gt; v-enter-from<br>v-leave =&gt; v-leave-from</li>
+<li>When watching an array, the callback will only trigger when the array is replaced. If you need to trigger on mutation, the deep option must be specified.<br> watch 方法在监听 array 时，仅在数组完全赋值替换的时候才会触发，如果需要在单项改变时触发，必须给一个deep: true字段进行配置。</li>
+<li><code>&lt;template&gt;</code> tags with no special directives (v-if/else-if/else, v-for, or v-slot) are now treated as plain elements and will result in a native <code>&lt;template&gt;</code> element instead of rendering its inner content.</li>
+<li>In Vue 2.x, application root container’s outerHTML is replaced with root component template (or eventually compiled to a template, if root component has no template/render option). Vue 3.x now uses application container’s innerHTML instead - this means the container itself is no longer considered part of the template.<br>后边这俩没看懂。。。</li>
+</ol>
+<h3 id="删除的API"><a href="#删除的API" class="headerlink" title="删除的API"></a>删除的API</h3><ol>
+<li>keyCode support as v-on modifiers<br>config.keyCodes keycode别名定义，不再受支持<br>v-on不再支持使用数字（即keyCodes）作为修饰符 例如：<code>&lt;input v-on:keyup.13=&quot;submit&quot; /&gt;</code><br>主要是因为 KeyboardEvent.keyCode 已弃用，推荐用 KeyboardEvent.key，但又说会有兼容性问题，难。</li>
+<li>$on, $off and $once instance methods<br>这几个删了 主要是用于 eventBus，但是emit还在。</li>
+<li>Filters<br>筛选器删了，特么难受，我觉得挺好用的啊，我经常用，推荐使用computed和function调用替换</li>
+<li>Inline templates attributes<br>没用过不知道</li>
+<li>$destroy instance method. Users should no longer manually manage the lifecycle of individual Vue components.<br>删除了$destroy实例方法， 用户不应再手动管理各个Vue组件的生命周期</li>
+</ol>
+<p>终于把migration文档看完了。。</p>
+<h3 id="Options-API-和-Composition-API"><a href="#Options-API-和-Composition-API" class="headerlink" title="Options API 和 Composition API"></a>Options API 和 Composition API</h3><p>在vue2中，我们会在一个vue文件中methods，computed，watch，data中等等定义属性和方法，共同处理页面逻辑，我们称这种方式为Options API。<br>缺点是：一个功能往往需要在不同的vue配置项中定义属性和方法，比较分散，项目小还好，清晰明了，但是项目大了后，一个methods中可能包含20多个方法，你往往分不清哪个方法对应着哪个功能</p>
+<p>vue3中的Composition API就是用来解决这个问题的<br>在vue3 Composition API 中，我们的代码是根据逻辑功能来组织的，一个功能所定义的所有api会放在一起（更加的高内聚，低耦合），这样做，即时项目很大，功能很多，我们都能快速的定位到这个功能所用到的所有API，而不像vue2 Options API 中一个功能所用到的API都是分散的，需要改动功能，到处找API的过程是很费劲的。</p>
+<p>为什么要使用 Composition API？<br>Composition API 是根据逻辑相关性组织代码的，提高可读性和可维护性<br>基于函数组合的 API 更好的重用逻辑代码（在vue2 Options API中通过Mixins重用逻辑代码，容易发生命名冲突且关系不清）</p>
+<h2 id="切入正题，专注搞事"><a href="#切入正题，专注搞事" class="headerlink" title="切入正题，专注搞事"></a>切入正题，专注搞事</h2><h3 id="引入方式"><a href="#引入方式" class="headerlink" title="引入方式"></a>引入方式</h3><ol>
+<li>CDN方式<script src="https://unpkg.com/vue@next"></script></li>
+<li>通过Vite脚手架 npm init vite-app hello-vue3 OR yarn create vite-app hello-vue3</li>
+<li>通过vue-cli脚手架 OR yarn global add @vue/cli<br>npm install -g @vue/cli<br>vue create hello-vue3<br>select vue 3 preset</li>
+</ol>
+<h3 id="vue-cli引入"><a href="#vue-cli引入" class="headerlink" title="vue-cli引入"></a>vue-cli引入</h3><p>我们就用最熟悉的vue-cli引入吧，折腾一下<br>执行 <code>vue create hello-vue3</code><br><img src="/img/vue3/1.png" alt="avatar"><br>我们选择使用vue3，激动<br>目录结构如下<br><img src="/img/vue3/2.png" alt="avatar"><br>执行 <code>npm run server</code><br>8080端口起了服务，我终于用上了网红框架，vue3哈哈哈。<br><img src="/img/vue3/3.png" alt="avatar"></p>
+<p>看看入口</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以看到 vue 跟应用的创建方式已经不是 new Vue了，而是createApp，创建一个应用，别切应用间配置可以相互隔离</span></span><br><span class="line">createApp(App).mount(<span class="string">'#app'</span>)</span><br><span class="line"><span class="comment">// App.vue</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;img alt=<span class="string">"Vue logo"</span> src=<span class="string">"./assets/logo.png"</span>&gt;</span><br><span class="line">  &lt;HelloWorld msg=<span class="string">"Welcome to Your Vue.js App"</span>/&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 感觉这代码规范天天变 之前的规范还是 &lt;hello-world&gt; 呢</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ref, onMounted, onUpdated, onUnmounted &#125; <span class="keyword">from</span> <span class="string">"vue"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">useCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> count = ref(<span class="number">0</span>);</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">increment</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    count.value++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    count,</span><br><span class="line">    increment,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">"App"</span>,</span><br><span class="line">  components: &#123;</span><br><span class="line">    HelloWorld,</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      a: <span class="number">1</span>,</span><br><span class="line">      b: <span class="number">2</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a, <span class="keyword">this</span>.b);</span><br><span class="line">  &#125;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; count, increment &#125; = useCounter();</span><br><span class="line"></span><br><span class="line">    onMounted(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"mounted!"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    onUpdated(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"updated!"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    onUnmounted(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"unmounted!"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      count,</span><br><span class="line">      increment,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我写了如上一段代码，是可以正常运行的，所以vue3在向后（vue2 Option API）兼容的基础上，新增了 Composition API，并且他们是可以同时存在的。害，我还以为vue2一些语法不能用了呢。但是，根据运行结果来看，setup 里的hook的执行是优先于mounted的，毕竟 setup 是主要方向。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以给创建的应用单独配置设置和添加应用内全局指令或其他功能</span></span><br><span class="line"><span class="comment">// 不会影响其他应用</span></span><br><span class="line"><span class="keyword">const</span> app = createApp(App).mount(<span class="string">'#app'</span>);</span><br><span class="line">app.config = &#123;...&#125;</span><br><span class="line">app.directive(<span class="string">"my-directive"</span>, &#123;</span><br><span class="line">  <span class="comment">// Directive has a set of lifecycle hooks:</span></span><br><span class="line">  <span class="comment">// called before bound element's parent component is mounted</span></span><br><span class="line">  beforeMount() &#123;&#125;,</span><br><span class="line">  <span class="comment">// called when bound element's parent component is mounted</span></span><br><span class="line">  mounted() &#123;&#125;,</span><br><span class="line">  <span class="comment">// called before the containing component's VNode is updated</span></span><br><span class="line">  beforeUpdate() &#123;&#125;,</span><br><span class="line">  <span class="comment">// called after the containing component's VNode and the VNodes of its children // have updated</span></span><br><span class="line">  updated() &#123;&#125;,</span><br><span class="line">  <span class="comment">// called before the bound element's parent component is unmounted</span></span><br><span class="line">  beforeUnmount() &#123;&#125;,</span><br><span class="line">  <span class="comment">// called when the bound element's parent component is unmounted</span></span><br><span class="line">  unmounted() &#123;&#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>vue3在大部分兼容vue2的基础上，做了很多的优化和更新（最基础的响应式原理，我们之前已经研究过了），当然也有很多breaking change。这次我们就先大致了解它的升级变化，基本用法，更高级的用法，比如setup 花式hook之类的，我们后续再去深入研究。</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><blockquote>
+<p><a href="https://v3.vuejs.org/guide/migration/introduction.html" target="_blank" rel="noopener">https://v3.vuejs.org/guide/migration/introduction.html</a></p>
+</blockquote>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/10/19/vue3之初体验/">vue3之初体验</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2020年10月19日 - 00时08分</p>
+        <p><span>最后更新:</span>2024年01月04日 - 16时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/10/19/vue3之初体验/" title="vue3之初体验">https://gapgao.github.io/2020/10/19/vue3之初体验/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/10/19/vue3之初体验/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2021/02/28/vite是什么/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          vite是什么
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/21/前端自动化测试（三）- E2E测试/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">前端自动化测试（三）- E2E测试</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#6大亮点"><span class="toc-number">1.</span> <span class="toc-text">6大亮点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#break-change-重大变化"><span class="toc-number">2.</span> <span class="toc-text">break change 重大变化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全局API"><span class="toc-number">2.1.</span> <span class="toc-text">全局API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板指令"><span class="toc-number">2.2.</span> <span class="toc-text">模板指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组件"><span class="toc-number">2.3.</span> <span class="toc-text">组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#渲染功能"><span class="toc-number">2.4.</span> <span class="toc-text">渲染功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义元素"><span class="toc-number">2.5.</span> <span class="toc-text">自定义元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他小的变化"><span class="toc-number">2.6.</span> <span class="toc-text">其他小的变化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除的API"><span class="toc-number">2.7.</span> <span class="toc-text">删除的API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Options-API-和-Composition-API"><span class="toc-number">2.8.</span> <span class="toc-text">Options API 和 Composition API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#切入正题，专注搞事"><span class="toc-number">3.</span> <span class="toc-text">切入正题，专注搞事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#引入方式"><span class="toc-number">3.1.</span> <span class="toc-text">引入方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vue-cli引入"><span class="toc-number">3.2.</span> <span class="toc-text">vue-cli引入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">5.</span> <span class="toc-text">引用</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'GapGao',
+      repo: 'gapgao.github.io',
+      oauth: {
+        client_id: 'b37cf634d1c116549841',
+        client_secret: '54bad933f4f25c63418d4c79fe77cbbba1c465b5',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2021/02/28/vite是什么/" title="上一篇: vite是什么">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2020/09/21/前端自动化测试（三）- E2E测试/" title="下一篇: 前端自动化测试（三）- E2E测试">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/28/rn/">RN开发与使用Expo+EAS打包发布及配套苹果开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/vite是什么/">vite是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/19/vue3之初体验/">vue3之初体验</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/初探Deno/">初探Deno</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/04/25/ES6-Proxy能干点啥/">ES6-Proxy 能干点啥</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/29/我爱读源码系列之飞冰配置式路由/">我爱读源码系列之飞冰配置式路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/23/搞懂CJS&UMD&ESM/">搞懂CJS & UMD & ESM</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/31/react15升16/">react15升16</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/17/小程序开发笔记/">小程序开发笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/用preload预加载页面资源/">用preload预加载页面资源</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/25/初探WebAssembly/">初探WebAssembly</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/完全理解react Fiber/">完全理解react Fiber</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/20/Nuxt-express踩坑日记/">Nuxt+express踩坑日记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这是 牛轰轰可能是个bug 的 技术博客，讨论学习前端技术及Nodejs">
+<meta name="keywords" content="web web前端 Nodejs CSS HTML Npm React Vue Angular">
+<meta property="og:type" content="website">
+<meta property="og:title" content="牛轰轰可能是个bug">
+<meta property="og:url" content="https://gapgao.github.io/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="这是 牛轰轰可能是个bug 的 技术博客，讨论学习前端技术及Nodejs">
+<meta property="og:locale" content="Chinese">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="牛轰轰可能是个bug">
+<meta name="twitter:description" content="这是 牛轰轰可能是个bug 的 技术博客，讨论学习前端技术及Nodejs">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+    
+    
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: true,
+          isPost: false,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CJS/" style="font-size: 10px;">CJS</a> <a href="/tags/Cypress/" style="font-size: 10px;">Cypress</a> <a href="/tags/Deno/" style="font-size: 10px;">Deno</a> <a href="/tags/E2E测试测试/" style="font-size: 10px;">E2E测试测试</a> <a href="/tags/ESM/" style="font-size: 10px;">ESM</a> <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/UMD/" style="font-size: 10px;">UMD</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/parcel/" style="font-size: 10px;">parcel</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vite/" style="font-size: 10px;">vite</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/打包/" style="font-size: 10px;">打包</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a> <a href="/tags/自动化测试/" style="font-size: 15px;">自动化测试</a> <a href="/tags/飞冰/" style="font-size: 10px;">飞冰</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-rn" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2023/12/28/rn/" class="article-date">
+      <time datetime="2023-12-28T12:45:51.000Z" itemprop="datePublished">2023-12-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/12/28/rn/">RN开发与使用Expo+EAS打包发布及配套苹果开发</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>作为一名移动应用开发者，我们常常要面对多平台的开发和发布需求。React Native（简称RN）是一个强大的跨平台框架，而Expo提供了便捷的工具链，让我们更轻松地构建、测试和发布RN应用。此外，Expo还整合了EAS（Expo Application Services），为项目打包和发布带来更多便利。本文将介绍RN开发、Expo+EAS打包发布以及与苹果开发的配套问题。</p>
+<h1 id="1-RN开发"><a href="#1-RN开发" class="headerlink" title="1. RN开发"></a>1. RN开发</h1><h2 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h2><p>RN是Facebook开源的一种用于构建原生 iOS 和 Android 应用的框架。它利用JavaScript和React的知识，允许我们编写一次代码，同时在两个平台上共享大部分逻辑。RN提供了丰富的组件库和API，使得开发者能够快速搭建用户界面并处理用户交互。</p>
+<h2 id="1-2-开发环境配置"><a href="#1-2-开发环境配置" class="headerlink" title="1.2 开发环境配置"></a>1.2 开发环境配置</h2><p>在开始RN开发之前，我们需要配置好相应的开发环境。首先，确保你已经安装了Node.js和npm包管理器。然后，通过运行以下命令来安装RN的命令行工具：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g react-native-cli</span><br></pre></td></tr></table></figure>
+<p>接下来，在你希望创建RN项目的目录中运行以下命令来初始化一个新项目：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init MyProject</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-开发流程"><a href="#1-3-开发流程" class="headerlink" title="1.3 开发流程"></a>1.3 开发流程</h2><p>在RN开发中，我们可以通过创建组件来构建用户界面。利用React的组件模型和JavaScript语法，我们能够轻松地定义UI的不同部分，并编写相应的业务逻辑。</p>
+<p>在编写代码时，我们可以使用调试工具和热重载功能加快开发速度。同时，RN还提供了与原生模块交互的能力，使我们可以直接调用iOS和Android的原生API。</p>
+<h1 id="2-使用Expo-EAS打包发布"><a href="#2-使用Expo-EAS打包发布" class="headerlink" title="2. 使用Expo+EAS打包发布"></a>2. 使用Expo+EAS打包发布</h1><h2 id="2-1-Expo简介"><a href="#2-1-Expo简介" class="headerlink" title="2.1 Expo简介"></a>2.1 Expo简介</h2><p>Expo是一个基于RN的开发工具链，它为开发者提供了一套强大而易用的工具，简化了RN项目的构建、测试和发布过程。使用Expo，我们无需安装和配置复杂的开发环境，只需下载Expo客户端即可开始开发。</p>
+<h2 id="2-2-Expo-EAS简介"><a href="#2-2-Expo-EAS简介" class="headerlink" title="2.2 Expo+EAS简介"></a>2.2 Expo+EAS简介</h2><p>Expo Application Services（EAS）是Expo的扩展服务，它提供了更多高级功能，包括更灵活的构建配置、自定义构建流程、更精细的资源管理和更快的构建速度等。EAS能够将我们的RN项目打包成二进制文件，并提供更多选项和控制来适应各种需求。</p>
+<h2 id="2-3-使用Expo-EAS创建项目"><a href="#2-3-使用Expo-EAS创建项目" class="headerlink" title="2.3 使用Expo+EAS创建项目"></a>2.3 使用Expo+EAS创建项目</h2><p>要使用Expo+EAS创建项目，首先确保你已经安装了Expo CLI。运行以下命令进行安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g expo-cli</span><br></pre></td></tr></table></figure>
+<p>接下来，在你希望创建Expo项目的目录中运行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expo init MyProject</span><br></pre></td></tr></table></figure>
+<p>然后按照提示进行相关设置。你可以选择使用现有的模板或从头开始创建一个空白项目。</p>
+<h2 id="2-4-使用Expo-EAS打包与发布"><a href="#2-4-使用Expo-EAS打包与发布" class="headerlink" title="2.4 使用Expo+EAS打包与发布"></a>2.4 使用Expo+EAS打包与发布</h2><p>在完成项目开发后，我们可以使用Expo+EAS进行更灵活和定制化的打包和发布。EAS提供了命令行工具和配置文件，使我们能够自定义构建流程、选项和资源管理。</p>
+<p>首先，在项目根目录中运行以下命令来登录到Expo账号：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expo login</span><br></pre></td></tr></table></figure>
+<p>然后，我们可以使用EAS命令行工具来构建和发布应用。例如，要构建iOS应用，可以运行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eas build --platform ios</span><br></pre></td></tr></table></figure>
+<p>这将触发EAS服务，根据配置文件进行构建，并生成一个IPA文件。你可以使用Xcode将其上传至App Store进行发布。</p>
+<p>对于Android平台，你可以运行以下命令进行构建和打包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eas build --platform android</span><br></pre></td></tr></table></figure>
+<p>这将生成一个APK文件，你可以上传至Google Play进行发布。</p>
+<p>EAS还提供了更多高级配置的选项，如自定义构建流程、指定构建环境、管理依赖等。你可以通过编辑配置文件（如eas.json）来调整这些选项。</p>
+<h1 id="3-配套苹果开发"><a href="#3-配套苹果开发" class="headerlink" title="3. 配套苹果开发"></a>3. 配套苹果开发</h1><h2 id="3-1-创建开发者账号"><a href="#3-1-创建开发者账号" class="headerlink" title="3.1 创建开发者账号"></a>3.1 创建开发者账号</h2><p>在配套苹果开发之前，你需要创建一个苹果开发者账号。访问苹果开发者网站并按照指引完成账号注册和相关设置。</p>
+<h2 id="3-2-申请证书和配置Provisioning-Profile"><a href="#3-2-申请证书和配置Provisioning-Profile" class="headerlink" title="3.2 申请证书和配置Provisioning Profile"></a>3.2 申请证书和配置Provisioning Profile</h2><p>为了将你的RN应用发布到App Store，你需要申请并配置相应的证书和Provisioning Profile。这些文件是与你的开发者账号绑定的，确保你可以将应用发布到苹果的生态系统中。</p>
+<p>通过Xcode或者苹果开发者网站，你可以创建和下载证书和Provisioning Profile。然后，将这些文件导入到Expo提供的构建服务器中，EAS会为你自动处理签名和配置。</p>
+<h2 id="3-3-审核与发布"><a href="#3-3-审核与发布" class="headerlink" title="3.3 审核与发布"></a>3.3 审核与发布</h2><p>一旦你的应用通过了苹果的审核，你就可以将它发布到App Store上了。在iTunes Connect中创建一个App Store Connect记录，并上传你从EAS生成的IPA文件。接下来，填写应用的相关信息和截图，并设置定价和分发方式。</p>
+<p>待所有设置完成后，你可以提交应用进行审核。一旦审核通过，你的应用将在App Store上可供下载和使用。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>通过使用React Native开发应用，并结合Expo+EAS工具链，我们可以更高效地构建、测试和发布跨平台的移动应用。Expo的简化流程和丰富功能使得我们可以更专注于业务逻辑的实现，而无需花费过多精力在配置和打包发布上。同时，EAS的扩展服务带来更灵活、定制化的打包和发布选项，满足不同项目的需求。配套苹果开发的操作也可以帮助我们将应用成功推向App Store，进一步扩大用户群体。因此，选择使用Expo+EAS作为RN开发的工具链是一个明智的决策。</p>
+
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-vite是什么" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/02/28/vite是什么/" class="article-date">
+      <time datetime="2021-02-28T12:14:31.000Z" itemprop="datePublished">2021-02-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/28/vite是什么/">vite是什么</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>很久很久没写博客了，今天拾起来，干它一篇。最近也有很多不错的项目开源出来，今天我就来研究一下，最近很火的，尤大大刚发布的 vite。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vite/">vite</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2021/02/28/vite是什么/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-vue3之初体验" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/10/19/vue3之初体验/" class="article-date">
+      <time datetime="2020-10-18T16:08:46.000Z" itemprop="datePublished">2020-10-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/19/vue3之初体验/">vue3之初体验</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>前段时间，神秘的尤爸爸终于发布了vue3.0。因为发布个vue3，尤爸爸还一度成为网红，积攒了一大波粉丝，又是搞直播又是搞宣传什么的，哈哈。今天让我们来看看vue3相较于vue2有哪些升级和不同吧~</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue3/">vue3</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/10/19/vue3之初体验/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-前端自动化测试（三）- E2E测试" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/09/21/前端自动化测试（三）- E2E测试/" class="article-date">
+      <time datetime="2020-09-21T04:06:56.000Z" itemprop="datePublished">2020-09-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>上一篇博客我们讲了讲前端单元测试及其选型、demo 等，我还给团队做了技术分享，这次补上 E2E 测试实战。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cypress/">Cypress</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/E2E测试测试/">E2E测试测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/09/21/前端自动化测试（三）- E2E测试/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-前端自动化测试（二）- 单元测试" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/08/22/前端自动化测试（二）- 单元测试/" class="article-date">
+      <time datetime="2020-08-22T04:06:56.000Z" itemprop="datePublished">2020-08-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>上一篇博客我们大概讲解了软件的开发模式，自动化测试的分类和方式，以及对应的一些技术框架介绍和选型，都是些理论性的知识。这一篇我们就先来实战一下前端单元测试。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/单元测试/">单元测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化测试/">自动化测试</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/08/22/前端自动化测试（二）- 单元测试/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-前端自动化测试（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/07/25/前端自动化测试（一）/" class="article-date">
+      <time datetime="2020-07-25T08:22:46.000Z" itemprop="datePublished">2020-07-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>最近公司项目在升级 react 技术栈，因为改动巨大，尤其是在路由改造和渲染方面。且我司项目庞大，路由众多，而我司主要测试靠人肉 e2e 测试，并没有做规范的高效率的自动化测试。所以此次升级回归测试范围很广，且风险很大。为了以后能够应对这种复杂的情况，故而研究一下前端自动化测试。</p>
+<p>写着写着发现这个博客议题忒大，我们还是一点一点的写吧，第一篇我们先来学习一些概念，有一个理论基础，下一期再根据现在我司项目写一个自动化测试工具，来补充一下我们自动化测试的缺漏，并解决一下我们技术栈升级导致人肉回归测试不能全覆盖的问题。自动化测试是一个长期积累的过程，先迈出第一步吧。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化测试/">自动化测试</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/07/25/前端自动化测试（一）/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-初探Deno" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/06/28/初探Deno/" class="article-date">
+      <time datetime="2020-06-28T11:25:11.000Z" itemprop="datePublished">2020-06-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/28/初探Deno/">初探Deno</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>Node.js 的创建者 Ryan Dahl 觉得 Node.js 已经背离了自己的初衷，因为他已经将 Node 托管给别人很久了，当他回来时，发现物是人非，因为有些众所周知且无法忽视的问题，Ryan Dahl 决定再写一个替代品，彻底解决这些问题。它就是 Deno（Destroy Node.js），顾名思义，推翻 Node。Deno 在 2020 年 5 月 14 日也正式发布了 1.0 版本，它的更新非常之快，扶我起来，我还能学。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Deno/">Deno</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/06/28/初探Deno/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-webpack-rollup-parcel" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/17/webpack-rollup-parcel/" class="article-date">
+      <time datetime="2020-05-17T12:12:25.000Z" itemprop="datePublished">2020-05-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>webpack rollup parcel 应该用哪个？</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/parcel/">parcel</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollup/">rollup</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/打包/">打包</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/05/17/webpack-rollup-parcel/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-AST抽象语法树" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/17/AST抽象语法树/" class="article-date">
+      <time datetime="2020-05-17T09:27:51.000Z" itemprop="datePublished">2020-05-17</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>AST-抽象语法树</p>
+<p>同事写了一个脚本，把所有引入某一组件的 js 文件都找出来了，我问他是咋做的，字符串正则匹配吗，他说用 AST 做的，今天我们就来研究一下。<br>我也是人生第一次。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AST/">AST</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/05/17/AST抽象语法树/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-ES6-Proxy能干点啥" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/04/25/ES6-Proxy能干点啥/" class="article-date">
+      <time datetime="2020-04-25T08:49:12.000Z" itemprop="datePublished">2020-04-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/25/ES6-Proxy能干点啥/">ES6-Proxy 能干点啥</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>顾名思义，Proxy 的意思是代理，作用是为其他对象提供一种代理以控制对这个对象的访问。</p>
+          
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Proxy/">Proxy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/">es6</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2020/04/25/ES6-Proxy能干点啥/#more">牛轰轰 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>

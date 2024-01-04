@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>前端自动化测试（二）- 单元测试 | 牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="上一篇博客我们大概讲解了软件的开发模式，自动化测试的分类和方式，以及对应的一些技术框架介绍和选型，都是些理论性的知识。这一篇我们就先来实战一下前端单元测试。">
+<meta name="keywords" content="前端,自动化测试,单元测试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端自动化测试（二）- 单元测试">
+<meta property="og:url" content="https://gapgao.github.io/2020/08/22/前端自动化测试（二）- 单元测试/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="上一篇博客我们大概讲解了软件的开发模式，自动化测试的分类和方式，以及对应的一些技术框架介绍和选型，都是些理论性的知识。这一篇我们就先来实战一下前端单元测试。">
+<meta property="og:locale" content="Chinese">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/1.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/2.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/3.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/4.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/5.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/6.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/7.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/8.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/9.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/10.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/11.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/12.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/13.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/14.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/15.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/16.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/17.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/18.png">
+<meta property="og:image" content="https://gapgao.github.io/img/autotest/19.png">
+<meta property="og:updated_time" content="2024-01-04T08:04:02.209Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端自动化测试（二）- 单元测试">
+<meta name="twitter:description" content="上一篇博客我们大概讲解了软件的开发模式，自动化测试的分类和方式，以及对应的一些技术框架介绍和选型，都是些理论性的知识。这一篇我们就先来实战一下前端单元测试。">
+<meta name="twitter:image" content="https://gapgao.github.io/img/autotest/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CJS/" style="font-size: 10px;">CJS</a> <a href="/tags/Cypress/" style="font-size: 10px;">Cypress</a> <a href="/tags/Deno/" style="font-size: 10px;">Deno</a> <a href="/tags/E2E测试测试/" style="font-size: 10px;">E2E测试测试</a> <a href="/tags/ESM/" style="font-size: 10px;">ESM</a> <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/UMD/" style="font-size: 10px;">UMD</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/parcel/" style="font-size: 10px;">parcel</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vite/" style="font-size: 10px;">vite</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/打包/" style="font-size: 10px;">打包</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a> <a href="/tags/自动化测试/" style="font-size: 15px;">自动化测试</a> <a href="/tags/飞冰/" style="font-size: 10px;">飞冰</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-前端自动化测试（二）- 单元测试" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/08/22/前端自动化测试（二）- 单元测试/" class="article-date">
+      <time datetime="2020-08-22T04:06:56.000Z" itemprop="datePublished">2020-08-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      前端自动化测试（二）- 单元测试
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/单元测试/">单元测试</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化测试/">自动化测试</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>上一篇博客我们大概讲解了软件的开发模式，自动化测试的分类和方式，以及对应的一些技术框架介绍和选型，都是些理论性的知识。这一篇我们就先来实战一下前端单元测试。</p>
+<a id="more"></a>
+<h2 id="选型"><a href="#选型" class="headerlink" title="选型"></a>选型</h2><p><code>mocha</code> 大家经常用，写node后端时也经常用，我们就先略过它了。<br>这次我想研究一下<code>karma</code>和<code>jest</code>。</p>
+<ol>
+<li><p><code>karma</code> - Google Angular 团队开发的测试运行平台。它配置简单灵活，能够很方便将测试在多个真实浏览器中运行。它使用 Nodejs 构建，因此跨平台，还支持 PhantomJS 浏览器，还支持多种框架，包括以下介绍的 Jasmine、Qunit 和 Mocha。一次可以在多个浏览器及设备中进行测试，并控制浏览器行为和测试报告。虽然它不支持 Nodejs 的测试，不过没什么影响，因为 Nodejs 并不依赖于浏览器。</p>
+</li>
+<li><p><code>jest</code> – facebook 出品的大而全的测试框架，React 官方推荐的单元测试框架，配置简单运行速度快。（备注：无法和 Karma 进行集成）</p>
+</li>
+</ol>
+<p>想研究下这俩的原因是，<code>karma</code>是集各家之大成，集成了很多测试框架和工具，功能齐全。由于我司项目是<code>React</code>，所以也想研究下<code>jest</code>，可惜和<code>karma</code>并不兼容。</p>
+<p>说干就干。</p>
+<h2 id="karma"><a href="#karma" class="headerlink" title="karma"></a>karma</h2><p>打开karma官网，直接一行大字<br><img src="/img/autotest/1.png" alt="avatar"><br>感觉作者是写angular的，为angular量身制作的。</p>
+<h3 id="官方推荐"><a href="#官方推荐" class="headerlink" title="官方推荐"></a>官方推荐</h3><p>When should I use Karma?<br>You want to test code in real browsers.<br>You want to test code in multiple browsers (desktop, mobile, tablets, etc.).<br>You want to execute your tests locally during development.<br>You want to execute your tests on a continuous integration server.<br>You want to execute your tests on every save.<br>You love your terminal.<br>You don’t want your (testing) life to suck.<br>You want to use Istanbul to automagically generate coverage reports.<br>You want to use RequireJS for your source files.</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
+<li><p>npm install karma –save-dev</p>
+</li>
+<li><p>npm install karma-jasmine karma-chrome-launcher jasmine-core –save-dev 官方demo是安装jasmine框架，我不太想用，我们还是用熟悉的mocha吧 一会再装</p>
+</li>
+<li><p>先 init</p>
+</li>
+<li><p>npx karma init my.conf.js<br><img src="/img/autotest/2.png" alt="avatar"><br>可以看到图中，让上下键选择测试框架，它会自己帮我们安装，这里我们选择mocha</p>
+</li>
+<li><p>下一步是问你是不是用Require.js，我们选择否</p>
+</li>
+<li><p><img src="/img/autotest/3.png" alt="avatar"></p>
+</li>
+</ol>
+<p>选择运行浏览器，我们就选Chrome吧，发现还得选一个，什么ChromeHeadless、ChromeCanary、PhantomJS、Firefox、safari、ie什么的，好吧，他是个多选项，让你可以选择多个环境，害。我们就选个Chrome真实环境吧，别的以后再说。</p>
+<ol start="7">
+<li><p><img src="/img/autotest/4.png" alt="avatar"><br>让选择test文件的路径或匹配方式，我们输入一个 <code>*.test.js</code>，也就是所有以<code>test.js</code>结尾的，都是我们的测试问文件。但是它好像得先创建一个，如果是test文件夹下的话，也得创建一个能让它找到。</p>
+</li>
+<li><p><img src="/img/autotest/5.png" alt="avatar"><br>没看懂，输入空格跳过</p>
+</li>
+<li><p><img src="/img/autotest/6.png" alt="avatar"><br>是否在文件变动时，执行测试，咱们还是算了吧，手动执行吧，用不着这么高级的功能。</p>
+</li>
+<li><p><img src="/img/autotest/7.png" alt="avatar"><br>终于成功了，这一顿配置</p>
+</li>
+</ol>
+<p><img src="/img/autotest/8.png" alt="avatar"><br>并且我发现，package.json也被贴心的更改了，我们直接 <code>npm i</code></p>
+<ol start="11">
+<li>再装个配套的可以在浏览器运行的断言库<blockquote>
+<p>npm install chai karma-chai –save-dev</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成的配置文件my.conf.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params">config</span>) </span>&#123;</span><br><span class="line">  config.set(&#123;</span><br><span class="line">    <span class="comment">// base path that will be used to resolve all patterns (eg. files, exclude)</span></span><br><span class="line">    basePath: <span class="string">""</span>,</span><br><span class="line">    <span class="comment">// 测试框架</span></span><br><span class="line">    <span class="comment">// frameworks to use</span></span><br><span class="line">    <span class="comment">// available frameworks: https://npmjs.org/browse/keyword/karma-adapter</span></span><br><span class="line">    frameworks: [<span class="string">"mocha"</span>, <span class="string">"chai"</span>],</span><br><span class="line">    <span class="comment">// 测试入口文件</span></span><br><span class="line">    <span class="comment">// list of files / patterns to load in the browser</span></span><br><span class="line">    files: [<span class="string">"*.test.js"</span>],</span><br><span class="line"></span><br><span class="line">    <span class="comment">// list of files / patterns to exclude</span></span><br><span class="line">    exclude: [],</span><br><span class="line">    <span class="comment">// 预处理器 karma-webpack</span></span><br><span class="line">    <span class="comment">// preprocess matching files before serving them to the browser</span></span><br><span class="line">    <span class="comment">// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor</span></span><br><span class="line">    preprocessors: &#123;&#125;,</span><br><span class="line">    <span class="comment">// 测试报告</span></span><br><span class="line">    <span class="comment">// test results reporter to use</span></span><br><span class="line">    <span class="comment">// possible values: 'dots', 'progress'</span></span><br><span class="line">    <span class="comment">// available reporters: https://npmjs.org/browse/keyword/karma-reporter</span></span><br><span class="line">    reporters: [<span class="string">"progress"</span>],</span><br><span class="line"></span><br><span class="line">    <span class="comment">// web server port</span></span><br><span class="line">    port: <span class="number">9876</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// enable / disable colors in the output (reporters and logs)</span></span><br><span class="line">    colors: <span class="literal">true</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// level of logging</span></span><br><span class="line">    <span class="comment">// possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG</span></span><br><span class="line">    logLevel: config.LOG_INFO,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// enable / disable watching file and executing tests whenever any file changes</span></span><br><span class="line">    autoWatch: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 浏览器</span></span><br><span class="line">    <span class="comment">// start these browsers</span></span><br><span class="line">    <span class="comment">// available browser launchers: https://npmjs.org/browse/keyword/karma-launcher</span></span><br><span class="line">    browsers: [<span class="string">"Chrome"</span>],</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Continuous Integration mode</span></span><br><span class="line">    <span class="comment">// if true, Karma captures browsers, runs the tests and exits</span></span><br><span class="line">    singleRun: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Concurrency level</span></span><br><span class="line">    <span class="comment">// how many browser should be started simultaneous</span></span><br><span class="line">    concurrency: <span class="literal">Infinity</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="开整"><a href="#开整" class="headerlink" title="开整"></a>开整</h3><ol>
+<li>执行 <code>npx karma start my.conf.js</code></li>
+</ol>
+<p>报错缺 <code>mocha</code>库，装一下子。<br><img src="/img/autotest/9.png" alt="avatar"><br>终于起来了，还起来了个Chrome浏览器，还聚焦切屏了。<br><img src="/img/autotest/10.png" alt="avatar"></p>
+<ol start="2">
+<li>demo一个，mocha的用法我就不在这介绍了。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">"demo"</span>, () =&gt; &#123;</span><br><span class="line">  it(<span class="string">"first test"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'123123'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="/img/autotest/11.png" alt="avatar"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// demo.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">demo</span>(<span class="params">arg1, arg2, arg3</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> arg1 + arg2 + arg3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; demo &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo.test.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; assert &#125; <span class="keyword">from</span> <span class="string">"chai"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; demo &#125; <span class="keyword">from</span> <span class="string">"./demo"</span>;</span><br><span class="line"></span><br><span class="line">describe(<span class="string">"demo"</span>, () =&gt; &#123;</span><br><span class="line">  it(<span class="string">"first test"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> result = demo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">    assert.equal(result, <span class="number">6</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">"second test"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> result = demo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">    assert.equal(result, <span class="number">5</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>发现控制台会报错，待我研究一下。<br><img src="/img/autotest/12.png" alt="avatar"><br><img src="/img/autotest/13.png" alt="avatar"><br>用require也不行，确实，这个是直接运行在真实浏览器中的，什么require import什么的都是node的，可能不大好使，我突然想到刚才配置的是后问我要不要用Requirejs，懂了。</p>
+<p>这感觉要配置webpack啊，我再查查。</p>
+<ol>
+<li>还得再装 webpack babel babel-loader<br>npm i webpack karma-webpack babel-loader @babel/core @babel/cli @babel/preset-env –save-dev<br>装上webpack，需要再进行一些配置</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// my.conf.js</span><br><span class="line">&#123;</span><br><span class="line">  preprocessors: &#123;</span><br><span class="line">    // 为选定脚本指定前处理器，这里配置所有的测试脚本需要经过webpack处理</span><br><span class="line">    "*.test.js": ["webpack"],</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  webpack: &#123;</span><br><span class="line">    mode: "development",</span><br><span class="line">    // webpack配置，针对测试脚本打包的compilation配置，与项目文件打包不相关</span><br><span class="line">    // 也可以引入独立的配置文件</span><br><span class="line">    module: &#123;</span><br><span class="line">      rules: [</span><br><span class="line">        &#123;</span><br><span class="line">          test: /\.js$/,</span><br><span class="line">          use: &#123;</span><br><span class="line">            loader: "babel-loader",</span><br><span class="line">            options: &#123;</span><br><span class="line">              presets: ["@babel/preset-env"],</span><br><span class="line">            &#125;,</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过webpack打包，babel之后，终于可以运行了。<br>可以看到打包的log<br><img src="/img/autotest/14.png" alt="avatar"><br>测试结果<br><img src="/img/autotest/15.png" alt="avatar"></p>
+<p>为啥只能在浏览器控制台查看测试结果，而node后台没得，发现得启动的时候传一个参数 <code>--log-level debug</code><br>karma start my.conf.js –log-level debug<br><img src="/img/autotest/16.png" alt="avatar"><br>有了</p>
+<h3 id="React支持"><a href="#React支持" class="headerlink" title="React支持"></a>React支持</h3><p>安装react 及 对应 babel-loader</p>
+<blockquote>
+<p>npm i react react-dom @babel/preset-react –save-dev</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// my.conf.js</span></span><br><span class="line">webpack: &#123;</span><br><span class="line">  mode: <span class="string">"development"</span>,</span><br><span class="line">  <span class="comment">// webpack配置，针对测试脚本打包的compilation配置，与项目文件打包不相关</span></span><br><span class="line">  <span class="comment">// 也可以引入独立的配置文件</span></span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        use: &#123;</span><br><span class="line">          loader: <span class="string">"babel-loader"</span>,</span><br><span class="line">          options: &#123;</span><br><span class="line">            presets: [<span class="string">"@babel/preset-env"</span>, <span class="string">"@babel/preset-react"</span>],</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// demo.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Container</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; title &#125; = <span class="keyword">this</span>.props;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">"title"</span>&gt;</span>&#123;title&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; Container &#125;;</span><br><span class="line"><span class="comment">// demo.test.js</span></span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Container &#125; <span class="keyword">from</span> <span class="string">"./demo"</span>;</span><br><span class="line"></span><br><span class="line">it(<span class="string">"third test"</span>, () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> root = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</span><br><span class="line">    root.id = <span class="string">"app"</span>;</span><br><span class="line">    <span class="built_in">document</span>.body.appendChild(root);</span><br><span class="line">    ReactDOM.render(</span><br><span class="line">      &lt;Container title=<span class="string">"hello world"</span> /&gt;,</span><br><span class="line">      <span class="built_in">document</span>.getElementById(<span class="string">"app"</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">const</span> reactComponent = <span class="built_in">document</span>.querySelector(<span class="string">".title"</span>);</span><br><span class="line">    assert.exists(reactComponent);</span><br><span class="line">    assert.equal(reactComponent.innerText, <span class="string">"hello world"</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="/img/autotest/17.png" alt="avatar"><br>测试成功！</p>
+<h3 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h3><p>安装 karma-coverage<br>npm i karma-coverage –save-dev</p>
+<p>修改配置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  preprocessors: &#123;</span><br><span class="line">    <span class="comment">// 为选定脚本指定前处理器，这里配置所有的测试脚本需要经过webpack处理</span></span><br><span class="line">    <span class="string">"*.test.js"</span>: [<span class="string">"webpack"</span>, <span class="string">"coverage"</span>],</span><br><span class="line">  &#125;,</span><br><span class="line">  reporters: [<span class="string">"progress"</span>, <span class="string">"coverage"</span>],</span><br><span class="line">  coverageReporter: &#123;</span><br><span class="line">    type: <span class="string">"html"</span>,</span><br><span class="line">    <span class="comment">// 第一文件夹</span></span><br><span class="line">    dir: <span class="string">"coverage"</span>,</span><br><span class="line">    <span class="comment">// 第二文件夹 可以 string 可以function 根据不同浏览器 设置不同文件夹</span></span><br><span class="line">    <span class="comment">// 将结果输出到: './coverage/chrome/'</span></span><br><span class="line">    subdir: <span class="function"><span class="keyword">function</span> (<span class="params">browser</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> browser.toLowerCase().split(<span class="regexp">/[ /-]/</span>)[<span class="number">0</span>];</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 下边的配置可以配置多种 type 的 报告</span></span><br><span class="line">    <span class="comment">// reporters: [</span></span><br><span class="line">    <span class="comment">//   // reporters not supporting the `file` property</span></span><br><span class="line">    <span class="comment">//   &#123; type: 'html', subdir: 'report-html' &#125;,</span></span><br><span class="line">    <span class="comment">//   &#123; type: 'lcov', subdir: 'report-lcov' &#125;,</span></span><br><span class="line">    <span class="comment">//   // reporters supporting the `file` property, use `subdir` to directly</span></span><br><span class="line">    <span class="comment">//   // output them in the `dir` directory</span></span><br><span class="line">    <span class="comment">//   &#123; type: 'cobertura', subdir: '.', file: 'cobertura.txt' &#125;,</span></span><br><span class="line">    <span class="comment">//   &#123; type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt' &#125;,</span></span><br><span class="line">    <span class="comment">//   &#123; type: 'teamcity', subdir: '.', file: 'teamcity.txt' &#125;,</span></span><br><span class="line">    <span class="comment">//   &#123; type: 'text', subdir: '.', file: 'text.txt' &#125;,</span></span><br><span class="line">    <span class="comment">//   &#123; type: 'text-summary', subdir: '.', file: 'text-summary.txt' &#125;,</span></span><br><span class="line">    <span class="comment">// ]</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动测试<br><img src="/img/autotest/18.png" alt="avatar"><br>发现文件目录下多了文件夹，里边还有一堆前端资源文件 打开之后查看<br><img src="/img/autotest/19.png" alt="avatar"><br>棒棒，karma基本的使用咱们搞过一遍了，发现还是有不少东西的。</p>
+<h2 id="jest"><a href="#jest" class="headerlink" title="jest"></a>jest</h2><p>下一篇再研究，溜了溜了。。。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://karma-runner.github.io/" target="_blank" rel="noopener">https://karma-runner.github.io/</a><br><a href="https://github.com/dashnowords/Webpack4-Karma-Mocha-Chai-Demo/" target="_blank" rel="noopener">https://github.com/dashnowords/Webpack4-Karma-Mocha-Chai-Demo/</a></p>
+</blockquote>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2020年08月22日 - 12时06分</p>
+        <p><span>最后更新:</span>2024年01月04日 - 16时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2020/08/22/前端自动化测试（二）- 单元测试/" title="前端自动化测试（二）- 单元测试">https://gapgao.github.io/2020/08/22/前端自动化测试（二）- 单元测试/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2020/08/22/前端自动化测试（二）- 单元测试/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2020/09/21/前端自动化测试（三）- E2E测试/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          前端自动化测试（三）- E2E测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/25/前端自动化测试（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">前端自动化测试（一）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#选型"><span class="toc-number">1.</span> <span class="toc-text">选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#karma"><span class="toc-number">2.</span> <span class="toc-text">karma</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#官方推荐"><span class="toc-number">2.1.</span> <span class="toc-text">官方推荐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">2.2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开整"><span class="toc-number">2.3.</span> <span class="toc-text">开整</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#React支持"><span class="toc-number">2.4.</span> <span class="toc-text">React支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试覆盖率"><span class="toc-number">2.5.</span> <span class="toc-text">测试覆盖率</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jest"><span class="toc-number">3.</span> <span class="toc-text">jest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'GapGao',
+      repo: 'gapgao.github.io',
+      oauth: {
+        client_id: 'b37cf634d1c116549841',
+        client_secret: '54bad933f4f25c63418d4c79fe77cbbba1c465b5',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2020/09/21/前端自动化测试（三）- E2E测试/" title="上一篇: 前端自动化测试（三）- E2E测试">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2020/07/25/前端自动化测试（一）/" title="下一篇: 前端自动化测试（一）">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/28/rn/">RN开发与使用Expo+EAS打包发布及配套苹果开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/vite是什么/">vite是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/19/vue3之初体验/">vue3之初体验</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/初探Deno/">初探Deno</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/04/25/ES6-Proxy能干点啥/">ES6-Proxy 能干点啥</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/29/我爱读源码系列之飞冰配置式路由/">我爱读源码系列之飞冰配置式路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/23/搞懂CJS&UMD&ESM/">搞懂CJS & UMD & ESM</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/31/react15升16/">react15升16</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/17/小程序开发笔记/">小程序开发笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/用preload预加载页面资源/">用preload预加载页面资源</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/25/初探WebAssembly/">初探WebAssembly</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/完全理解react Fiber/">完全理解react Fiber</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/20/Nuxt-express踩坑日记/">Nuxt+express踩坑日记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>

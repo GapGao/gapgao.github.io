@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>深入理解JavaScript的设计模式 | 牛轰轰可能是个bug</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用适当的设计模式可以帮助你编写更好、更易于理解的代码。这样的代码也更容易维护。但是，重要的是不要过度使用它们。在使用设计模式之前，你应该仔细考虑你的问题是否符合设计模式。 当你开始一个新的项目时，你不会立即开始编码。你必须定义项目的目的和范围，然后列出项目特性或规格说明。之后，你可以开始编写代码，或者，如果你正在参与的是一个更复杂的项目，那么你应该选择一个最适合项目的设计模式。">
+<meta name="keywords" content="javascript,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JavaScript的设计模式">
+<meta property="og:url" content="https://gapgao.github.io/2019/11/21/深入理解JavaScript的设计模式/index.html">
+<meta property="og:site_name" content="牛轰轰可能是个bug">
+<meta property="og:description" content="使用适当的设计模式可以帮助你编写更好、更易于理解的代码。这样的代码也更容易维护。但是，重要的是不要过度使用它们。在使用设计模式之前，你应该仔细考虑你的问题是否符合设计模式。 当你开始一个新的项目时，你不会立即开始编码。你必须定义项目的目的和范围，然后列出项目特性或规格说明。之后，你可以开始编写代码，或者，如果你正在参与的是一个更复杂的项目，那么你应该选择一个最适合项目的设计模式。">
+<meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2024-01-04T08:04:02.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JavaScript的设计模式">
+<meta name="twitter:description" content="使用适当的设计模式可以帮助你编写更好、更易于理解的代码。这样的代码也更容易维护。但是，重要的是不要过度使用它们。在使用设计模式之前，你应该仔细考虑你的问题是否符合设计模式。 当你开始一个新的项目时，你不会立即开始编码。你必须定义项目的目的和范围，然后列出项目特性或规格说明。之后，你可以开始编写代码，或者，如果你正在参与的是一个更复杂的项目，那么你应该选择一个最适合项目的设计模式。">
+  
+    <link rel="alternative" href="/atom.xml" title="牛轰轰可能是个bug" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">GapGao</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">但行好事 莫问前程</p>
+        
+        
+            <form>
+                <input type="text" class="st-default-search-input search" id="search" placeholder=" Search...">
+            </form>
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/works">作品展示</a></li>
+                        
+                            <li><a href="/about">留言打卡</a></li>
+                        
+                            <li><a href="/FrontEndGuide">前端导航</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                
+                                    <a class="fl mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+
+                                
+                            
+                                
+                                    <a class="fl github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                                
+                            
+                                
+                                    <a class="fl weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                                
+                            
+                                
+                                    <a class="fl linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                                
+                            
+                                
+                                    <a class="fl QQ" target="_self" href="/qq" title="QQ">QQ</a>
+
+                                
+                            
+                                
+                                    <a class="fl wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+
+                                
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CJS/" style="font-size: 10px;">CJS</a> <a href="/tags/Cypress/" style="font-size: 10px;">Cypress</a> <a href="/tags/Deno/" style="font-size: 10px;">Deno</a> <a href="/tags/E2E测试测试/" style="font-size: 10px;">E2E测试测试</a> <a href="/tags/ESM/" style="font-size: 10px;">ESM</a> <a href="/tags/Nuxt/" style="font-size: 10px;">Nuxt</a> <a href="/tags/Proxy/" style="font-size: 10px;">Proxy</a> <a href="/tags/UMD/" style="font-size: 10px;">UMD</a> <a href="/tags/WebAssembly/" style="font-size: 10px;">WebAssembly</a> <a href="/tags/antd/" style="font-size: 10px;">antd</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/console/" style="font-size: 10px;">console</a> <a href="/tags/device/" style="font-size: 10px;">device</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/express/" style="font-size: 10px;">express</a> <a href="/tags/fiber/" style="font-size: 10px;">fiber</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/migration/" style="font-size: 10px;">migration</a> <a href="/tags/parcel/" style="font-size: 10px;">parcel</a> <a href="/tags/react/" style="font-size: 15px;">react</a> <a href="/tags/react15/" style="font-size: 10px;">react15</a> <a href="/tags/react16/" style="font-size: 10px;">react16</a> <a href="/tags/rollup/" style="font-size: 10px;">rollup</a> <a href="/tags/umi/" style="font-size: 10px;">umi</a> <a href="/tags/vconsole/" style="font-size: 10px;">vconsole</a> <a href="/tags/vite/" style="font-size: 10px;">vite</a> <a href="/tags/vue/" style="font-size: 15px;">vue</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/wechat/" style="font-size: 15px;">wechat</a> <a href="/tags/前端/" style="font-size: 20px;">前端</a> <a href="/tags/前端前沿/" style="font-size: 10px;">前端前沿</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/小程序/" style="font-size: 10px;">小程序</a> <a href="/tags/打包/" style="font-size: 10px;">打包</a> <a href="/tags/真机调试/" style="font-size: 10px;">真机调试</a> <a href="/tags/移动端/" style="font-size: 10px;">移动端</a> <a href="/tags/自动化测试/" style="font-size: 15px;">自动化测试</a> <a href="/tags/飞冰/" style="font-size: 10px;">飞冰</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.mokahr.com/">mokahr</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://app.mokahr.com/">mokahr-app</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">爱运动、爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">GapGao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head1.jpg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">GapGao</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">但行好事 莫问前程</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/works">作品展示</a></li>
+                
+                    <li><a href="/about">留言打卡</a></li>
+                
+                    <li><a href="/FrontEndGuide">前端导航</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        
+                            <a class="mail" target="_self" href="mailto:gaobo_1994@126.com" title="mail">mail</a>
+                        
+                    
+                        
+                            <a class="github" target="_blank" href="https://github.com/GapGao" title="github">github</a>
+                        
+                    
+                        
+                            <a class="weibo" target="_blank" href="https://weibo.com/u/3812290780" title="weibo">weibo</a>
+                        
+                    
+                        
+                            <a class="linkedin" target="_blank" href="https://www.linkedin.com/in/博-高-544345139" title="linkedin">linkedin</a>
+                        
+                    
+                        
+                            <a class="QQ" target="_self" href="/qq" title="QQ">QQ</a>
+                        
+                    
+                        
+                            <a class="wechat" target="_self" href="/wechat" title="wechat">wechat</a>
+                        
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-深入理解JavaScript的设计模式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/11/21/深入理解JavaScript的设计模式/" class="article-date">
+      <time datetime="2019-11-21T14:42:08.000Z" itemprop="datePublished">2019-11-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解JavaScript的设计模式
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>使用适当的设计模式可以帮助你编写更好、更易于理解的代码。这样的代码也更容易维护。但是，重要的是不要过度使用它们。在使用设计模式之前，你应该仔细考虑你的问题是否符合设计模式。</p>
+<p>当你开始一个新的项目时，你不会立即开始编码。你必须定义项目的目的和范围，然后列出项目特性或规格说明。之后，你可以开始编写代码，或者，如果你正在参与的是一个更复杂的项目，那么你应该选择一个最适合项目的设计模式。</p>
+<a id="more"></a>
+<h2 id="什么是设计模式？"><a href="#什么是设计模式？" class="headerlink" title="什么是设计模式？"></a>什么是设计模式？</h2><p>在软件工程中，设计模式是软件设计中常见问题的可重用解决方案。设计模式代表了经验丰富的软件开发人员所使用的最佳实践。设计模式可以看作是编程模板。</p>
+<h2 id="为什么要使用设计模式？"><a href="#为什么要使用设计模式？" class="headerlink" title="为什么要使用设计模式？"></a>为什么要使用设计模式？</h2><p>有许多程序员，他们要么认为设计模式浪费时间，要么不知道如何恰当地应用它们。但是，使用适当的设计模式可以帮助你编写更好、更易于理解的代码。这样的代码也更容易维护。</p>
+<p>最重要的是，设计模式为软件开发人员提供了一个可以谈论的通用词汇表。它们可以让学习代码的人快速了解代码的意图。</p>
+<p>例如，如果你在项目中使用了装饰模式，那么新程序员就会立即知道那段代码在做什么，他们可以把更多的精力放在解决业务问题上，而不是试图理解那段代码在做什么。</p>
+<p>现在我们知道了什么是设计模式，以及为什么它们很重要。接下来，让我们深入探讨下应用于 JavaScript 的各种设计模式。</p>
+<h2 id="模块模式"><a href="#模块模式" class="headerlink" title="模块模式"></a>模块模式</h2><p>模块是一段自包含的代码，因此，我们可以在不影响代码其他部分的情况下更新模块。模块还允许我们通过为变量创建单独的作用域来避免命名空间污染。当模块与其他代码片段松耦合时，我们还可以在其他项目中重用它们。</p>
+<p>模块是任何现代化 JavaScript 应用程序的组成部分，有助于保持代码的整洁、隔离和条理性。使用 JavaScript 创建模块有很多方法，其中之一就是模块模式。</p>
+<p>像 Bit 这样的平台可以帮助你将模块和组件转换成共享的构建块，可以在任何项目中共享、发现和开发。不需要任何重构，就可以使用一种快速且可扩展的方式共享和重用代码。</p>
+<p>与其他编程语言不同，JavaScript 没有访问修饰符，也就是说，不能将变量声明为 private 或 public。因此，模块模式也被用来模拟封装的概念。</p>
+<p>该模式使用 iife（即时调用函数表达式）、闭包和函数作用域来模拟这个概念，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myModule = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> privateVariable = <span class="string">"Hello World"</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">privateMethod</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(privateVariable);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    publicMethod: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      privateMethod();</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line">myModule.publicMethod();</span><br></pre></td></tr></table></figure>
+<p>由于是 iife，所以代码会立即执行，返回的对象赋给 myModule 变量。由于是闭包，所以返回的对象仍然可以访问在 iife 中定义的函数和变量，即使在 iife 结束之后。</p>
+<p>因此，在 iife 中定义的变量和函数本质上是对外部作用域隐藏的，这使得它成为 myModule 变量私有的。</p>
+<p>执行代码后，myModule 变量如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myModule = &#123;</span><br><span class="line">  publicMethod: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    privateMethod();</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>因此，我们可以调用 publicMethod()，而它又会调用 privateMethod()，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打印'Hello World'</span></span><br><span class="line"><span class="built_in">module</span>.publicMethod();</span><br></pre></td></tr></table></figure>
+<h2 id="揭示模块模式"><a href="#揭示模块模式" class="headerlink" title="揭示模块模式"></a>揭示模块模式</h2><p>揭示模块模式是经 Christian Heilmann 略微改进的模块模式。模块模式的问题是，我们必须创建新的公共函数来调用私有函数和变量。</p>
+<p>在这个模式中，我们将把返回对象的属性映射到我们想要公开的私有函数。这就是为什么它被称为揭示模块模式，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myRevealingModule = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> privateVar = <span class="string">"Peter"</span>;</span><br><span class="line">  <span class="keyword">const</span> publicVar = <span class="string">"Hello World"</span>;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">privateFunction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Name: "</span> + privateVar);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">publicSetName</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    privateVar = name;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">publicGetName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    privateFunction();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/** 把希望公开的方法和变量赋给对象属性 */</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    setName: publicSetName,</span><br><span class="line">    greeting: publicVar,</span><br><span class="line">    getName: publicGetName,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line">myRevealingModule.setName(<span class="string">"Mark"</span>);</span><br><span class="line"><span class="comment">// 打印姓名：Mark</span></span><br><span class="line">myRevealingModule.getName();</span><br></pre></td></tr></table></figure>
+<p>这种模式使我们更容易理解哪些函数和变量可以公开访问，这有助于提高代码的可读性。</p>
+<p>执行代码之后，myRevealingModule 是下面这个样子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myRevealingModule = &#123;</span><br><span class="line">  setName: publicSetName,</span><br><span class="line">  greeting: publicVar,</span><br><span class="line">  getName: publicGetName,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我们可以调用 myrevealingmodule. setname (‘Mark’)，它是对方法 publicSetName 的引用，而 myRevealingModule.getName() 是对内部方法 publicGetName 的引用，例如:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">myRevealingModule.setName(<span class="string">"Mark"</span>);</span><br><span class="line"><span class="comment">// 打印姓名：Mark</span></span><br><span class="line">myRevealingModule.getName();</span><br></pre></td></tr></table></figure>
+<h3 id="与模块模式相比，揭示模块模式的优点如下"><a href="#与模块模式相比，揭示模块模式的优点如下" class="headerlink" title="与模块模式相比，揭示模块模式的优点如下"></a>与模块模式相比，揭示模块模式的优点如下</h3><ul>
+<li>通过修改 return 语句中的一行代码，我们就可以将成员从 public 更改为 private，反之亦然。</li>
+<li>返回的对象不包含任何函数定义，所有右侧表达式都在 iife 中定义，这使得代码清晰且易于阅读。</li>
+</ul>
+<h2 id="ES6-模块"><a href="#ES6-模块" class="headerlink" title="ES6 模块"></a>ES6 模块</h2><p>在 ES6 之前，JavaScript 没有内置模块，因此，开发人员不得不依赖第三方库或模块模式来实现模块。但是在 ES6 中，JavaScript 有了本地模块。</p>
+<p>ES6 模块存储在文件中。每个文件只能有一个模块。默认情况下，模块中的所有内容都是私有的。函数、变量和类都是使用 export 关键字公开的。模块内的代码总是在严格模式下运行。</p>
+<h2 id="输出模块"><a href="#输出模块" class="headerlink" title="输出模块"></a>输出模块</h2><p>有多种方法可以公开函数和变量声明：</p>
+<p>在函数和变量声明前添加 export 关键字，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// utils.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> greeting = <span class="string">"Hello World"</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Sum:"</span>, num1, num2);</span><br><span class="line">  <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">subtract</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Subtract:"</span>, num1, num2);</span><br><span class="line">  <span class="keyword">return</span> num1 - num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这是一个私有函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">privateLog</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Private Function"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在代码末尾添加 export 关键字，其中包含我们希望公开的函数名和变量名，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// utils.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Multiply:"</span>, num1, num2);</span><br><span class="line">  <span class="keyword">return</span> num1 * num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">divide</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Divide:"</span>, num1, num2);</span><br><span class="line">  <span class="keyword">return</span> num1 / num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这是一个私有函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">privateLog</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Private Function"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123; multiply, divide &#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="导入模块"><a href="#导入模块" class="headerlink" title="导入模块"></a>导入模块</h3><p>和输出模块类似，借助 import，有多种方法可以导入模块：</p>
+<p>一次导入多个项：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="comment">// 导入多个项</span></span><br><span class="line"><span class="keyword">import</span> &#123; sum, multiply &#125; <span class="keyword">from</span> <span class="string">"./utils.js"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(sum(<span class="number">3</span>, <span class="number">7</span>));</span><br><span class="line"><span class="built_in">console</span>.log(multiply(<span class="number">3</span>, <span class="number">7</span>));</span><br></pre></td></tr></table></figure>
+<p>导入所有模块：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="comment">// 导入所有模块</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> utils <span class="keyword">from</span> <span class="string">"./utils.js"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(utils.sum(<span class="number">3</span>, <span class="number">7</span>));</span><br><span class="line"><span class="built_in">console</span>.log(utils.multiply(<span class="number">3</span>, <span class="number">7</span>));</span><br></pre></td></tr></table></figure>
+<h3 id="导入和输出的别名"><a href="#导入和输出的别名" class="headerlink" title="导入和输出的别名"></a>导入和输出的别名</h3><p>如果你想要避免命名冲突，则可以在输出和导入时更改名称，例如：</p>
+<p>重命名输出：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// utils.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Sum:"</span>, num1, num2);</span><br><span class="line">  <span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Multiply:"</span>, num1, num2);</span><br><span class="line">  <span class="keyword">return</span> num1 * num2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123; sum <span class="keyword">as</span> add, multiply &#125;;</span><br></pre></td></tr></table></figure>
+<p>重命名导入：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; add, multiply <span class="keyword">as</span> mult &#125; <span class="keyword">from</span> <span class="string">"./utils.js"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">3</span>, <span class="number">7</span>));</span><br><span class="line"><span class="built_in">console</span>.log(mult(<span class="number">3</span>, <span class="number">7</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p>单例对象是只能实例化一次的对象。如果一个类的实例不存在，单例模式就会创建一个新的类实例。如果实例存在，它只返回对该对象的引用。对构造函数的任何重复调用都会获取相同的对象。</p>
+<p>JavaScript 语言一直都内置了的单例，只是我们不把它们叫做单例，我们称它们为对象字面量，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user = &#123;</span><br><span class="line">  name: <span class="string">"Peter"</span>,</span><br><span class="line">  age: <span class="number">25</span>,</span><br><span class="line">  job: <span class="string">"Teacher"</span>,</span><br><span class="line">  greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Hello!"</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>因为 JavaScript 中的每个对象都占用一个唯一的内存位置，当我们调用 user 对象时，我们本质上是返回了该对象的引用。</p>
+<p>如果我们试图将 user 变量复制到另一个变量中并修改该变量，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user1 = user;</span><br><span class="line">user1.name = <span class="string">"Mark"</span>;</span><br></pre></td></tr></table></figure>
+<p>我们会看到，两个对象都被修改了，因为在 JavaScript 中，对象是通过引用传递的，而不是值。因此，内存中只有一个对象，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打印'Mark'</span></span><br><span class="line"><span class="built_in">console</span>.log(user.name);</span><br><span class="line"><span class="comment">// 打印'Mark'</span></span><br><span class="line"><span class="built_in">console</span>.log(user1.name);</span><br><span class="line"><span class="comment">// 打印 true</span></span><br><span class="line"><span class="built_in">console</span>.log(user === user1);</span><br></pre></td></tr></table></figure>
+<p>单例模式可以使用构造函数实现，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> instance = <span class="literal">null</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">User</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (instance) &#123;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">  &#125;</span><br><span class="line">  instance = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">this</span>.name = <span class="string">"Peter"</span>;</span><br><span class="line">  <span class="keyword">this</span>.age = <span class="number">25</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> user1 = <span class="keyword">new</span> User();</span><br><span class="line"><span class="keyword">const</span> user2 = <span class="keyword">new</span> User();</span><br><span class="line"><span class="comment">// 打印 true</span></span><br><span class="line"><span class="built_in">console</span>.log(user1 === user2);</span><br></pre></td></tr></table></figure>
+<p>当调用这个构造函数时，它会检查实例对象是否存在。如果对象不存在，它就将这个变量赋给实例变量。如果对象存在，它只返回那个对象。</p>
+<p>单例也可以使用模块模式实现，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> singleton = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> instance;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      name: <span class="string">"Peter"</span>,</span><br><span class="line">      age: <span class="number">24</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    getInstance: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!instance) &#123;</span><br><span class="line">        instance = init();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="keyword">const</span> instanceA = singleton.getInstance();</span><br><span class="line"><span class="keyword">const</span> instanceB = singleton.getInstance();</span><br><span class="line"><span class="comment">// 打印 true</span></span><br><span class="line"><span class="built_in">console</span>.log(instanceA === instanceB);</span><br></pre></td></tr></table></figure>
+<p>在上面的代码中，我们通过调用 singleton.getInstance 方法来创建一个新实例。如果实例已经存在，则该方法只是返回这个实例，如果实例不存在，则调用 init() 函数创建一个新的实例。</p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>工厂模式使用工厂方法创建对象，而不指定所创建对象的确切类或构造函数。</p>
+<p>工厂模式用于创建对象，而不公开实例化逻辑。当我们需要根据特定条件生成不同的对象时，可以使用此模式，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">    <span class="keyword">this</span>.doors = options.doors || <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">this</span>.state = options.state || <span class="string">"brand new"</span>;</span><br><span class="line">    <span class="keyword">this</span>.color = options.color || <span class="string">"white"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Truck</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">    <span class="keyword">this</span>.doors = options.doors || <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">this</span>.state = options.state || <span class="string">"used"</span>;</span><br><span class="line">    <span class="keyword">this</span>.color = options.color || <span class="string">"black"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactory</span> </span>&#123;</span><br><span class="line">  createVehicle(options) &#123;</span><br><span class="line">    <span class="keyword">if</span> (options.vehicleType === <span class="string">"car"</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> Car(options);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (options.vehicleType === <span class="string">"truck"</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> Truck(options);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里，我创建了一个 Car 类和一个 Truck 类（带有一些默认值），用于创建新的 Car 和 Truck 对象。我还定义了一个 VehicleFactory 类，基于 options 对象中接收到的 vehicleType 属性创建和返回一个新的对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> factory = <span class="keyword">new</span> VehicleFactory();</span><br><span class="line"><span class="keyword">const</span> car = factory.createVehicle(&#123;</span><br><span class="line">  vehicleType: <span class="string">"car"</span>,</span><br><span class="line">  doors: <span class="number">4</span>,</span><br><span class="line">  color: <span class="string">"silver"</span>,</span><br><span class="line">  state: <span class="string">"Brand New"</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> truck = factory.createVehicle(&#123;</span><br><span class="line">  vehicleType: <span class="string">"truck"</span>,</span><br><span class="line">  doors: <span class="number">2</span>,</span><br><span class="line">  color: <span class="string">"white"</span>,</span><br><span class="line">  state: <span class="string">"used"</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 打印 Car &#123;doors: 4, state: "Brand New", color: "silver"&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(car);</span><br><span class="line"><span class="comment">// 打印 Truck &#123;doors: 2, state: "used", color: "white"&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(truck);</span><br></pre></td></tr></table></figure>
+<p>我已经创建了一个新的 VehicleFactory 类的对象工厂。之后，我们可以调用 factory.createVehicle 方法，传入一个 vehicleType 属性值为 car 或 truck 的 options 对象。</p>
+<h2 id="装饰模式"><a href="#装饰模式" class="headerlink" title="装饰模式"></a>装饰模式</h2><p>装饰模式用于扩展对象的功能，而不修改现有的类或构造函数。该模式可用于向对象添加特性，而不修改使用它们的底层代码。</p>
+<p>下面是这个模式的一个简单例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Car</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="comment">// 默认值</span></span><br><span class="line">  <span class="keyword">this</span>.color = <span class="string">"White"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 新建一个需要装饰的对象</span></span><br><span class="line"><span class="keyword">const</span> tesla = <span class="keyword">new</span> Car(<span class="string">"Tesla Model 3"</span>);</span><br><span class="line"><span class="comment">// 使用新功能装饰对象</span></span><br><span class="line">tesla.setColor = <span class="function"><span class="keyword">function</span> (<span class="params">color</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.color = color;</span><br><span class="line">&#125;;</span><br><span class="line">tesla.setPrice = <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.price = price;</span><br><span class="line">&#125;;</span><br><span class="line">tesla.setColor(<span class="string">"black"</span>);</span><br><span class="line">tesla.setPrice(<span class="number">49000</span>);</span><br><span class="line"><span class="comment">// 打印 black</span></span><br><span class="line"><span class="built_in">console</span>.log(tesla.color);</span><br></pre></td></tr></table></figure>
+<p>对于这种模式，一个更实际的例子是，比方说，一辆车的价格取决于它有多少功能。如果没有装饰模式，我们将不得不为不同的特性组合创建不同的类，每个类都有计算成本的 cost 方法，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span>() </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarWithAC</span>() </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarWithAutoTransmission</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarWithPowerLocks</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarWithACandPowerLocks</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是使用装饰模式，我们可以创建一个基类 Car，并使用装饰函数将不同配置的成本添加到它的对象中，例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="comment">// 默认值</span></span><br><span class="line">    <span class="keyword">this</span>.cost = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">20000</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 装饰函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">carWithAC</span>(<span class="params">car</span>) </span>&#123;</span><br><span class="line">  car.hasAC = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">const</span> prevCost = car.cost();</span><br><span class="line">  car.cost = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prevCost + <span class="number">500</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 装饰函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">carWithAutoTransmission</span>(<span class="params">car</span>) </span>&#123;</span><br><span class="line">  car.hasAutoTransmission = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">const</span> prevCost = car.cost();</span><br><span class="line">  car.cost = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prevCost + <span class="number">2000</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 装饰函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">carWithPowerLocks</span>(<span class="params">car</span>) </span>&#123;</span><br><span class="line">  car.hasPowerLocks = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">const</span> prevCost = car.cost();</span><br><span class="line">  car.cost = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prevCost + <span class="number">500</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先，我们创建一个创建 Car 对象的基类 Car。然后，为要添加的功能创建装饰，并将 Car 对象作为参数传递。然后，我们重写这个对象的 cost 函数，该函数返回更新后的汽车成本，并向该对象添加一个新属性，表明添加了哪些功能。</p>
+<p>要添加新功能，我们可以这样做：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> car = <span class="keyword">new</span> Car();</span><br><span class="line"><span class="built_in">console</span>.log(car.cost());</span><br><span class="line">carWithAC(car);</span><br><span class="line">carWithAutoTransmission(car);</span><br><span class="line">carWithPowerLocks(car);</span><br></pre></td></tr></table></figure>
+<p>最后，我们可以像下面这样计算汽车的成本：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算汽车的总成本</span></span><br><span class="line"><span class="built_in">console</span>.log(car.cost());</span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>我们已经了解了 JavaScript 中使用的各种设计模式，但还有一些可以用 JavaScript 实现的设计模式我在这里没有涉及。</p>
+<p>虽然了解各种设计模式很重要，但同样重要的是不要过度使用它们。在使用设计模式之前，你应该仔细考虑你的问题是否符合设计模式。要知道一个模式是否适合你的问题，你应该研究设计模式以及该设计模式的应用。</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><blockquote>
+<p><a href="https://blog.bitsrc.io/understanding-design-patterns-in-javascript-13345223f2dd?br=ro&amp;" target="_blank" rel="noopener">https://blog.bitsrc.io/understanding-design-patterns-in-javascript-13345223f2dd?br=ro&amp;</a></p>
+</blockquote>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>纯属好玩</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GapGao 的个人博客">GapGao</a></p>
+        <p><span>发布时间:</span>2019年11月21日 - 22时42分</p>
+        <p><span>最后更新:</span>2024年01月04日 - 16时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2019/11/21/深入理解JavaScript的设计模式/" title="深入理解JavaScript的设计模式">https://gapgao.github.io/2019/11/21/深入理解JavaScript的设计模式/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://gapgao.github.io/2019/11/21/深入理解JavaScript的设计模式/　　作者: GapGao" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2019/12/17/小程序开发笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          小程序开发笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/24/用preload预加载页面资源/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">用preload预加载页面资源</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是设计模式？"><span class="toc-number">1.</span> <span class="toc-text">什么是设计模式？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要使用设计模式？"><span class="toc-number">2.</span> <span class="toc-text">为什么要使用设计模式？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块模式"><span class="toc-number">3.</span> <span class="toc-text">模块模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#揭示模块模式"><span class="toc-number">4.</span> <span class="toc-text">揭示模块模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#与模块模式相比，揭示模块模式的优点如下"><span class="toc-number">4.1.</span> <span class="toc-text">与模块模式相比，揭示模块模式的优点如下</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES6-模块"><span class="toc-number">5.</span> <span class="toc-text">ES6 模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出模块"><span class="toc-number">6.</span> <span class="toc-text">输出模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#导入模块"><span class="toc-number">6.1.</span> <span class="toc-text">导入模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#导入和输出的别名"><span class="toc-number">6.2.</span> <span class="toc-text">导入和输出的别名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单例模式"><span class="toc-number">7.</span> <span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工厂模式"><span class="toc-number">8.</span> <span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装饰模式"><span class="toc-number">9.</span> <span class="toc-text">装饰模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">10.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">11.</span> <span class="toc-text">引用</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <div id="gitments"></div>
+<script src="/js/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+      id: window.location.pathname,
+      owner: 'GapGao',
+      repo: 'gapgao.github.io',
+      oauth: {
+        client_id: 'b37cf634d1c116549841',
+        client_secret: '54bad933f4f25c63418d4c79fe77cbbba1c465b5',
+      },
+    })
+    gitment.render('gitments')
+</script>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2019/12/17/小程序开发笔记/" title="上一篇: 小程序开发笔记">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2019/10/24/用preload预加载页面资源/" title="下一篇: 用preload预加载页面资源">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/28/rn/">RN开发与使用Expo+EAS打包发布及配套苹果开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/02/28/vite是什么/">vite是什么</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/10/19/vue3之初体验/">vue3之初体验</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/21/前端自动化测试（三）- E2E测试/">前端自动化测试（三）- E2E测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/08/22/前端自动化测试（二）- 单元测试/">前端自动化测试（二）- 单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/07/25/前端自动化测试（一）/">前端自动化测试（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/06/28/初探Deno/">初探Deno</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/webpack-rollup-parcel/">webpack-rollup-parcel</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/05/17/AST抽象语法树/">AST抽象语法树</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/04/25/ES6-Proxy能干点啥/">ES6-Proxy 能干点啥</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/29/我爱读源码系列之飞冰配置式路由/">我爱读源码系列之飞冰配置式路由</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/02/23/搞懂CJS&UMD&ESM/">搞懂CJS & UMD & ESM</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/01/31/react15升16/">react15升16</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/12/17/小程序开发笔记/">小程序开发笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/21/深入理解JavaScript的设计模式/">深入理解JavaScript的设计模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/用preload预加载页面资源/">用preload预加载页面资源</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/25/初探WebAssembly/">初探WebAssembly</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/25/完全理解react Fiber/">完全理解react Fiber</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/20/Nuxt-express踩坑日记/">Nuxt+express踩坑日记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/本地微信真机调试方法/">本地微信真机调试方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/chrome模拟微信浏览器device/">chrome模拟微信浏览器device</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/01/vConsole调试console/">vConsole调试console</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/umi实战笔记/">umi实战笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/27/学习计划/">学习计划</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2024 GapGao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit">到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+    <script type="text/javascript">
+      window.onload = function(){
+        document.getElementById("search").onclick = function(){
+            console.log("search")
+            search();
+        }
+      }
+      function search(){
+        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+        (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+        e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+        _st('install','A1Pz-LKMXbrzcFg2FWi6','2.0.0');
+      }
+    </script>
+
+  </div>
+</body>
+</html>
