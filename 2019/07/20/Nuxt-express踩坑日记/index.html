@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <title>Nuxt+express踩坑日记 | 牛轰轰可能是个bug</title>
@@ -58,7 +58,7 @@
     <header id="header" class="inner">
         <a href="/" class="profilepic">
             
-            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            <img lazy-src="/img/head2.jpg" class="js-avatar">
             
         </a>
 
@@ -273,7 +273,7 @@
   
   <div class="article-inner">
     
-      <input type="hidden" class="isFancy">
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -337,7 +337,7 @@
 <blockquote>
 <p>1.nuxt.config.js</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">modules: [</span><br><span class="line">  '@nuxtjs/style-resources',</span><br><span class="line">],</span><br><span class="line">// 可以随处直接使用定义过的变量或函数</span><br><span class="line">styleResources: &#123;</span><br><span class="line">  stylus: ['./assets/palette.styl', './assets/util.styl', './assets/product_page.styl'],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">modules: [</span><br><span class="line">  '@nuxtjs/style-resources',</span><br><span class="line">],</span><br><span class="line"><span class="comment">// 可以随处直接使用定义过的变量或函数</span></span><br><span class="line">styleResources: &#123;</span><br><span class="line">  stylus: ['./assets/palette.styl', './assets/util.styl', './assets/product_page.styl'],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>modules是加载一些module引用的plugin，使得后边的那些styl可以在每个.vue中均被自动引入，less啊saas啊都行，觉得比较好用。</p>
 <blockquote>
 <p>2.app.html可以写一些比如在线客服啊，埋点啊，百度或头条等seo的一些东西。<br>3.assest 放一些.styl，.saas，.less，.ts，需要打包或编译的一些资源文件，static放一些静态文件，middleware和plugin我还没用过哈哈。<br>4.layout里边放一些共用的容器模板文件，每个路由对应的.vue文件会自动填充在对应容器内，当然，填充在哪个容器内是可以配置的。在路由对应的.vue文件里可以配置</p>
@@ -360,20 +360,20 @@
               <p>纯属好玩</p>
             </div>
             <div class="shang_payimg">
-              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
             </div>
               <div class="pay_explain">扫码打赏，你说多少就多少</div>
             <div class="shang_payselect">
               
                 <div class="pay_item checked" data-id="alipay">
                   <span class="radiobox"></span>
-                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
                 </div>
               
               
                 <div class="pay_item" data-id="wechat">
                   <span class="radiobox"></span>
-                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
                 </div>
               
             </div>
@@ -414,7 +414,7 @@
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -446,7 +446,7 @@
     <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ssr个人理解"><span class="toc-number">2.</span> <span class="toc-text">ssr个人理解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Nuxt官方介绍"><span class="toc-number">3.</span> <span class="toc-text">Nuxt官方介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#项目搭建"><span class="toc-number">4.</span> <span class="toc-text">项目搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#dev环境"><span class="toc-number">4.1.</span> <span class="toc-text">dev环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prod环境"><span class="toc-number">4.2.</span> <span class="toc-text">prod环境</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一些觉得挺好的小知识点"><span class="toc-number">5.</span> <span class="toc-text">一些觉得挺好的小知识点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
 </div>
-<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
 <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
 <script>
@@ -560,8 +560,8 @@
         
             <div class="visit">
                 
-                    <span id="busuanzi_container_site_pv" style="display:none">
-                        <span id="site-visit">到访数: 
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >到访数: 
                             <span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
@@ -570,7 +570,7 @@
                     <span>, </span>
                 
                 
-                    <span id="busuanzi_container_page_pv" style="display:none">
+                    <span id="busuanzi_container_page_pv" style='display:none'>
                         <span id="page-visit">本页阅读量: 
                             <span id="busuanzi_value_page_pv"></span>
                         </span>

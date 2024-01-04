@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <title>深入理解JavaScript的设计模式 | 牛轰轰可能是个bug</title>
@@ -58,7 +58,7 @@
     <header id="header" class="inner">
         <a href="/" class="profilepic">
             
-            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            <img lazy-src="/img/head2.jpg" class="js-avatar">
             
         </a>
 
@@ -273,7 +273,7 @@
   
   <div class="article-inner">
     
-      <input type="hidden" class="isFancy">
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -399,20 +399,20 @@
               <p>纯属好玩</p>
             </div>
             <div class="shang_payimg">
-              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
             </div>
               <div class="pay_explain">扫码打赏，你说多少就多少</div>
             <div class="shang_payselect">
               
                 <div class="pay_item checked" data-id="alipay">
                   <span class="radiobox"></span>
-                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
                 </div>
               
               
                 <div class="pay_item" data-id="wechat">
                   <span class="radiobox"></span>
-                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
                 </div>
               
             </div>
@@ -453,7 +453,7 @@
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -485,7 +485,7 @@
     <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是设计模式？"><span class="toc-number">1.</span> <span class="toc-text">什么是设计模式？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要使用设计模式？"><span class="toc-number">2.</span> <span class="toc-text">为什么要使用设计模式？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块模式"><span class="toc-number">3.</span> <span class="toc-text">模块模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#揭示模块模式"><span class="toc-number">4.</span> <span class="toc-text">揭示模块模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#与模块模式相比，揭示模块模式的优点如下"><span class="toc-number">4.1.</span> <span class="toc-text">与模块模式相比，揭示模块模式的优点如下</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES6-模块"><span class="toc-number">5.</span> <span class="toc-text">ES6 模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出模块"><span class="toc-number">6.</span> <span class="toc-text">输出模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#导入模块"><span class="toc-number">6.1.</span> <span class="toc-text">导入模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#导入和输出的别名"><span class="toc-number">6.2.</span> <span class="toc-text">导入和输出的别名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单例模式"><span class="toc-number">7.</span> <span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工厂模式"><span class="toc-number">8.</span> <span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装饰模式"><span class="toc-number">9.</span> <span class="toc-text">装饰模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">10.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用"><span class="toc-number">11.</span> <span class="toc-text">引用</span></a></li></ol>
 </div>
-<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
 <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
 <script>
@@ -599,8 +599,8 @@
         
             <div class="visit">
                 
-                    <span id="busuanzi_container_site_pv" style="display:none">
-                        <span id="site-visit">到访数: 
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >到访数: 
                             <span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
@@ -609,7 +609,7 @@
                     <span>, </span>
                 
                 
-                    <span id="busuanzi_container_page_pv" style="display:none">
+                    <span id="busuanzi_container_page_pv" style='display:none'>
                         <span id="page-visit">本页阅读量: 
                             <span id="busuanzi_value_page_pv"></span>
                         </span>

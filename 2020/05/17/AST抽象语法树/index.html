@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <title>AST抽象语法树 | 牛轰轰可能是个bug</title>
@@ -60,7 +60,7 @@
     <header id="header" class="inner">
         <a href="/" class="profilepic">
             
-            <img lazy-src="/img/head1.jpg" class="js-avatar">
+            <img lazy-src="/img/head2.jpg" class="js-avatar">
             
         </a>
 
@@ -275,7 +275,7 @@
   
   <div class="article-inner">
     
-      <input type="hidden" class="isFancy">
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -389,20 +389,20 @@
               <p>纯属好玩</p>
             </div>
             <div class="shang_payimg">
-              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
             </div>
               <div class="pay_explain">扫码打赏，你说多少就多少</div>
             <div class="shang_payselect">
               
                 <div class="pay_item checked" data-id="alipay">
                   <span class="radiobox"></span>
-                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
                 </div>
               
               
                 <div class="pay_item" data-id="wechat">
                   <span class="radiobox"></span>
-                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
                 </div>
               
             </div>
@@ -443,7 +443,7 @@
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target="_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -475,7 +475,7 @@
     <strong class="toc-title">文章目录</strong>
     <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#先看看概念"><span class="toc-number">1.</span> <span class="toc-text">先看看概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AST-有什么用"><span class="toc-number">2.</span> <span class="toc-text">AST 有什么用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parse"><span class="toc-number">3.</span> <span class="toc-text">Parse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我的第一次-AST-解析"><span class="toc-number">4.</span> <span class="toc-text">我的第一次 AST 解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#纯文本转-AST-的实现"><span class="toc-number">5.</span> <span class="toc-text">纯文本转 AST 的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一步：词法分析，也叫扫描-scanner"><span class="toc-number">5.1.</span> <span class="toc-text">第一步：词法分析，也叫扫描 scanner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二步：语法分析，也称解析器"><span class="toc-number">5.2.</span> <span class="toc-text">第二步：语法分析，也称解析器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#看看别人怎么吹-AST-的"><span class="toc-number">6.</span> <span class="toc-text">看看别人怎么吹 AST 的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开搞：利用-AST-实现一个组件引用文件查找的脚本"><span class="toc-number">7.</span> <span class="toc-text">开搞：利用 AST 实现一个组件引用文件查找的脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#依赖工具安装"><span class="toc-number">7.1.</span> <span class="toc-text">依赖工具安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#试用一下功能"><span class="toc-number">7.2.</span> <span class="toc-text">试用一下功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#举个-🌰"><span class="toc-number">7.3.</span> <span class="toc-text">举个 🌰</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#首先我们要搞一些测试文件或文件夹：如下"><span class="toc-number">7.3.1.</span> <span class="toc-text">首先我们要搞一些测试文件或文件夹：如下</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#然后要写一个遍历文件读取的脚本"><span class="toc-number">7.3.2.</span> <span class="toc-text">然后要写一个遍历文件读取的脚本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#log-一下解析内容"><span class="toc-number">7.3.3.</span> <span class="toc-text">log 一下解析内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#最终代码"><span class="toc-number">7.3.4.</span> <span class="toc-text">最终代码</span></a></li></ol></li></ol></li></ol>
 </div>
-<input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
 <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
 <script>
@@ -589,8 +589,8 @@
         
             <div class="visit">
                 
-                    <span id="busuanzi_container_site_pv" style="display:none">
-                        <span id="site-visit">到访数: 
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >到访数: 
                             <span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
@@ -599,7 +599,7 @@
                     <span>, </span>
                 
                 
-                    <span id="busuanzi_container_page_pv" style="display:none">
+                    <span id="busuanzi_container_page_pv" style='display:none'>
                         <span id="page-visit">本页阅读量: 
                             <span id="busuanzi_value_page_pv"></span>
                         </span>
